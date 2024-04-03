@@ -20,15 +20,8 @@ public class HomeController {
 	 * Simply selects the home view to render by returning its name.
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String home(Locale locale, Model model, HttpSession session) {
-//		String result = "";
-//		String mbrId = (String)session.getAttribute("sessionId");
-//		if(mbrId!=null) {
-//			result = "redirect:/board/bbsList";
-//		}else {
-//			result = "/member/login";
-//		}
-		return "home";
+	public String home(Locale locale, Model model) {
+		return "forward:board/bbsList";
 	}
 	
 }

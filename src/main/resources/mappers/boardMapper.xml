@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.secondhand.mappers.board">
+	
+	<select id="getBbsList" resultType="com.secondhand.domain.BoardDTO">
+		SELECT BBS_ID		AS bbsId			
+			, BBS_TTL		AS bbsTtl
+			, SLE_CMPTN_YN	AS sleCmptnYn
+			, SLE_PRC		AS slePrc
+			, RGTR_ID		AS rgtrId
+			, RGTR_DT		AS rgtrDt 
+		FROM TB_BBS
+		ORDER BY BBS_ID DESC
+	</select>
+	
+	
+</mapper>
