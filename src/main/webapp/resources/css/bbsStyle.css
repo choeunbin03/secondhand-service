@@ -1,0 +1,11 @@
+@charset "UTF-8";
+
+	.bbsContent {
+		border: 1px solid #c0c0c0;
+		margin: 20px;
+		float: left;
+		width: clac(100%-100px);
+		padding: 20px;
+		justify-content: center;
+		align-items: center;
+	}

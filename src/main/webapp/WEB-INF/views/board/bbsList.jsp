@@ -9,9 +9,11 @@
 <title>Insert title here</title>
 	<style type="text/css">
 		.btn {border: 0; background-color: transparent;}
+		
 	</style>
 	
 	<link rel="stylesheet" href="${path}/resources/css/moduleStyle.css">
+	<link rel="stylesheet" href="${path}/resources/css/bbsStyle.css">
 	<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 		
 	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -58,7 +60,7 @@
 		
 		</div><!-- //bbs_content -->		
 	</div>
-	
+
 
 </body>
 </html>
