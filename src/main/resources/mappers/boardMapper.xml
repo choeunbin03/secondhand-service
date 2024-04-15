@@ -15,5 +15,17 @@
 		ORDER BY BBS_ID DESC
 	</select>
 	
+	<select id="getBbsListByCtgry" resultType="com.secondhand.domain.BoardDTO" parameterType="HashMap">
+		SELECT BBS_ID		AS bbsId			
+			, BBS_TTL		AS bbsTtl
+			, SLE_CMPTN_YN	AS sleCmptnYn
+			, SLE_PRC		AS slePrc
+			, RGTR_ID		AS rgtrId
+			, RGTR_DT		AS rgtrDt 
+		FROM TB_BBS
+		WHERE CTGRY_FLD = ${ctgryFld}
+		ORDER BY BBS_ID DESC
+	</select>
+	
 	
 </mapper>

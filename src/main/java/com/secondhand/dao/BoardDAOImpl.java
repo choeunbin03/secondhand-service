@@ -1,6 +1,7 @@
 package com.secondhand.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -20,6 +21,12 @@ public class BoardDAOImpl implements BoardDAO{
 	@Override
 	public List<BoardDTO> getBbsList() {
 		List<BoardDTO> bbsList = sqlSession.selectList(namespace + ".getBbsList");
+		return bbsList;
+	}
+
+	@Override
+	public List<BoardDTO> getBbsList(Map<String, Object> param) {
+		List<BoardDTO> bbsList = sqlSession.selectList(namespace + ".getBbsListByCtgry", param);
 		return bbsList;
 	}
 

@@ -29,6 +29,7 @@
 		<%@ include file="../module/ctgryBar.jsp" %>
  	
 		<div class="bbsContent">
+			<div class="ctgry-wrapper">카테고리> ${ctgryFld}</div>
 			<br>		
 			<br>	
 			
@@ -67,16 +68,6 @@
 		</div><!-- //bbs_content -->		
 	</div>
 
-
-<script>
-	var ctgry = document.querySelector('.menu-v1');
-	ctgry.addEventListener('click', function(){
-		
-		var ctgryVal = ctgry.attr("value");
-		location.href = "/board/bbsList?ctgryFld="+ctgryVal;
-		
-	})
-</script>
 
 </body>
 </html>

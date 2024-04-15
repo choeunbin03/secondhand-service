@@ -1,6 +1,7 @@
 package com.secondhand.service;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -18,6 +19,12 @@ public class BoardServiceImpl implements BoardService{
 	@Override
 	public List<BoardDTO> getBbsList() {
 		List<BoardDTO> bbsList = boardDao.getBbsList();
+		return bbsList;
+	}
+
+	@Override
+	public List<BoardDTO> getBbsList(Map<String, Object> param) {
+		List<BoardDTO> bbsList = boardDao.getBbsList(param);
 		return bbsList;
 	}
 
