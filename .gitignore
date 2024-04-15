@@ -1,2 +1,5 @@
 #ignore root-context.xml
 root-context.xml
+
+#ignore pom.xml
+pom.xml
