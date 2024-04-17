@@ -52,7 +52,11 @@ public class BoardController {
 		}		
 				
 		//첨부파일 목록 가져오기.
-		
+		System.out.println("==1===");
+		System.out.println(bbsList);
+		System.out.println(bbsList.get(0));
+		System.out.println(bbsList.get(0));
+		System.out.println("=====");
 		model.addAttribute("bbsList", bbsList);
 		return "/board/bbsList";
 	}

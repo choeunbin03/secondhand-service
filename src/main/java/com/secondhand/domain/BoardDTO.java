@@ -6,7 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class BoardDTO extends BaseDTO{
-	private int bbsId; //게시글 id
+	public int bbsId; //게시글 id
 	private String bbsTtl; //게시글 제목
 	private String bbsCn; //게시글 내용
 	private int ctgryFld; //카테고리 종류
