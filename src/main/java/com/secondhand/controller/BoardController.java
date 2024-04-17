@@ -49,8 +49,7 @@ public class BoardController {
 		}catch(Exception e) {
 			//카테고리를 선택하지 않은 경우 게시글 리스트 가져오기
 			bbsList = boardService.getBbsList();
-		}		
-		System.out.println(bbsList);
+		}
 				
 		//첨부파일 목록 가져오기.
 		
