@@ -21,7 +21,7 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.39</version>
+            <version>8.0.16</version>
         </dependency>
 
 	<!-- 마이바티스 관련 라이브러리 설정 -->
@@ -55,7 +55,7 @@
 	  	<dependency>
 	  		<groupId>org.projectlombok</groupId>
 	  		<artifactId>lombok</artifactId>
-	  		<version>1.18.6</version>
+	  		<version>1.18.32</version>
 	  	</dependency>
 	  	
 	<!-- https://mvnrepository.com/artifact/io.projectreactor.netty/reactor-netty -->
