@@ -17,6 +17,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.amazonaws.services.datapipeline.model.Field;
+import com.secondhand.domain.BoardDTO;
 import com.secondhand.service.BoardService;
 
 @Controller
@@ -51,14 +53,21 @@ public class BoardController {
 			bbsList = boardService.getBbsList();
 		}		
 				
-		//첨부파일 목록 가져오기.
-		System.out.println("==1===");
-		System.out.println(bbsList);
-		System.out.println(bbsList.get(0));
-		System.out.println(bbsList.get(0));
-		System.out.println("=====");
 		model.addAttribute("bbsList", bbsList);
 		return "/board/bbsList";
 	}
-
+	//게시글 상세페이지 불러오기.
+	@RequestMapping(value = "/bbsView", method = RequestMethod.GET)
+	public String bbs(Locale locale, Model model, HttpSession session, HttpServletRequest request) {
+		Map<String, Object> param = new HashMap<>();
+		param.put("bbsId", request.getParameter("bbsId"));
+		BoardDTO bbsView = boardService.getBbsView(param);
+		System.out.println("========1111==========");
+		System.out.println(bbsView);
+		System.out.println("========1111==========");
+		
+		model.addAttribute("bbsView", bbsView);
+				
+		return "/board/bbsView";
+	}
 }

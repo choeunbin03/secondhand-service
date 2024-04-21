@@ -32,10 +32,10 @@
 			<br>		
 			<br>	
 			
-			<c:forEach items="${bbsList}" var="bbsList" varStatus="status">
+			<c:forEach items="${bbsList}" var="bbslist" varStatus="status">
 				<div class="product-wrapper">
 				<!-- 클릭 시 상세페이지 이동. -->
-					<!-- <a class="product-item" href="/board/bbsView?bbsId=${bbsList.bbsId}"> -->
+					<!-- <a class="product-item" href="/board/bbsView?bbsId=${bbslist.bbsId}"> -->
 					<div class="product-item">
 						<!-- 첨부파일 -->
 						<div class="product-image">
@@ -43,20 +43,23 @@
 						</div>
 						<div class="product-content">
 							<!-- 게시글 제목 -->
-							<div class="product-title">${bbsList.bbsTtl}</div>
+							<div class="product-title">${bbslist.bbsTtl}</div>
+							<!-- @@@@@@@@	판매완료 시 어떻게 표시할것인지 상의	@@@@@@@@ -->
 							<!-- 게시글 상세 정보 -->
 							<div class="product-detail">
+								<!-- 판매 가격 -->
+								<div class="product-price">${bbslist.slePrc}</div>
 								<!-- 판매 완료 여부 및 가격 -->
 								<div class="price-wrapper">
 									<c:choose>
-										<c:when test='${bbsList.sleCmptnYn eq 1}'> <!-- 판매 완료(sleCmptnYn==1) -->
+										<c:when test='${bbslist.sleCmptnYn eq 1}'> <!-- 판매 완료(sleCmptnYn==1) -->
 											<div class="sleCmptnYn-btn">판매완료</div>
 										</c:when>
 									</c:choose>
-									<div class="product-price">&#8361;${bbsList.slePrc}원</div>
+									<div class="product-price">&#8361;${bbslist.slePrc}원</div>
 								</div>								
 								<!-- 게시글 등록 날짜 -->
-								<div class="register-date"><fmt:formatDate pattern="yyyy/MM/dd" value="${bbsList.rgtrDt}" /></div>
+								<div class="register-date"><fmt:formatDate pattern="yyyy/MM/dd" value="${bbslist.rgtrDt}" /></div>
 							</div>
 						</div>
 					<!-- </a> -->

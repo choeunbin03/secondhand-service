@@ -9,6 +9,7 @@ public interface BoardDAO {
 	
 	public List<BoardDTO> getBbsList();
 	public List<BoardDTO> getBbsList(Map<String, Object> param);
+	public BoardDTO getBbsView(Map<String, Object> param);
 
 
 }

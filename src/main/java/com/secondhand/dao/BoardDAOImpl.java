@@ -30,4 +30,10 @@ public class BoardDAOImpl implements BoardDAO{
 		return bbsList;
 	}
 
+	@Override
+	public BoardDTO getBbsView(Map<String, Object> param) {
+		BoardDTO bbsList = (BoardDTO) sqlSession.selectList(namespace + ".getBbsView", param).get(0);
+		return bbsList;
+	}
+
 }
