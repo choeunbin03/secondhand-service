@@ -1,6 +1,13 @@
 package com.secondhand.service;
 
-public class LoginService{ // 로그인 확인용 필터
-	
+import org.springframework.validation.Validator;
+
+import com.secondhand.domain.MemberDTO;
+
+//로그인 및 로그아웃 관련 service
+public interface LoginService extends Validator{
+
+	//로그인 메소드
+	public MemberDTO login(String loginId, String password);
 	
 }
