@@ -9,5 +9,7 @@ public interface BoardService {
 	
 	public List<BoardDTO> getBbsList();
 	public List<BoardDTO> getBbsList(Map<String, Object> param);
+	public List<BoardDTO> getPrchBbsList(String mbrId);
+	public List<BoardDTO> getSleBbsList(String mbrId);
 
 }

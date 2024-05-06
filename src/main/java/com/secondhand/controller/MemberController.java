@@ -11,10 +11,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import com.secondhand.dao.MemberDAO;
+import com.secondhand.dao.MemberDAOImpl;
 import com.secondhand.domain.LoginDTO;
 import com.secondhand.domain.MemberDTO;
-import com.secondhand.service.LoginService;
+import com.secondhand.service.LoginServiceImpl;
 import com.secondhand.service.SigninService;
 
 import java.util.Set;
@@ -26,8 +26,8 @@ import java.util.Set;
 public class MemberController{
 
     private final SigninService signinService;
-    private final LoginService loginService; // 멤버 조회역할'
-    private final MemberDAO store;
+    private final LoginServiceImpl loginService; // 멤버 조회역할'
+    private final MemberDAOImpl store;
 
 
     @GetMapping("/login") // 로그인화면

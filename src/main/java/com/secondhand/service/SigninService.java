@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
-import com.secondhand.dao.MemberDAO;
+import com.secondhand.dao.MemberDAOImpl;
 import com.secondhand.domain.MemberDTO;
 
 import java.util.HashSet;
@@ -15,7 +15,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class SigninService implements Validator { // 회원가입 확인용 필터
 
-    private final MemberDAO store;
+    private final MemberDAOImpl store;
 
     public Set<String> isValidate(MemberDTO member, String mbrPwdConfirm) {
 

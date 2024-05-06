@@ -28,4 +28,18 @@ public class BoardServiceImpl implements BoardService{
 		return bbsList;
 	}
 
+	@Override
+	public List<BoardDTO> getPrchBbsList(String mbrId) {
+		List<BoardDTO> bbsList = boardDao.getPrchBbsList(mbrId);
+		return bbsList;
+	}
+	
+	@Override
+	public List<BoardDTO> getSleBbsList(String mbrId) {
+		List<BoardDTO> bbsList = boardDao.getSleBbsList(mbrId);
+		return bbsList;
+	}
+
+	
+
 }
