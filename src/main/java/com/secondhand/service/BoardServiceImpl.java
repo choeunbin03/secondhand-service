@@ -27,6 +27,12 @@ public class BoardServiceImpl implements BoardService{
 		List<BoardDTO> bbsList = boardDao.getBbsList(param);
 		return bbsList;
 	}
+	
+	@Override
+	public BoardDTO getBbsView(Map<String, Object> param) {
+		BoardDTO bbsContent = boardDao.getBbsView(param);
+		return bbsContent;
+	}
 
 	@Override
 	public List<BoardDTO> getPrchBbsList(String mbrId) {

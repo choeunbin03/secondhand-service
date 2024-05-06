@@ -3,3 +3,6 @@ root-context.xml
 
 #ignore pom.xml
 pom.xml
+
+#ignore application.properties(aws계정 정보)
+application.properties

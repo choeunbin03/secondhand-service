@@ -1,6 +1,7 @@
 package com.secondhand.controller;
 
 import javax.annotation.PostConstruct;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -11,11 +12,17 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
 import com.secondhand.dao.MemberDAOImpl;
 import com.secondhand.domain.LoginDTO;
 import com.secondhand.domain.MemberDTO;
 import com.secondhand.service.LoginServiceImpl;
-import com.secondhand.service.SigninService;
+
+import com.secondhand.dao.MemberDAO;
+import com.secondhand.domain.LoginDTO;
+import com.secondhand.domain.MemberDTO;
+import com.secondhand.service.LoginService;
+import com.secondhand.service.MemberService;
 
 import java.util.Set;
 
@@ -25,9 +32,8 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class MemberController{
 
-    private final SigninService signinService;
     private final LoginServiceImpl loginService; // 멤버 조회역할'
-    private final MemberDAOImpl store;
+    private final MemberService memberService;
 
 
     @GetMapping("/login") // 로그인화면
@@ -41,6 +47,7 @@ public class MemberController{
                         BindingResult bindingResult,
                         @RequestParam(name = "redirectURL", defaultValue = "/") String redirectURL,
                         HttpServletRequest request) {
+
         loginService.validate(login, bindingResult); //검증기에 주입
         if(bindingResult.hasErrors()){ // 입력 값 없으면 다시 로그인창
             log.info("error ={}", bindingResult.getFieldError());
@@ -61,6 +68,7 @@ public class MemberController{
         session.setAttribute("LoginMember", loginMember);
         log.info("OO");
         return "redirect:" + redirectURL;
+
     }
 
     @GetMapping("/signin") // 회원가입 화면
@@ -76,18 +84,20 @@ public class MemberController{
                          HttpServletRequest request,
                          Model model){
 
-        signinService.validate(member, bindingResult);
 
-        Set<String> errorMsgSet=signinService.isValidate(member,mbrPwdConfirm);
+        memberService.validate(member, bindingResult);
+
+        Set<String> errorMsgSet = memberService.isValidate(member,mbrPwdConfirm);
         if(errorMsgSet.contains("noError")){ // 회원 가입이 적절할 떄
-            store.save(member);
+        	memberService.save(member);
+
             log.info("회원 가입 성공");
         }
         else { // 회원 가입이 적절하지 않을 때
             log.info("회원 가입 실패");
-            if(errorMsgSet.contains("mbrIdError")){ log.info("사용자 이름 제약 조건 불충족");}
-            if(errorMsgSet.contains("mbrPwdError")){ log.info("사용자 비밀번호 제약 조건 불충족");}
-            if(errorMsgSet.contains("mbrPwdConfirmError")){ log.info("사용자 비밀번호 확인 제약 조건 불충족");}
+            if(errorMsgSet .contains("mbrIdError")){ log.info("사용자 이름 제약 조건 불충족");}
+            if(errorMsgSet .contains("mbrPwdError")){ log.info("사용자 비밀번호 제약 조건 불충족");}
+            if(errorMsgSet .contains("mbrPwdConfirmError")){ log.info("사용자 비밀번호 확인 제약 조건 불충족");}
 
             return "/member/signin";
         }

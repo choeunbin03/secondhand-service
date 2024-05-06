@@ -1,11 +1,21 @@
 package com.secondhand.dao;
 
+
 import java.util.*;
 
 import lombok.extern.slf4j.Slf4j;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+import javax.annotation.PostConstruct;
+
 import org.springframework.stereotype.Repository;
 
 import com.secondhand.domain.MemberDTO;
@@ -20,7 +30,6 @@ public class MemberDAOImpl implements MemberDAO { //리포지터리
     private SqlSession sqlSession;	
 	private static String namespace = "com.secondhand.mappers.member";
 
-    //회원가입 파트에서 멤버 저장하는 로직 구현하고 내가 멤버 조회하는 로직 구현
 
 	@Override
     public MemberDTO save(MemberDTO member) {
@@ -30,6 +39,7 @@ public class MemberDAOImpl implements MemberDAO { //리포지터리
 
 	@Override
     public MemberDTO findByMbrId(String LoginId){
+
     	MemberDTO member = sqlSession.selectOne(namespace + ".findByMbrId", LoginId);
     	log.info("멤버정보 = {}", member);
     	return member;

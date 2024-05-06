@@ -24,4 +24,7 @@ public class MemberDTO { // 회원가입할 때 여기에 로그인, 비밀번�
         this.mbrId = mbrId;
         this.mbrPwd = mbrPwd;
     }
+
 }
+
+

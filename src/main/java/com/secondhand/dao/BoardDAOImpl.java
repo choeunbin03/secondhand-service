@@ -34,6 +34,7 @@ public class BoardDAOImpl implements BoardDAO{
 	}
 	
 	@Override
+
 	public List<BoardDTO> getPrchBbsList(String mbrId){ // 해당 멤버의 구매내역에 해당되는 리스트만 가져옴
 		List<BoardDTO> bbsList = sqlSession.selectList(namespace + ".getPrchBbsList", mbrId);
 		log.info("구매 내역 = {}", bbsList.get(0));
@@ -47,4 +48,11 @@ public class BoardDAOImpl implements BoardDAO{
 		return bbsList;
 	}
 
+
+	public BoardDTO getBbsView(Map<String, Object> param) {
+		BoardDTO bbsContent = (BoardDTO) sqlSession.selectList(namespace + ".getBbsView", param).get(0);
+		return bbsContent;
+	}
+
 }
+
