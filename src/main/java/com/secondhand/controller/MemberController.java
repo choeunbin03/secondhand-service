@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.secondhand.dao.MemberDAOImpl;
 import com.secondhand.domain.LoginDTO;
@@ -45,23 +46,22 @@ public class MemberController{
     @PostMapping("/login")
     public String login(@ModelAttribute("loginDTO") LoginDTO login,
                         BindingResult bindingResult,
+                        RedirectAttributes redirectAttributes,
                         @RequestParam(name = "redirectURL", defaultValue = "/") String redirectURL,
                         HttpServletRequest request) {
 
         loginService.validate(login, bindingResult); //검증기에 주입
         if(bindingResult.hasErrors()){ // 입력 값 없으면 다시 로그인창
-            log.info("error ={}", bindingResult.getFieldError());
+            log.info("error1 ={}", bindingResult.getFieldError());
             return "/member/login";
         }
         //LoginService에서 받은 데이터로 로그인 가능한지 처리해야함
         MemberDTO loginMember = loginService.login(login.getLoginId(), login.getPassword()); // 넘겨준 아이디에 맞는 MemberDTO객체 있으면 반환받음
 
        if(loginMember == null) { // 없는 회원일때
-           log.info("XX");
-//           bindingResult.rejectValue("loginFail", "아이디 또는 비밀번호가 맞지 않습니다.");
-            bindingResult.reject("loginFail","아이디 또는 비밀번호가 맞지 않습니다.");
-           log.info("error ={}", bindingResult.getFieldError());
-            return "/member/login"; //다시 로그인 화면
+    	   log.info("Login failed for user ID: {}", login.getLoginId());
+     	   redirectAttributes.addFlashAttribute("error", "아이디 또는 비밀번호가 일치하지 않습니다.");
+     	   return "redirect:/member/login";
         }
 
         HttpSession session = request.getSession();

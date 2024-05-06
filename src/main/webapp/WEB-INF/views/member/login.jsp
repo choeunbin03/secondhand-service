@@ -51,17 +51,14 @@
 <body>
 <div class="login-container">
   <h2>로그인</h2>
-  <c:if test="${errors.hasFieldErrors('loginFail')}">
-    <div class="error-message">${errors.getFieldError('loginFail').defaultMessage}</div>
-  </c:if>
+   <c:if test="${not empty error}">
+    <div class="error-message">${error}</div>
+	</c:if>
 
   <form action="/member/login" method="post">
     <input type="text" id="loginId" name="loginId"
            class="login-input" placeholder="사용자 아이디"
            value="${loginId}" required> <!-- value 속성 추가 -->
-    <c:if test="${not empty errors and errors.hasFieldErrors('loginId')}">
-      <div class="error-message">${errors.getFieldError('loginId').defaultMessage}</div>
-    </c:if>
     <br>
     <input type="password" id="password" name="password"
            class="login-input" placeholder="비밀번호"
