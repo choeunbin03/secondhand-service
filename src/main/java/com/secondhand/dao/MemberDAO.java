@@ -9,7 +9,7 @@ public interface MemberDAO {
 	
 	public void init();
 	public MemberDTO save(MemberDTO member);
-	public MemberDTO findByMbrId(String LoginId);
+	public MemberDTO findByMbrId(String loginId);
 	public List<MemberDTO> findAll();
 	public void clearStore();
 

@@ -34,10 +34,10 @@ public class MemberDAOImpl implements MemberDAO{ //리포지터리
     }
 
 	@Override
-    public MemberDTO findByMbrId(String LoginId){
-       return store.get(LoginId);
+    public MemberDTO findByMbrId(String loginId){
+       return store.get(loginId);
     }
-//	    public Optional<MemberDTO> findByLoginId(String LoginId){ // 회원가입할 때 만든 아이디로 멤버 조회
+//	    public Optional<MemberDTO> findByLoginId(String loginId){ // 회원가입할 때 만든 아이디로 멤버 조회
 //	        // sql 쿼리로 아이디 조회하기 -> 더 알아봐야할듯
 //	    }
 
