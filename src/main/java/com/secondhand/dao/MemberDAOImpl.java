@@ -33,7 +33,8 @@ public class MemberDAOImpl implements MemberDAO { //리포지터리
 
 	@Override
     public MemberDTO save(MemberDTO member) {
-        store.put(member.getMbrId(), member);
+      sqlSession.insert(namespace+".save",member);
+        log.info("회원 가입 성공 = {}",member);
         return member;
     }
 
@@ -45,13 +46,13 @@ public class MemberDAOImpl implements MemberDAO { //리포지터리
     	return member;
     }
 
-	@Override
-    public List<MemberDTO> findAll(){
-        return new ArrayList<>(store.values());
-    }
+//	@Override
+//    public List<MemberDTO> findAll(){
+//        return new ArrayList<>(store.values());
+//    }
 
-	@Override
-    public void clearStore() {
-        store.clear();
-    }
+//	@Override
+//    public void clearStore() {
+//        store.clear();
+//    }
 }

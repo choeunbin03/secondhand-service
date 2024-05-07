@@ -90,8 +90,6 @@ public class MemberController{
         Set<String> errorMsgSet = memberService.isValidate(member,mbrPwdConfirm);
         if(errorMsgSet.contains("noError")){ // 회원 가입이 적절할 떄
         	memberService.save(member);
-
-            log.info("회원 가입 성공");
         }
         else { // 회원 가입이 적절하지 않을 때
             log.info("회원 가입 실패");
