@@ -82,12 +82,13 @@ public class BoardController {
 		System.out.println("========1111==========");
 		
 		//첨부파일 가져오기
-		
+		List<AtchFileDTO> files = atchFileService.getFiles(param);
 		//좋아요 체크 여부 및 좋아요 개수 가져오기
 		
 		//채팅 개수 가져오기
 		
 		model.addAttribute("bbsView", bbsView);
+		model.addAttribute("files", files);
 				
 		return "/board/bbsView";
 	}

@@ -23,7 +23,7 @@ public class LoginServiceImpl implements LoginService, Validator{
 	@Override
     public MemberDTO login(String loginId, String password) {
 //        return memberDAO.findById(loginId);
-        // ==> MemberDAO의 public Optional<MemberDTO> findByLoginId(String LoginId) 개발하면, 아래로 대체
+        // ==> MemberDAO의 public Optional<MemberDTO> findByLoginId(String loginId) 개발하면, 아래로 대체
 
 //        return memberDAO.findById(loginId)
 //                .filter(m -> m.getMbrPwd().equals(password))

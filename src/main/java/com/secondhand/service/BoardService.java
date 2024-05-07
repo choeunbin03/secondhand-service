@@ -13,6 +13,10 @@ public interface BoardService {
 	public List<BoardDTO> getBbsList(Map<String, Object> param);
 	//게시글 상세정보 가져오기
 	public BoardDTO getBbsView(Map<String, Object> param);
+	//사용자의 판매내역 가져오기
+	public List<BoardDTO> getPrchBbsList(String mbrId);
+	//사용자의 구매내역 가져오기
+	public List<BoardDTO> getSleBbsList(String mbrId);
 
 }
 

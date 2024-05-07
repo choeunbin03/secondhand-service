@@ -39,7 +39,7 @@
 		)
 	</insert>
 	
-	<select id="getFileList" resultType="com.secondhand.domain.AtchFileDTO">
+	<select id="getFiles" resultType="com.secondhand.domain.AtchFileDTO" parameterType="HashMap">
 		SELECT B.ATCH_FILE_NO AS atchFileNo,
 				B.ATCH_FILE_SEQ AS atchFileSeq,
 				B.ATCH_FILE_PATH AS atchFilePath,
@@ -48,7 +48,7 @@
 				B.ATCH_FILE_SZ AS atchFileSz
 		FROM TB_BBS a
 		LEFT JOIN TB_ATCH_FILE B ON A.ATCH_FILE_NO = B.ATCH_FILE_NO
-		ORDER BY A.BBS_ID DESC
+		WHERE A.BBS_ID = #{bbsId}
 	</select>
 	
 	<select id="getFileThumbNail" resultType="com.secondhand.domain.AtchFileDTO">

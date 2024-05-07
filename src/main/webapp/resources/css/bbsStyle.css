@@ -1,11 +1,12 @@
 @charset "UTF-8";
 
 	.bbsContent {		
-		float: left;
 		padding: 20px;
 		justify-content: center;
-		align-items: center;
+		align-items: flex-start;
 		display: flex;
+		width: calc(100% - 200px);
+		flex-wrap: wrap;
 	}
 	
 	.product-wrapper{
@@ -15,10 +16,20 @@
 		padding: 20px;
 		height: 300px;
 		width: 200px;
+		justify-content: center;
+	}
+	
+	.product-title{
+		font-size: 20px;
+		font-weight: bold;
+	}
+	
+	.product-item{
+		align-content: center;
 	}
 	
 	.price-wrapper {
-	
+		display: flex;
 	}
 	
 	.sleCmptnYn-btn {
@@ -26,7 +37,7 @@
 		margin: 5px;
 		padding: 5px;
 		height: 20px;
-		width: 55px;
+		width: 60px;
 		box-sizing: border-box;
 		border: 1px solid black;
 		background-color: #c0c0c0;

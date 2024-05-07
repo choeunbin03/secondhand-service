@@ -34,7 +34,7 @@ public class MemberController{
         model.addAttribute("loginDTO", new LoginDTO());
         return "/member/login";
     }
-
+//login 관련 메소드
     @PostMapping("/login")
     public String login(@ModelAttribute("loginDTO") LoginDTO login,
                         BindingResult bindingResult,
@@ -59,12 +59,14 @@ public class MemberController{
         }
 
         HttpSession session = request.getSession();
-        session.setAttribute("LoginMember", loginMember);
+        session.setAttribute("loginMember", loginMember);
         log.info("OO");
         return "redirect:" + redirectURL;
         
     }
 
+    
+//회원가입 관련 메소드
     @GetMapping("/signin") // 회원가입 화면
     public String signInForm(@ModelAttribute("member") MemberDTO member){
         return "/member/signin";
@@ -72,12 +74,13 @@ public class MemberController{
 
     @PostMapping("/signin") // 회원가입 화면에서 가입하기 눌렸을 때
     public String singIn(@ModelAttribute("member") MemberDTO member,
-                         @ModelAttribute("mbrPwdConfirm") String mbrPwdConfirm,
                          BindingResult bindingResult,
                          @RequestParam(name="redirectURL",defaultValue="/member/login") String redirectURL,
                          HttpServletRequest request,
                          Model model){
 
+    	String mbrPwdConfirm = (String)request.getParameter("mbrPwdConfirm");
+    	
         memberService.validate(member, bindingResult);
 
         Set<String> errorMsgSet=memberService.isValidate(member,mbrPwdConfirm);
@@ -97,5 +100,10 @@ public class MemberController{
         }
 
         return "redirect:"+redirectURL;
+    }
+    
+    @GetMapping("/jusoPopup") // 회원가입 화면
+    public String signInForm(){
+        return "/member/jusoPopup";
     }
 }

@@ -9,7 +9,8 @@
 <title>Insert title here</title>
 	<style type="text/css">
 		.btn {border: 0; background-color: transparent;}
-		
+		.bbs-img-files{width: 180px; height: 170px; margin-bottom: 10px;}
+		#img-file{width: 100%; height: 100%;}
 	</style>
 	
 	<link rel="stylesheet" href="${path}/resources/css/moduleStyle.css">
@@ -48,7 +49,7 @@
 									</c:when>
 									<c:otherwise>
 										<div class="bbs-img-files">
-											<img id="img-file" src="/resources/images/defaultImage.png">
+											<img id="img-file" src="/resources/images/default.jpg">
 										</div>
 									</c:otherwise>
 								</c:choose>		

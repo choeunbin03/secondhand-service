@@ -80,32 +80,9 @@ public class AtchFileServiceImpl implements AtchFileService{
 	}
 
 	@Override
-	public List<List<AtchFileDTO>> getFileList() {
-		 List<List<AtchFileDTO>> outerList = new ArrayList<>();
-		 
-		 List<AtchFileDTO> files = atchFileDao.getFileList();
-		 
-		// int flag = files.get(0).getAtchFileNo();
-		 //첨부파일 list를 그냥 받아와서 여기에서 이차원list로 만들어주기
-		 //null값은 화면단에서 처리.
-		
-		 for( int i = 0; i < files.size(); i++) {
-			 int flag = 1;
-			 List<AtchFileDTO> innerList = new ArrayList<>();
-			 while(flag == 1) {
-				 innerList.add(files.get(i));			
-				 
-				 if(i == files.size()-1 || files.get(i+1) == null || files.get(i).getAtchFileNo() != files.get(i+1).getAtchFileNo()) {
-					 outerList.add(innerList);
-					 flag = 0;
-					 break;
-					 //null값 체크!!
-				 }
-				 i++;
-			 }
-		 }
-		
-		 return outerList;
+	public List<AtchFileDTO> getFiles(Map<String, Object> params) {
+		 List<AtchFileDTO> files = atchFileDao.getFiles(params);		
+		 return files;
 	}
 
 	@Override

@@ -9,11 +9,14 @@
 <title>Insert title here</title>
 	<style type="text/css">
 		.btn {border: 0; background-color: transparent;}
-		
+		.bbs-img-files{width: 350px; height: 315px;}
+		#img-file{width: 100%; height: 100%;}
+		.bbsViewWrap {display:flex; margin-top:30px; width: 900px;}
+		.img-wrapper{margin-right: 50px;}
 	</style>
 	
 	<link rel="stylesheet" href="${path}/resources/css/moduleStyle.css">
-	<link rel="stylesheet" href="${path}/resources/css/bbsViewStyle.css">
+	<link rel="stylesheet" href="${path}/resources/css/bbsStyle.css">
 	<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 		
 	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -32,10 +35,24 @@
 			<br>		
 			<br>	
 			<div class="bbsViewWrap">
-				
 				<!-- 첨부파일 -->
 				<div class="bbsViewImgWrap">
-					<img class="bbsViewImg" alt="" src="${path}/resources/img/test.jpg">
+					<div class="img-wrapper">
+						<c:choose>
+							<c:when test='${bbsView.atchFileNo ne 0}'>		
+								<c:forEach items="${files}" var="files"	>
+									<div class="bbs-img-files">
+										<img id="img-file" src="${files.atchFilePath}">
+									</div>	
+								</c:forEach>																	
+							</c:when>
+							<c:otherwise>
+								<div class="bbs-img-files">
+									<img id="img-file" src="/resources/images/default.jpg">
+								</div>
+							</c:otherwise>
+						</c:choose>		
+					</div>	
 				</div>
 				<div class="bbsViewContentWrap">
 					<h1>[${bbsView.sleCmptnYn == 1 ? '판매완료' : '판매중' }] ${bbsView.bbsTtl}</h1>
