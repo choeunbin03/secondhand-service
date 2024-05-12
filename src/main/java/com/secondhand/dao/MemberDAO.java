@@ -13,6 +13,7 @@ import com.secondhand.domain.MemberDTO;
 @Repository
 public class MemberDAO { //리포지터리
 	
+<<<<<<< Updated upstream
 	private static Map<Long,MemberDTO> store = new HashMap<>();
 	private static final Long sequence = 0L; // 멤버 고유 저장 번호
 	
@@ -40,3 +41,14 @@ public class MemberDAO { //리포지터리
 		store.clear();
 	}
 }
+=======
+	public void init();
+	public MemberDTO save(MemberDTO member);
+	public MemberDTO findByMbrId(String loginId);
+	public List<MemberDTO> findAll();
+	public void clearStore();
+	public List<String> getBMK(String mbrId);
+	public void updateBMK(Map<String, Object> param);
+
+}
+>>>>>>> Stashed changes

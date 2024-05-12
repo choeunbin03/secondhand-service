@@ -1,7 +1,11 @@
 @charset "UTF-8";
 
+<<<<<<< Updated upstream
 	.bbsContent {		
 		float: left;
+=======
+	.bbsContent {
+>>>>>>> Stashed changes
 		padding: 20px;
 		justify-content: center;
 		align-items: center;
@@ -40,4 +44,16 @@
 	
 	.register-date {
 		font-size: 11px;
+	}
+	.transparent-button{
+	  border: 0;
+	  background-color: transparent;
+	}
+	.small_button{
+	    height:50px;
+	    width: 50px;
+	
+	}
+	.bbsViewBtnWrap{
+		margin-right:25px;
 	}
