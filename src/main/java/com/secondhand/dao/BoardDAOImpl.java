@@ -1,5 +1,6 @@
 package com.secondhand.dao;
 
+import java.util.HashMap;
 import java.util.List; 
 import java.util.Map;
 
@@ -37,14 +38,12 @@ public class BoardDAOImpl implements BoardDAO{
 
 	public List<BoardDTO> getPrchBbsList(String mbrId){ // 해당 멤버의 구매내역에 해당되는 리스트만 가져옴
 		List<BoardDTO> bbsList = sqlSession.selectList(namespace + ".getPrchBbsList", mbrId);
-		log.info("구매 내역 = {}", bbsList.get(0));
 		return bbsList;
 	}
 	
 	@Override
 	public List<BoardDTO> getSleBbsList(String mbrId){ // 해당 멤버의 구매내역에 해당되는 리스트만 가져옴
 		List<BoardDTO> bbsList = sqlSession.selectList(namespace + ".getSleBbsList", mbrId);
-		log.info("판매 내역 = {}", bbsList.get(0));
 		return bbsList;
 	}
 
@@ -53,6 +52,24 @@ public class BoardDAOImpl implements BoardDAO{
 		BoardDTO bbsContent = (BoardDTO) sqlSession.selectList(namespace + ".getBbsView", param).get(0);
 		return bbsContent;
 	}
+	
+	@Override
+	public void insertBoard(BoardDTO board) {
+		sqlSession.insert(namespace+".insertBoard",board);
+	}
+	
+	@Override
+    public List<BoardDTO> getBbsListByKeyword(String keyword) {
+        return sqlSession.selectList(namespace + ".searchBbsList", keyword);
+    }
+	
+	@Override
+	public void deleteBoard(int bbsId) {
+		sqlSession.delete("deleteBoard",bbsId);
+	}
+
+
+	   
 
 }
 

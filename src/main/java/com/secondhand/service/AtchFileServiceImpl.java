@@ -28,31 +28,33 @@ public class AtchFileServiceImpl implements AtchFileService{
 		int result = atchFileDao.getMaxAtchFileNo();
 		return result;
 	}
-	
+	//수정 
 	@Override
 	public List<Map<String, Object>> submitFiles(List<MultipartFile> multipartFileList) throws IOException {
-		
-		List<Map<String, Object>> filesInfo = new ArrayList<>();
+	    List<Map<String, Object>> filesInfo = new ArrayList<>();
 
-		for (MultipartFile multipartFile : multipartFileList) {
-			//첨부파일 하나의 정보 담을 객체 생성.
-			Map<String, Object> fileObj = new HashMap<>();			
-			//파일 원본 명 가져오기
-			String uploadFileName = multipartFile.getOriginalFilename();
-			uploadFileName = uploadFileName.substring(uploadFileName.lastIndexOf("\\") + 1);
-			fileObj.put("orgFileNm", uploadFileName);
-            // 파일명 지정 (겹치면 안되고, 확장자 빼먹지 않도록 조심!)
-			String fileName = UUID.randomUUID() + multipartFile.getOriginalFilename();
-            // 파일데이터와 파일명 넘겨서 S3에 저장
-			String fileUrl = s3Service.upload(multipartFile, fileName);
-            // DB에는 전체 url말고 파일명으로 저장할 것임	((혹시라도 문제 생기면 fileName 말고 fileUrl put하기)
-			fileObj.put("fileNm", fileName);
-			fileObj.put("fileUrl", fileUrl);
-			filesInfo.add(fileObj);
-		}
+	    if (multipartFileList != null) {
+	        for (MultipartFile multipartFile : multipartFileList) {
+	            if (!multipartFile.isEmpty()) {
+	                // 첨부파일 하나의 정보 담을 객체 생성.
+	                Map<String, Object> fileObj = new HashMap<>();
+	                // 파일 원본 명 가져오기
+	                String uploadFileName = multipartFile.getOriginalFilename();
+	                uploadFileName = uploadFileName.substring(uploadFileName.lastIndexOf("\\") + 1);
+	                fileObj.put("orgFileNm", uploadFileName);
+	                // 파일명 지정 (겹치면 안되고, 확장자 빼먹지 않도록 조심!)
+	                String fileName = UUID.randomUUID() + multipartFile.getOriginalFilename();
+	                // 파일데이터와 파일명 넘겨서 S3에 저장
+	                String fileUrl = s3Service.upload(multipartFile, fileName);
+	                // DB에는 전체 url말고 파일명으로 저장할 것임 (혹시라도 문제 생기면 fileName 말고 fileUrl put하기)
+	                fileObj.put("fileNm", fileName);
+	                fileObj.put("fileUrl", fileUrl);
+	                filesInfo.add(fileObj);
+	            }
+	        }
+	    }
 
-		return filesInfo;
-      
+	    return filesInfo;
 	}
 
 	@Override

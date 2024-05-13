@@ -67,8 +67,19 @@ public class MemberController{
         HttpSession session = request.getSession();
         session.setAttribute("LoginMember", loginMember);
         log.info("OO");
-        return "redirect:" + redirectURL;
+     // 여기에 세션 검증 코드 추가
+        if (session != null) {
+            MemberDTO user = (MemberDTO) session.getAttribute("LoginMember");
+            if (user != null) {
+                log.info("User ID: {}", user.getMbrId());
+            } else {
+                log.error("No user found in session");
+            }
+        } else {
+            log.error("Session not found");
+        }
 
+        return "redirect:" + redirectURL;
     }
 
     @GetMapping("/signin") // 회원가입 화면

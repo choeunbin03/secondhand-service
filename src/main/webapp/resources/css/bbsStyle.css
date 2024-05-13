@@ -41,3 +41,21 @@
 	.register-date {
 		font-size: 11px;
 	}
+	.add-board-btn {
+    margin-bottom: 20px;
+    text-align: right; /* 버튼을 우측으로 정렬 */
+}
+
+.add-button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.add-board-btn .btn:hover {
+    background-color: #45a049; /* 호버 시 배경 색상 변경 */
+}
+	
