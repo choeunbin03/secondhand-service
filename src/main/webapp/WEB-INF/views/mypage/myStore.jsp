@@ -36,7 +36,7 @@
         			<th>판매 여부</th>
         			<th>날짜</th>
         		</tr>
-        		<c:forEach var = "item" items="${sleBbsList}">
+        		<c:forEach var = "item" items="${prchBbsList}">
         			<tr onclick="location.href='/board/bbsView?bbsId=${item.bbsId}'">
         				<td>${item.bbsTtl}</td>
         				<td>${item.slePrc}</td>
@@ -55,7 +55,7 @@
         			<th>판매 여부</th>
         			<th>날짜</th>
         		</tr>
-        		<c:forEach var = "item" items="${prchBbsList}">
+        		<c:forEach var = "item" items="${sleBbsList}">
         			<tr onclick="location.href='/board/bbsView?bbsId=${item.bbsId}'">
         				<td>${item.bbsTtl}</td>
         				<td>${item.slePrc}</td>

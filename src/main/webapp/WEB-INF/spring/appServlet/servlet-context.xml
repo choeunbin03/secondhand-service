@@ -36,8 +36,6 @@
 			<exclude-mapping path="*.jsp"/>
 			<exclude-mapping path="*.js"/>
 			<exclude-mapping path="*.html"/>
-			<exclude-mapping path="*.css"/>
-	        <exclude-mapping path="/"/>
 	        <exclude-mapping path="/board/bbsList"/>
 	        <exclude-mapping path="/"/>
 	        <exclude-mapping path="/member/login"/>
