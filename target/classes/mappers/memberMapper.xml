@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.secondhand.mappers.member">
+	
+	<select id="findByMbrId" resultType = "com.secondhand.domain.MemberDTO" parameterType = "String">
+		SELECT	MBR_ID 		AS mbrId,
+				MBR_PWD		AS mbrPwd
+		FROM TB_MBR
+		WHERE MBR_ID = #{LoginId}				
+	</select>
+	
+	<insert id="save" parameterType="com.secondhand.domain.MemberDTO">
+		INSERT INTO tb_mbr
+		( 
+			MBR_ID,
+			MBR_NM,
+			MBR_PWD,
+			RGN,
+			RGN_SCP,
+			JOIN_DT
+		)
+		VALUES(	#{mbrId},
+				#{mbrNm},
+				#{mbrPwd},
+				0,
+				0,
+				now()
+		)
+	</insert>		
+	
+	<delete id="delete" parameterType="com.secondhand.domain.MemberDTO">
+		DELETE 
+		FROM tb_mbr
+		WHERE mbr_id = #{mbrId}
+	</delete>
+	
+</mapper>

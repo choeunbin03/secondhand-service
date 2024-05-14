@@ -10,7 +10,10 @@ import org.springframework.stereotype.Repository;
 
 import com.secondhand.domain.BoardDTO;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Repository
+@Slf4j
 public class BoardDAOImpl implements BoardDAO{
 
 	@Inject
@@ -29,5 +32,23 @@ public class BoardDAOImpl implements BoardDAO{
 		List<BoardDTO> bbsList = sqlSession.selectList(namespace + ".getBbsListByCtgry", param);
 		return bbsList;
 	}
-
+	
+	@Override
+	public BoardDTO getBbsView(Map<String, Object> param) {
+		BoardDTO bbsContent = (BoardDTO) sqlSession.selectList(namespace + ".getBbsView", param).get(0);
+		return bbsContent;
+	}
+	
+	@Override
+	public List<BoardDTO> getPrchBbsList(String mbrId){ // 해당 멤버의 구매내역에 해당되는 리스트만 가져옴
+		List<BoardDTO> bbsList = sqlSession.selectList(namespace + ".getPrchBbsList", mbrId);
+		return bbsList;
+	}
+	
+	@Override
+	public List<BoardDTO> getSleBbsList(String mbrId){ // 해당 멤버의 구매내역에 해당되는 리스트만 가져옴
+		List<BoardDTO> bbsList = sqlSession.selectList(namespace + ".getSleBbsList", mbrId);
+		return bbsList;
+	}
 }
+

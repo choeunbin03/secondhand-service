@@ -21,7 +21,7 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.39</version>
+            <version>8.0.22</version>
         </dependency>
 
 	<!-- 마이바티스 관련 라이브러리 설정 -->

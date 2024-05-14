@@ -9,7 +9,8 @@
 <title>Insert title here</title>
 	<style type="text/css">
 		.btn {border: 0; background-color: transparent;}
-		
+		.bbs-img-files{width: 200px; height: 180px;}
+		#img-file{width: 100%;}
 	</style>
 	
 	<link rel="stylesheet" href="${path}/resources/css/moduleStyle.css">

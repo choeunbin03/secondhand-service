@@ -9,7 +9,8 @@
 <title>Insert title here</title>
 	<style type="text/css">
 		.btn {border: 0; background-color: transparent;}
-		
+		.bbs-img-files{width: 180px; height: 170px; margin-bottom: 10px;}
+		#img-file{width: 100%; height: 100%;}
 	</style>
 	
 	<link rel="stylesheet" href="${path}/resources/css/moduleStyle.css">
@@ -35,11 +36,24 @@
 			<c:forEach items="${bbsList}" var="bbsList" varStatus="status">
 				<div class="product-wrapper">
 				<!-- 클릭 시 상세페이지 이동. -->
-					<!-- <a class="product-item" href="/board/bbsView?bbsId=${bbsList.bbsId}"> -->
+					<a class="product-item" href="/board/bbsView?bbsId=${bbsList.bbsId}">
 					<div class="product-item">
 						<!-- 첨부파일 -->
 						<div class="product-image">
-							<img src="">	<!-- 여기에 이미지 경로 넣어야 함~!! -->
+							<div class="img-wrapper">
+								<c:choose>
+									<c:when test='${bbsList.atchFileNo ne 0}'>							
+										<div class="bbs-img-files">
+											<img id="img-file" src="${fileList[status.index].atchFilePath}">
+										</div>										
+									</c:when>
+									<c:otherwise>
+										<div class="bbs-img-files">
+											<img id="img-file" src="/resources/images/default.jpg">
+										</div>
+									</c:otherwise>
+								</c:choose>		
+							</div>	
 						</div>
 						<div class="product-content">
 							<!-- 게시글 제목 -->
@@ -69,13 +83,14 @@
 
 
 <script>
-	var ctgry = document.querySelector('.menu-v1');
-	ctgry.addEventListener('click', function(){
+	//var ctgry = document.querySelector('.menu-v1');
+	//ctgry.addEventListener('click', function(){
 		
-		var ctgryVal = ctgry.attr("value");
-		location.href = "/board/bbsList?ctgryFld="+ctgryVal;
+	//	var ctgryVal = ctgry.attr("value");
+	//	location.href = "/board/bbsList?ctgryFld="+ctgryVal;
 		
-	})
+	//})
+
 </script>
 
 </body>

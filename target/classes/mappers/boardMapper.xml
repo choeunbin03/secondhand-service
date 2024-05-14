@@ -11,6 +11,7 @@
 			, SLE_PRC		AS slePrc
 			, RGTR_ID		AS rgtrId
 			, RGTR_DT		AS rgtrDt 
+			, ATCH_FILE_NO 	AS atchFileNo
 		FROM TB_BBS
 		ORDER BY BBS_ID DESC
 	</select>
@@ -22,10 +23,51 @@
 			, SLE_PRC		AS slePrc
 			, RGTR_ID		AS rgtrId
 			, RGTR_DT		AS rgtrDt 
+			, ATCH_FILE_NO 	AS atchFileNo
 		FROM TB_BBS
 		WHERE CTGRY_FLD = ${ctgryFld}
 		ORDER BY BBS_ID DESC
 	</select>
 	
+	<select id="getBbsView" resultType="com.secondhand.domain.BoardDTO" parameterType="HashMap">
+		SELECT BBS_ID		AS bbsId			
+			, BBS_TTL		AS bbsTtl
+			, BBS_CN		AS bbsCn
+			, CTGRY_FLD		AS ctgryFld
+			, SLE_CMPTN_YN	AS sleCmptnYn
+			, SLE_ID		AS sleId
+			, ATCH_FILE_NO 	AS atchFileNo
+			, BMK_CNT		AS bmkCnt
+			, SLE_PRC		AS slePrc
+			, RGTR_ID		AS rgtrId
+			, RGTR_DT		AS rgtrDt
+			, MDFR_DT		AS mdfrDt 
+		FROM TB_BBS
+		WHERE BBS_ID = ${bbsId}
+		ORDER BY BBS_ID DESC
+	</select>
+	<select id="getPrchBbsList" resultType="com.secondhand.domain.BoardDTO" parameterType="String">
+		SELECT BBS_ID		AS bbsId			
+			, BBS_TTL		AS bbsTtl
+			, SLE_CMPTN_YN	AS sleCmptnYn
+			, SLE_PRC		AS slePrc
+			, RGTR_ID		AS rgtrId
+			, RGTR_DT		AS rgtrDt 
+		FROM TB_BBS
+		WHERE RGTR_ID = #{mbrId} 
+		ORDER BY BBS_ID DESC
+	</select>
+	
+	<select id="getSleBbsList" resultType="com.secondhand.domain.BoardDTO" parameterType="String">
+		SELECT BBS_ID		AS bbsId			
+			, BBS_TTL		AS bbsTtl
+			, SLE_CMPTN_YN	AS sleCmptnYn
+			, SLE_PRC		AS slePrc
+			, RGTR_ID		AS rgtrId
+			, RGTR_DT		AS rgtrDt 
+		FROM TB_BBS
+		WHERE SLE_ID = #{mbrId} 
+		ORDER BY BBS_ID DESC
+	</select>
 	
 </mapper>
