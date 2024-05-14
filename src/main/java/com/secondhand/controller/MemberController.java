@@ -11,6 +11,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import com.secondhand.dao.MemberDAO;
 import com.secondhand.domain.LoginDTO;
 import com.secondhand.domain.MemberDTO;
@@ -38,6 +40,7 @@ public class MemberController{
     @PostMapping("/login")
     public String login(@ModelAttribute("loginDTO") LoginDTO login,
                         BindingResult bindingResult,
+                        RedirectAttributes redirectAttributes,
                         @RequestParam(name = "redirectURL", defaultValue = "/") String redirectURL,
                         HttpServletRequest request) {
     	
@@ -47,22 +50,29 @@ public class MemberController{
             return "/member/login";
         }
         //LoginService에서 받은 데이터로 로그인 가능한지 처리해야함
-        MemberDTO loginMember = loginService.login(login.getLoginId(), login.getPassword()); // 넘겨준 아이디에 맞는 MemberDTO객체 있으면 반환받음
-
-       if(loginMember == null) { // 없는 회원일때
-           log.info("XX");
-//           bindingResult.rejectValue("loginFail", "아이디 또는 비밀번호가 맞지 않습니다.");
-            bindingResult.reject("loginFail","아이디 또는 비밀번호가 맞지 않습니다.");
-           log.info("error ={}", bindingResult.getFieldError());
-            return "/member/login"; //다시 로그인 화면
-            
+        MemberDTO LoginMember = loginService.login(login.getLoginId(), login.getPassword()); // 넘겨준 아이디에 맞는 MemberDTO객체 있으면 반환받음
+        if(LoginMember == null) { // 없는 회원일때
+            log.info("Login failed for user ID: {}", login.getLoginId());
+             redirectAttributes.addFlashAttribute("error", "아이디 또는 비밀번호가 일치하지 않습니다.");
+             return "redirect:/member/login";
         }
 
         HttpSession session = request.getSession();
-        session.setAttribute("loginMember", loginMember);
+        session.setAttribute("LoginMember", LoginMember);
         log.info("OO");
+       
         return "redirect:" + redirectURL;
         
+    }
+    
+  //logout 관련 메소드
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request) {
+    	
+    	HttpSession session=request.getSession();
+    	session.invalidate();
+    	
+    	return "redirect:/board/bbsList";
     }
 
     
@@ -102,8 +112,32 @@ public class MemberController{
         return "redirect:"+redirectURL;
     }
     
-    @GetMapping("/jusoPopup") // 회원가입 화면
-    public String signInForm(){
+ // 회원 삭제 관련 메소드
+    @GetMapping("/deleteMember")
+    public String deleteMember(Model model) {
+        model.addAttribute("loginDTO", new LoginDTO());
+        return "/member/deleteMember";
+    }
+    
+    @PostMapping("/deleteMember")
+    public String deleteMember(HttpServletRequest request) {
+    	HttpSession session=request.getSession();
+    	MemberDTO deleteMember=(MemberDTO)session.getAttribute("loginMember");
+    	
+    	memberService.delete(deleteMember);
+    	session.invalidate();
+
+    	return "redirect:/board/bbsList";
+    }
+ 
+    //회원가입 시 동네설정
+    @GetMapping("/jusoPopup") 
+    public String jusoPopupGet(){
         return "/member/jusoPopup";
     }
+    
+    @PostMapping("/jusoPopup")
+	public String jusoPopupPost() throws Exception {
+		return "/member/jusoPopup";
+	}
 }

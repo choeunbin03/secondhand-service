@@ -49,10 +49,10 @@
 <body>
 	<div class="login-container">
 		<h2>로그인</h2>
-	  	<c:if test="${errors.hasFieldErrors('loginFail')}">
-	    	<div class="error-message">${errors.getFieldError('loginFail').defaultMessage}</div>
-	  	</c:if>
-	
+	  	<c:if test="${not empty error}">
+	    	<div class="error-message">${error}</div>
+	   	</c:if>
+		
 	  	<form action="/member/login" method="post">
 		    <input type="text" id="loginId" name="loginId"
 		           class="login-input" placeholder="사용자 아이디"

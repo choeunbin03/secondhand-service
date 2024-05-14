@@ -7,7 +7,10 @@ import org.springframework.validation.Validator;
 import com.secondhand.dao.MemberDAO;
 import com.secondhand.domain.MemberDTO;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -62,6 +65,12 @@ public class MemberServiceImpl implements MemberService, Validator { // 회원�
 	public void save(MemberDTO member) {		
 		memberDao.save(member);
 	}
+	
+	// 회원 탈퇴 메소드
+	@Override
+	public boolean delete(MemberDTO member) {
+		return memberDao.delete(member);
+	}
 
 //Validator 메소드
     @Override
@@ -97,5 +106,38 @@ public class MemberServiceImpl implements MemberService, Validator { // 회원�
             return false;
         }
     }
+    
+//찜 관련 메소드
+    
+    @Override
+    public List<String> getALLBMK(String userId) {
+    	 return memberDao.getBMK(userId);
+    }
+
+    @Override
+    public boolean isBMK(String userId, String bbsId) {
+    	 return getALLBMK(userId).contains(bbsId);
+    }
+    
+    @Override
+    public void updateBMK(String userId, String bbsId) {
+    	Map<String, Object> params = new HashMap<String, Object>();
+		List<String> l =  new ArrayList<String>();
+		l.addAll(getALLBMK(userId));
+		System.out.println(l);
+		System.out.println(1234);
+		System.out.println(l);
+		
+    	if(isBMK(userId,bbsId)){
+    		l.remove(bbsId);
+    	}
+    	else {
+       	 	l.add(bbsId);
+    	}
+    	params.put("NewBMK", String.join(" ",l));
+    	params.put("LoginId", userId);
+    	memberDao.updateBMK(params);
+    }
+
 
 }

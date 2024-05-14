@@ -17,6 +17,11 @@ public interface BoardService {
 	public List<BoardDTO> getPrchBbsList(String mbrId);
 	//사용자의 구매내역 가져오기
 	public List<BoardDTO> getSleBbsList(String mbrId);
-
+	//게시물 추가기능
+	public void bbsRegi(BoardDTO board);
+	//게시글 검색기능
+	public List<BoardDTO>searchBbsListByKeyword(String keyword);		
+	//게시글 삭제기능
+	public void deleteBoard(int bbsId);
 }
 

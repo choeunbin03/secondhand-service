@@ -11,7 +11,7 @@
 		
 			<div class="member-wrapper">
 				<%
-					if(session.getAttribute("loginMember")==null){
+					if(session.getAttribute("LoginMember")==null){
 						out.println("<a href='/member/login'>로그인/회원가입</a>");
 					}else{
 						out.println("<a href='/member/logout'>로그아웃</a>");
@@ -29,10 +29,12 @@
 				<!-- 검색 -->
 				<div class="search-wrapper">
 					<div class="search-content">
-						<input type="text" name="keyWd" placeholder="상품명, 지역명, @상점명 입력" maxlength="40" class="search input" value="">
-						<button type="button" class="search-btn btn" onclick="fn_search()">
-							<i class="xi-search xi-2x"></i>
-						</button>
+						<form action="/board/search" method="get">
+							<input type="text" name="searchKeyword" placeholder="검색어 입력" maxlength="40" class="search input" value="">
+							<button type="submit" class="search-btn btn">
+								<i class="xi-search xi-2x"></i>
+							</button>
+						</form>
 					</div>
 				</div>
 				
@@ -42,8 +44,9 @@
 				</div>
 				
 				<!-- 채팅 목록 -->
-				<div class="show-chatSpce-list header-element">
-					<a href="/chat/chatSpceList">채팅</a>
+				<div class="show-chatRoom-list header-element">
+					<!-- <a href="#" onClick="fn_chatView(0)">채팅</a>	-->
+					<a href="/chat/chatView?chatSpceId=0">채팅</a>
 				</div>
 				
 				<!-- 마이페이지 -->
@@ -57,3 +60,7 @@
 	 
 	</div> <!-- header-content -->
 	 <!-- End Header -->
+	 
+<script>
+
+</script>

@@ -7,21 +7,35 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-	<style type="text/css">
-		.btn {border: 0; background-color: transparent;}
-		.bbs-img-files{width: 350px; height: 315px;}
-		#img-file{width: 100%; height: 100%;}
-		.bbsViewWrap {display:flex; margin-top:30px; width: 900px;}
-		.img-wrapper{margin-right: 50px;}
-	</style>
-	
+
+	<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+	<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
 	<link rel="stylesheet" href="${path}/resources/css/moduleStyle.css">
 	<link rel="stylesheet" href="${path}/resources/css/bbsStyle.css">
 	<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 		
 	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+	<script src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 	<script src="${path}/resources/js/board.js" type="text/javascript" defer="defer"></script>
 
+	<style type="text/css">
+		.btn {border: 0; background-color: transparent;}
+		.bbs-img-files{width: 350px; height: 315px;}
+		#img-file{width: 100%; height: 100%;}
+		.bbsViewWrap {display:flex; margin-top:30px; width: 900px;}
+		.bbsViewImgWrap{width: 450px; height: 315px;}
+		.img-wrapper{margin-right: 50px;}
+		.slick-prev:before, .slick-next:before{color: #c0c0c0;}
+		.action-button {
+		    padding: 10px 20px;
+		    background-color: #fafafa; /* 핑크색 */
+		    color: black;
+		    text-decoration: none;
+		    border-radius: 5px;
+		    margin-top: 10px; /* 간격 조절 */
+		}
+				
+	</style>
 	
 </head>
 <body>
@@ -86,7 +100,28 @@
 					
 				</div>
 				
+				<c:if test="${bbsView.rgtrId == sessionScope.LoginMember.mbrId}">
+					<div style="text-align: right; margin:20px;">
+						<div class="action-button">
+							<a href="/board/edit?bbsId=${bbsView.bbsId}">수정</a>
+						</div>
+						<div class="action-button">
+							<a href="/board/delete?bbsId=${bbsView.bbsId}" onclick="return confirm('이 게시글을 삭제하시겠습니까?');">삭제</a>
+						</div>                        
+                    </div>
+                </c:if>
+				
 				<!-- 찜 및 채팅 구현 -->
+				<div class="bbsViewBtnWrap">	
+					<form action="/board/addBmk" method="post">
+						<input type="hidden" name="bbsId" value="${bbsView.bbsId}"/>
+					    <input type="submit" name="bmk" value="찜하기" class="small_button" style=  "cursor: pointer; border:none; color:rgba(255,255,255,0); background: transparent; background-size : cover; background-image : url('/resources/images/heart_${isBMK ? 1 : 0}.png');"/>
+					</form>
+					<div class="btn chat-btn">
+						<button type="button" onclick="location.href='/chat/goChat?bbsId=${bbsView.bbsId}'">채팅하기</button>
+					</div>
+				
+				</div>
 			</div><!-- bbsViewWrap -->
 		
 		</div><!-- //bbs_content -->		
@@ -94,13 +129,9 @@
 
 
 <script>
-	var ctgry = document.querySelector('.menu-v1');
-	ctgry.addEventListener('click', function(){
-		
-		var ctgryVal = ctgry.attr("value");
-		location.href = "/board/bbsList?ctgryFld="+ctgryVal;
-		
-	})
+	$(document).ready(function(){
+		$('.img-wrapper').slick();
+	});
 </script>
 
 

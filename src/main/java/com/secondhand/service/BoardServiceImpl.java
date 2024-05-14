@@ -45,5 +45,20 @@ public class BoardServiceImpl implements BoardService{
 		List<BoardDTO> bbsList = boardDao.getSleBbsList(mbrId);
 		return bbsList;
 	}
+	
+	@Override
+	public void bbsRegi(BoardDTO board) {
+		boardDao.bbsRegi(board);
+	}
+	
+	@Override
+	public List<BoardDTO>searchBbsListByKeyword(String keyword){
+		return boardDao.getBbsListByKeyword(keyword);
+	}
+	
+	@Override
+    public void deleteBoard(int bbsId) {
+        boardDao.deleteBoard(bbsId);
+    }
 
 }

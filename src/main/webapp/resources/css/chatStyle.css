@@ -1,0 +1,139 @@
+@charset "UTF-8";
+
+html, body{
+	height: 100%;
+}
+
+
+.chatRoomBar-wrapper {
+		padding-top:10px;
+		width:300px;
+		float:left;
+		background-color: white;
+    	box-sizing: border-box;
+    	border-right: 2px solid #c0c0c0;
+	}
+	
+	a {text-decoration:none;color:inherit;}
+	.clear{clear:both;}
+	.chatRoom-wrapper{
+		background-color:white;
+		width: 100%;
+
+	}
+
+	.chatRoom-content{
+		
+	}
+	
+	.chatRoom-chatPartner{
+		font-weight: bold;
+	}
+	
+	.chatRoom-detail{
+		display:flex;
+		color: #616161
+	}
+	
+	.chat-Content{
+		font-size: 14px;
+    	margin-right: 5px;
+	}
+	
+	.chat-date{
+	    font-size: 11px;
+	    align-content: end;
+	}
+
+/*hover 관련?*/	
+	/*v1*/
+	.chatRoomList{
+		line-height:2;
+		border-bottom:1px solid #c0c0c0;
+		padding: 10px;
+	}
+	.chatRoomList:hover{background-color:#fafafa;}
+	
+	
+/*채팅방 선택 후*/
+	.chatting-wrapper{
+		padding: 20px;
+		width: 100%;
+		text-align: right;
+		overflow: auto;
+	}
+
+	.chat-part{
+		display:flex;
+	}
+	
+	.loginMember-chat{
+		justify-content: end;
+	}
+	
+	.chatPartner-chat .additional-info {
+		order: 2;
+	}
+	
+	.additional-info{
+		color: #616161;
+		align-content: end;
+	}
+	
+	.idntyYn{
+		font-size: 11px;
+	}
+	
+	.sendDt{
+		font-size: 11px;
+	}
+
+	.chatBox{
+		border-radius: 20px;
+		padding: 10px;
+		font-size: 15px;
+		margin-right: 5px;
+		margin-top: 10px;
+		box-sizing: border-box;
+	}
+	
+	.chatPartner-chat .chatBox {
+		background: #dbdbdb;
+	}
+	
+	.loginMember-chat .chatBox {
+		background: #fff0f5;
+	}
+	
+	.chat-part .chatBox .chatCn {display:block; max-width: 300px;}
+	
+	.chat_input {
+		width: calc(100% - 270px);
+	    height: 60px;
+	    border: none;
+	    border-top: 2px solid #c0c0c0;
+	    position: fixed;
+	    bottom: 0px;
+	    box-sizing: border-box;
+	    /*display: flex;*/
+	}
+	
+	.chat_input_area {
+		width: 100%;
+		height: 100%;
+	}
+	
+	.chat-text {
+		border: none;
+		width: calc(100% - 40px);
+		height: 100%;
+	}
+	
+	.chat_button_area {
+		align-content: start;
+	}
+
+	.chat_input button {
+		width: 40px;
+	}
+	

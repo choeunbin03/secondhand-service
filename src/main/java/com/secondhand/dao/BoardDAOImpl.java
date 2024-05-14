@@ -50,5 +50,20 @@ public class BoardDAOImpl implements BoardDAO{
 		List<BoardDTO> bbsList = sqlSession.selectList(namespace + ".getSleBbsList", mbrId);
 		return bbsList;
 	}
+
+	@Override
+	public void bbsRegi(BoardDTO board) {
+		sqlSession.insert(namespace+".bbsRegi",board);
+	}
+	
+	@Override
+    public List<BoardDTO> getBbsListByKeyword(String keyword) {
+        return sqlSession.selectList(namespace + ".searchBbsList", keyword);
+    }
+	
+	@Override
+	public void deleteBoard(int bbsId) {
+		sqlSession.delete("deleteBoard",bbsId);
+	}
 }
 

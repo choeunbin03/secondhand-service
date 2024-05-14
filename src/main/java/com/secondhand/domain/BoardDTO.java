@@ -15,5 +15,4 @@ public class BoardDTO extends BaseDTO{
 	private int atchFileNo; //첨부파일 번호
 	private int bmkCnt; //찜 개수
 	private int slePrc; // 판매 가격
-
 }
