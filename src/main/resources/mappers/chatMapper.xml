@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.secondhand.mappers.chat">
+<!-- 
+	<select id="getchatRoomList" resultType="com.secondhand.domain.ChatRoomDTO" parameterType="String">
+		SELECT A.CHAT_ID		AS chatId
+			, A.CHAT_SPCE_ID	AS chatSpceId
+			, A.BBS_ID			AS bbsId
+			, A.CHAT_CN			AS chatCn
+			, A.SEND_DT			AS sendDt
+			, CASE
+				WHEN A.SEND_ID = #{mbrId} THEN A.RCV_ID
+				WHEN A.RCV_ID = #{mbrId} THEN A.SEND_ID
+				END AS chatPartner
+			, CASE
+				WHEN A.RCV_ID = #{mbrId} AND A.IDNTY_YN = 0 THEN 0
+				ELSE 1
+				END AS chkYn
+		FROM TB_CHAT A
+		WHERE (A.SEND_ID = #{mbrId} OR A.RCV_ID = #{mbrId})
+			AND A.CHAT_ID 	IN	(
+				SELECT IFNULL(MAX(B.CHAT_ID), 0)
+				FROM TB_CHAT B
+				GROUP BY B.CHAT_SPCE_ID
+			)
+		ORDER BY A.SEND_DT DESC
+	</select>
+-->	
+	<select id="getChat" resultType="com.secondhand.domain.ChatDTO" parameterType="HashMap">
+		SELECT CHAT_ID		AS chatId
+			, CHAT_SPCE_ID	AS chatSpceId
+			, BBS_ID		AS bbsId
+			, SEND_ID		AS sendId
+			, RCV_ID		AS rcvId
+			, CHAT_CN		AS chatCn
+			, SEND_DT		AS sendDt
+			, ATCH_FILE_NO	AS atchFileNo
+			, IDNTY_YN		AS idntyYn
+		FROM TB_CHAT
+		WHERE CHAT_SPCE_ID = #{chatSpceId}
+	</select>
+	
+	<select id="getchatRoomList" resultType="com.secondhand.domain.ChatRoomDTO" parameterType="HashMap">
+		SELECT A.CHAT_ID		AS chatId
+			, A.CHAT_SPCE_ID	AS chatSpceId
+			, A.BBS_ID			AS bbsId
+			, A.CHAT_CN			AS chatCn
+			, A.SEND_DT			AS sendDt
+			, CASE
+				WHEN A.SEND_ID = #{mbrId} THEN A.RCV_ID
+				WHEN A.RCV_ID = #{mbrId} THEN A.SEND_ID
+				END AS chatPartner
+			, CASE
+				WHEN A.RCV_ID = #{mbrId} AND A.IDNTY_YN = 1 THEN 1
+				ELSE 0
+				END AS chkYn
+		FROM TB_CHAT A
+		WHERE (A.SEND_ID = #{mbrId} OR A.RCV_ID = #{mbrId})
+			AND A.CHAT_ID 	IN	(
+				SELECT IFNULL(MAX(B.CHAT_ID), 0)
+				FROM TB_CHAT B
+				GROUP BY B.CHAT_SPCE_ID
+			)
+		ORDER BY A.SEND_DT DESC
+	</select>
+	
+	<update id="updateIdntyYn" parameterType="HashMap">
+		UPDATE TB_CHAT
+		SET IDNTY_YN = 0
+		WHERE CHAT_SPCE_ID = #{chatSpceId}		AND		RCV_ID = #{mbrId}	AND		IDNTY_YN = 1
+	</update>
+	
+	<select id="getMaxChatId" resultType="java.lang.Integer">
+		SELECT IFNULL(MAX(CHAT_ID), 0) FROM TB_CHAT
+	</select>
+	
+	<select id="getChatPartnerId" parameterType="HashMap" resultType="String">
+		SELECT ID 
+		FROM (
+			SELECT RCV_ID AS ID FROM TB_CHAT WHERE CHAT_SPCE_ID = #{chatSpceId}
+			UNION
+			SELECT SEND_ID AS ID FROM TB_CHAT WHERE CHAT_SPCE_ID = #{chatSpceId}
+			) AS sub
+		WHERE id != #{mbrId}
+	</select>
+	
+	<insert id="regiChat" parameterType="com.secondhand.domain.ChatDTO">
+    	INSERT INTO TB_CHAT (
+    		CHAT_ID
+    		, CHAT_SPCE_ID
+    		, BBS_ID
+    		, SEND_ID
+    		, RCV_ID
+    		, CHAT_CN
+    		, SEND_DT
+    		, ATCH_FILE_NO
+    		, IDNTY_YN
+    		)
+    	VALUES (
+    		#{chatId}
+    		, #{chatSpceId}
+    		, #{bbsId}
+    		, #{sendId}
+    		, #{rcvId}
+    		, #{chatCn}
+    		, now()
+    		, 0
+    		, 1
+    		)
+	</insert>
+	
+	
+</mapper>
