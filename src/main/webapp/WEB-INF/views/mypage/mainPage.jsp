@@ -21,7 +21,7 @@
     <div class="section">
         <h2>내 정보 관리</h2>
         <a href="/myPage/editProfile" class="button">내정보수정</a>
-        <a href="/myPage/deleteAccount" class="button">회원탈퇴</a>
+        <a href="/member/deleteMember" class="button">회원탈퇴</a>
     </div>
     <div class="section">
         <h2>활동</h2>

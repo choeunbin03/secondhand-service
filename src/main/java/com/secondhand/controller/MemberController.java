@@ -102,4 +102,43 @@ public class MemberController{
 
         return "redirect:"+redirectURL;
     }
+    
+    //logout 관련 메소드
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request) {
+    	
+    	HttpSession session=request.getSession();
+    	session.invalidate();
+    	
+    	return "redirect:/board/bbsList";
+    }
+    
+    // 회원 삭제 관련 메소드
+    @GetMapping("/deleteMember")
+    public String deleteMember(Model model) {
+        model.addAttribute("loginDTO", new LoginDTO());
+        return "/member/deleteMember";
+    }
+    
+    @PostMapping("/deleteMember")
+    public String deleteMember(HttpServletRequest request) {
+    	HttpSession session=request.getSession();
+    	MemberDTO deleteMember=(MemberDTO)session.getAttribute("loginMember");
+    	
+    	memberService.delete(deleteMember);
+    	session.invalidate();
+
+    	return "redirect:/board/bbsList";
+    }
+ 
+    //회원가입 시 동네설정
+    @GetMapping("/jusoPopup") 
+    public String jusoPopupGet(){
+        return "/member/jusoPopup";
+    }
+    
+    @PostMapping("/jusoPopup")
+	public String jusoPopupPost() throws Exception {
+		return "/member/jusoPopup";
+	}
 }

@@ -46,13 +46,38 @@ public class MemberDAOImpl implements MemberDAO { //리포지터리
     	return member;
     }
 
-//	@Override
-//    public List<MemberDTO> findAll(){
-//        return new ArrayList<>(store.values());
-//    }
+	// 회원 탈퇴 (삭제 되면 true 반환)
+	@Override
+	public boolean delete(MemberDTO member) {
+		if(sqlSession.delete(namespace + ".delete",member)!=1) {
+			log.info("회원 탈퇴 실패");
+			return false;
+		}
+		else {
+			log.info("회원 탈퇴 성공");
+			return true;
+		}
+	}
+	
+	@Override
+    public List<MemberDTO> findAll(){
+        return new ArrayList<>(store.values());
+    }
 
-//	@Override
-//    public void clearStore() {
-//        store.clear();
-//    }
+	@Override
+    public void clearStore() {
+        store.clear();
+    }
+	
+	@Override
+    public List<String> getBMK(String loginId) {
+		List<String> bbsList = sqlSession.selectList(namespace + ".getBMKByMbrId",loginId);
+		System.out.println(bbsList);
+		return Arrays.asList(bbsList.get(0).split(" "));
+			
+		}
+    @Override
+    public void updateBMK(Map<String, Object> param) {
+		sqlSession.selectList(namespace + ".updateBMKByMbrId",param);			
+	}
 }

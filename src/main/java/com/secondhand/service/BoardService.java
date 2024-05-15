@@ -17,6 +17,9 @@ public interface BoardService {
 
 	//게시글 상세정보 가져오기
 	public BoardDTO getBbsView(Map<String, Object> param);
+	public void bbsRegi(BoardDTO board);
+	public List<BoardDTO> searchBbsListByKeyword(String keyword);
+	public void deleteBoard(int bbsId);
 
 
 }
