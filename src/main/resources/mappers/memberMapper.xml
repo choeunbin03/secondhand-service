@@ -29,4 +29,23 @@
             now()
       )
    </insert>
+   
+   
+	<delete id="delete" parameterType="com.secondhand.domain.MemberDTO">
+		DELETE 
+		FROM tb_mbr
+		WHERE mbr_id = #{mbrId}
+	</delete>
+	
+	<select id="getBMKByMbrId" resultType = "String" parameterType = "String">
+		SELECT	BMK 		AS BMK
+		FROM TB_MBR
+		WHERE MBR_ID = #{LoginId}				
+	</select>
+	
+	<select id="updateBMKByMbrId" parameterType = "HashMap">
+		UPDATE TB_MBR 
+		SET BMK = #{NewBMK}
+		WHERE MBR_ID = #{LoginId}
+	</select>
 </mapper>

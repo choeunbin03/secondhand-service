@@ -20,7 +20,11 @@ public interface BoardService {
 	public void bbsRegi(BoardDTO board);
 	public List<BoardDTO> searchBbsListByKeyword(String keyword);
 	public void deleteBoard(int bbsId);
-
+	
+	// 후기 작성할 게시글 가져오기
+	public BoardDTO getBbsById(String bbsId);
+	// 작성된 후기 게시글에 등록하기
+	public void postReview(BoardDTO reviewBbs);
 
 }
 

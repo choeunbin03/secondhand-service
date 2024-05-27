@@ -123,7 +123,7 @@ public class MemberController{
     @PostMapping("/deleteMember")
     public String deleteMember(HttpServletRequest request) {
     	HttpSession session=request.getSession();
-    	MemberDTO deleteMember=(MemberDTO)session.getAttribute("loginMember");
+    	MemberDTO deleteMember=(MemberDTO)session.getAttribute("LoginMember");
     	
     	memberService.delete(deleteMember);
     	session.invalidate();

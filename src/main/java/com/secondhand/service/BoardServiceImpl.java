@@ -61,6 +61,16 @@ public class BoardServiceImpl implements BoardService{
         boardDao.deleteBoard(bbsId);
     }
 
+	@Override
+	public BoardDTO getBbsById(String bbsId) {
+		return boardDao.getBbsById(bbsId);
+	}
+
+	@Override
+	public void postReview(BoardDTO reviewBbs) {
+		boardDao.postReview(reviewBbs);	
+	}
+
 
 	
 

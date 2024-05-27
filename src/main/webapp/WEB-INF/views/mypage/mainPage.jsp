@@ -27,7 +27,7 @@
         <h2>활동</h2>
         <a href="/myPage/recentViewed" class="button">최근 본 상품</a>
         <a href="/myPage/myStore" class="button">내 상점 관리</a>
-        <a href="/myPage/reviews" class="button">후기</a>
+        <a href="/myPage/myReviews" class="button">후기</a>
         <a href="/myPage/favorites" class="button">찜</a>
     </div>
 </div>

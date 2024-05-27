@@ -80,17 +80,17 @@ public class BoardController {
 			fileList = atchFileService.getFileThumbNail();
 		}	
 		
-		List<PageDTO> pageList= new ArrayList<>();
-		// 업 케스팅 예시
-		List<Object> objectBbsList=new ArrayList<>(bbsList); 
-
-		pageList=pageService.makePages(objectBbsList);
-		// 다운 케스팅 예시
-		List<BoardDTO> firstPage=(List<BoardDTO>)(List<?>) pageService.getPage(pageList, 0).getList();
+//		List<PageDTO> pageList= new ArrayList<>();
+//		// 업 케스팅 예시
+//		List<Object> objectBbsList=new ArrayList<>(bbsList); 
+//
+//		pageList=pageService.makePages(objectBbsList);
+//		// 다운 케스팅 예시
+//		List<BoardDTO> firstPage=(List<BoardDTO>)(List<?>) pageService.getPage(pageList, 0).getList();
 	
 		
-		//model.addAttribute("bbsList", bbsList);
-		model.addAttribute("bbsList", firstPage);
+		model.addAttribute("bbsList", bbsList);
+//		model.addAttribute("bbsList", firstPage);
 		model.addAttribute("fileList", fileList);
 		return "/board/bbsList";
 	}

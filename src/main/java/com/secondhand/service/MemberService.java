@@ -21,5 +21,10 @@ public interface MemberService extends Validator{
 	public boolean isBMK(String s, String bbsId);
 	//찜 추가 및 삭제
 	public void updateBMK(String userId, String bbsId);
+	//후기 목록 조회
+	public List<String> getAllReview(String mbrId);
+	//후기 작성
+	public void writeReview(String review);
+	
 
 }

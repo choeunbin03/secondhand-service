@@ -139,5 +139,20 @@ public class MemberServiceImpl implements MemberService, Validator { // 회원�
     	memberDao.updateBMK(params);
     }
 
+	@Override
+	public List<String> getAllReview(String mbrId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void writeReview(String review) {
+		// TODO Auto-generated method stub
+		
+	}
+    
+    // 후기 관련 메소드
+    
+
 
 }
