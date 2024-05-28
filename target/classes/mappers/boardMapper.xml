@@ -43,4 +43,22 @@
 		ORDER BY BBS_ID DESC
 	</select>
 	
+<<<<<<< Updated upstream
+=======
+	<select id="searchBbsListbyBbsIdList" resultType="com.secondhand.domain.BoardDTO" parameterType="String">
+		SELECT BBS_ID		AS bbsId			
+			, BBS_TTL		AS bbsTtl
+			, SLE_CMPTN_YN	AS sleCmptnYn
+			, SLE_PRC		AS slePrc
+			, RGTR_ID		AS rgtrId
+			, RGTR_DT		AS rgtrDt 
+			, ATCH_FILE_NO 	AS atchFileNo
+		FROM TB_BBS WHERE BBS_ID IN ${bbsIdList}
+	</select>
+	
+	<delete id="deleteBoard" parameterType="int">
+	    DELETE FROM TB_BBS WHERE BBS_ID = #{bbsId}
+	</delete>
+	
+>>>>>>> Stashed changes
 </mapper>

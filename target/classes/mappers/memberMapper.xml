@@ -13,12 +13,24 @@
 	<select id="getBMKByMbrId" resultType = "String" parameterType = "String">
 		SELECT	BMK 		AS BMK
 		FROM TB_MBR
-		WHERE MBR_ID = #{LoginId}				
+		WHERE MBR_ID = #{loginId}				
+	</select>
+	
+	<select id="getRecentViewedByMbrId" resultType = "String" parameterType = "String">
+		SELECT	RCNT_VIEW
+		FROM TB_MBR
+		WHERE MBR_ID = #{loginId}				
 	</select>
 	<select id="updateBMKByMbrId" parameterType = "HashMap">
 		UPDATE TB_MBR 
-		SET BMK = #{NewBMK}
-		WHERE MBR_ID = #{LoginId}
+		SET BMK = "${NewBMK}"
+		WHERE MBR_ID = ${loginId}
+	</select>
+	
+	<select id="updateRecentView" parameterType = "HashMap">
+		UPDATE TB_MBR 
+		SET RCNT_VIEW = "${NewRecentView}"
+		WHERE MBR_ID = ${loginId}
 	</select>
 	
 </mapper>

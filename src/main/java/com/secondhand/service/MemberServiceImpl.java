@@ -104,6 +104,7 @@ public class MemberServiceImpl implements MemberService, Validator { // 회원�
 
     @Override
     public List<String> getALLBMK(String userId) {
+    	
     	 return memberDao.getBMK(userId);
     }
 
@@ -116,20 +117,38 @@ public class MemberServiceImpl implements MemberService, Validator { // 회원�
     public void updateBMK(String userId, String bbsId) {
     	Map<String, Object> params = new HashMap<String, Object>();
 		List<String> l =  new ArrayList<String>();
-		l.addAll(getALLBMK(userId));
-		System.out.println(l);
-		System.out.println(1234);
-		System.out.println(l);
+		System.out.println(123455);
+		System.out.println(userId);
+		System.out.println(123455);
 		
+		l.addAll(getALLBMK(userId));
     	if(isBMK(userId,bbsId)){
     		l.remove(bbsId);
     	}
     	else {
        	 	l.add(bbsId);
     	}
-    	params.put("NewBMK", String.join(" ",l));
-    	params.put("LoginId", userId);
+    	params.put("NewBMK", String.join(" ",l).trim());
+    	params.put("loginId", userId);
+		System.out.println(params);
+    	
     	memberDao.updateBMK(params);
+    }
+	public void updateRecentView(String userId, String bbsId) {
+    	Map<String, Object> params = new HashMap<String, Object>();
+		List<String> l =  new ArrayList<String>();
+		l.addAll(memberDao.getRecentViewed(userId));
+		l.remove(bbsId);
+   	 	l.add(0,bbsId);
+   	 	//10은 최근게시물 띄울 개수
+   	 	while(l.size() > 10) {
+   	 		l.remove(9);
+   	 	}
+    	params.put("NewRecentView", String.join(" ",l).trim());
+    	params.put("loginId", userId);
+		System.out.println(params);
+    	
+    	memberDao.updateRecentView(params);
     }
 
 }

@@ -19,4 +19,10 @@ public interface MemberService extends Validator{
 	public boolean isBMK(String s, String bbsId);
 	
 	public void updateBMK(String userId, String bbsId);
+<<<<<<< Updated upstream
+=======
+	//최근방문글 업데이트
+	public void updateRecentView(String userId, String bbsId);
+
+>>>>>>> Stashed changes
 }

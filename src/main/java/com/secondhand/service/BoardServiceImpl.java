@@ -32,5 +32,41 @@ public class BoardServiceImpl implements BoardService{
 		BoardDTO bbs = boardDao.getBbsView(param);
 		return bbs;
 	}
+<<<<<<< Updated upstream
+=======
+	
+	@Override
+	public List<BoardDTO> getPrchBbsList(String mbrId) {
+		List<BoardDTO> bbsList = boardDao.getPrchBbsList(mbrId);
+		return bbsList;
+	}
+	
+	@Override
+	public List<BoardDTO> getSleBbsList(String mbrId) {
+		List<BoardDTO> bbsList = boardDao.getSleBbsList(mbrId);
+		return bbsList;
+	}
+	
+	@Override
+	public void bbsRegi(BoardDTO board) {
+		boardDao.bbsRegi(board);
+	}
+	
+	@Override
+	public List<BoardDTO>searchBbsListByKeyword(String keyword){
+		return boardDao.getBbsListByKeyword(keyword);
+	}
+	public List<BoardDTO>searchBbsListByBMK(String mbrId){
+		return boardDao.getBbsListByBMK(mbrId);
+	}
+	public List<BoardDTO>searchBbsListByRecentViewed(String mbrId){
+		return boardDao.getBbsListByRecentViewed(mbrId);
+		
+	}
+	@Override
+    public void deleteBoard(int bbsId) {
+        boardDao.deleteBoard(bbsId);
+    }
+>>>>>>> Stashed changes
 
 }
