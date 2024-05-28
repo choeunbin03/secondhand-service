@@ -1,7 +1,9 @@
 package com.secondhand.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -14,9 +16,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.secondhand.domain.AtchFileDTO;
 import com.secondhand.domain.BoardDTO;
 import com.secondhand.domain.MemberDTO;
+import com.secondhand.service.AtchFileService;
 import com.secondhand.service.BoardServiceImpl;
 
 import lombok.RequiredArgsConstructor;
@@ -29,6 +34,7 @@ import lombok.extern.slf4j.Slf4j;
 public class MypageController{
 	
 	private final BoardServiceImpl boardService;
+	private final AtchFileService atchFileService;
 
 	@GetMapping("/mainPage")
 	public String myPage(Model model) {
@@ -67,18 +73,34 @@ public class MypageController{
 		return "/mypage/myReviews";	
 	}
 	
-	//후기 작성
+	//후기 작성 @ModelAttribute("bbsId") int bbsId, 
 	@GetMapping("/writeReview")
-	public String writeReview(@ModelAttribute String bbsId, Model model) {
+	public String writeReview(Model model, HttpSession session) {
+		int bbsId = 16;
+		log.info("후기 작성 페이지");
 		BoardDTO reviewBbs = boardService.getBbsById(bbsId); // 후기 작성할 게시글을 게시글id로 찾아옴
+		log.info("reviewBbs아이디 ={}", reviewBbs.getBbsId());
 		model.addAttribute("reviewBbs",reviewBbs); //후기 작성할 게시글 뷰에 넘겨줌 -> 현재 fdbk,fdbkDT가 비어있는 게시글 객체임
+
+	    
+		Map<String, Object> param = new HashMap<>();
+		param.put("bbsId",bbsId);		
+		//첨부파일 가져오기
+		List<AtchFileDTO> files = atchFileService.getFiles(param);
+		log.info("files ={}", files);
+		model.addAttribute("files", files); 
 		return "/mypage/writeReview"; // 뷰에서 리뷰 작성하게 할 것
 	}
+	
 	// 후기 등록
 	@PostMapping("/writeReview") 
-	public String postReview(@ModelAttribute("reviewBbs") BoardDTO reviewBbs) {
-		boardService.postReview(reviewBbs);
-		return "redirect:/"; // 홈 화면 리다이렉트
+	public String postReview(@RequestParam("fdbk") String fdbk, @RequestParam("bbsId") int bbsId) {
+		BoardDTO reviewBbs = boardService.getBbsById(bbsId);//id에 맞는 게시물 가져옴
+		reviewBbs.setFdbk(fdbk);
+		log.info("후기 등록 bbsId = {}, 리뷰내용 = {}", reviewBbs.getBbsId(), reviewBbs.getFdbk());
+	    
+	    boardService.postReview(reviewBbs); // 변경된 게시글 객체 정보 SQL에 저장   
+	    return "redirect:/board/bbsList"; // 홈 화면 리다이렉트
 	}
 	
 	

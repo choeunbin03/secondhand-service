@@ -34,13 +34,13 @@
 			, BBS_TTL		AS bbsTtl
 			, SLE_CMPTN_YN	AS sleCmptnYn
 			, SLE_PRC		AS slePrc
-			, SLE_ID		AS sleId
+			, PRCH_ID		AS prchId
 			, RGTR_ID		AS rgtrId
 			, RGTR_DT		AS rgtrDt 
 			, FDBK			AS fdbk
 			, FDBK_DT		AS fdbkDt
 		FROM TB_BBS
-		WHERE SLE_ID = #{mbrId} 
+		WHERE prch_ID = #{mbrId} 
 		ORDER BY BBS_ID DESC
 	</select>
 	
@@ -49,7 +49,7 @@
 			, BBS_TTL		AS bbsTtl
 			, SLE_CMPTN_YN	AS sleCmptnYn
 			, SLE_PRC		AS slePrc
-			, SLE_ID		AS sleId
+			, PRCH_ID		AS prchId
 			, RGTR_ID		AS rgtrId
 			, RGTR_DT		AS rgtrDt 
 			, FDBK			AS fdbk
@@ -65,7 +65,7 @@
 			, BBS_CN		AS bbsCn
 			, CTGRY_FLD		AS ctgryFld
 			, SLE_CMPTN_YN	AS sleCmptnYn
-			, SLE_ID		AS sleId
+			, PRCH_ID		AS prchId
 			, ATCH_FILE_NO 	AS atchFileNo
 			, BMK_CNT		AS bmkCnt
 			, SLE_PRC		AS slePrc
@@ -85,7 +85,7 @@
     		, BBS_CN
     		, CTGRY_FLD
     		, SLE_CMPTN_YN
-    		, SLE_ID
+    		, PRCH_ID
     		, ATCH_FILE_NO
     		, BMK_CNT
     		, SLE_PRC
@@ -101,7 +101,7 @@
     		, #{bbsCn}
     		, #{ctgryFld}
     		, #{sleCmptnYn}
-    		, #{sleId}
+    		, #{prchId}
     		, #{atchFileNo}
     		, #{bmkCnt}
     		, #{slePrc}
@@ -129,10 +129,11 @@
 	    DELETE FROM TB_BBS WHERE BBS_ID = #{bbsId}
 	</delete>
 	
-	<select id="getBbsById" resultType="com.secondhand.domain.BoardDTO" parameterType="String">
-		SELECT BBS_TTL		 AS bbsTtl
+	<select id="getBbsById" resultType="com.secondhand.domain.BoardDTO" parameterType="int">
+		SELECT BBS_ID		 AS bbsId
+			,  BBS_TTL		 AS bbsTtl
     		,  BBS_CN		 AS bbsCn
-    		,  SLE_ID		 AS sleId
+    		,  PRCH_ID		 AS prchId
     		,  ATCH_FILE_NO  AS atchFileNo
     		,  SLE_PRC		 AS slePrc
     		,  RGTR_ID		 AS rgtrId
@@ -141,6 +142,12 @@
     	FROM TB_BBS
     	WHERE BBS_ID = #{bbsId}
 	</select>
+	
+	<update id="postReview" parameterType="com.secondhand.domain.BoardDTO">
+    	UPDATE TB_BBS 
+    	SET FDBK = #{fdbk}, FDBK_DT = now()
+    	WHERE BBS_ID = #{bbsId}
+	</update>
 	
 	
 </mapper>

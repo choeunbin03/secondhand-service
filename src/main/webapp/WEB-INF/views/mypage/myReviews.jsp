@@ -40,7 +40,7 @@
         		 	<c:if test="${item.fdbk != null}">
 	        			<tr onclick="location.href='/board/bbsView?bbsId=${item.bbsId}'">
 	        				<td>${item.bbsTtl}</td>
-	        				<td>${item.sleId}</td>
+	        				<td>${item.prchId}</td>
 	        				<td>${item.fdbk}</td>
 	        				<td><fmt:formatDate value="${item.fdbkDt}" pattern="yyyy-MM-dd" /></td>
 	        			</tr>
@@ -61,7 +61,7 @@
 	        		<c:if test="${item.fdbk != null}">
 	        			<tr onclick="location.href='/board/bbsView?bbsId=${item.bbsId}'">
 	        				<td>${item.bbsTtl}</td>
-	        				<td>${item.sleId}</td>
+	        				<td>${item.prchId}</td>
 	        				<td>${item.fdbk}</td>
 	        				<td><fmt:formatDate value="${item.fdbkDt}" pattern="yyyy-MM-dd" /></td>
 	        			</tr>

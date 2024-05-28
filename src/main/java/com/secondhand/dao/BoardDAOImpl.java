@@ -67,7 +67,7 @@ public class BoardDAOImpl implements BoardDAO{
 	}
 
 	@Override
-	public BoardDTO getBbsById(String bbsId) {
+	public BoardDTO getBbsById(int bbsId) {
 		return sqlSession.selectOne(namespace + ".getBbsById", bbsId);
 	}
 

@@ -62,7 +62,7 @@ public class BoardServiceImpl implements BoardService{
     }
 
 	@Override
-	public BoardDTO getBbsById(String bbsId) {
+	public BoardDTO getBbsById(int bbsId) {
 		return boardDao.getBbsById(bbsId);
 	}
 

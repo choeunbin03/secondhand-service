@@ -22,7 +22,7 @@ public interface BoardDAO {
 	//게시글 작성
 	public void bbsRegi(BoardDTO board);
 	//게시글 정보 조회
-	public BoardDTO getBbsById(String bbsId);
+	public BoardDTO getBbsById(int bbsId);
 	//게시글 후기 등록
 	public void postReview(BoardDTO reviewBbs);
 }
