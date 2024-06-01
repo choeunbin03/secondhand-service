@@ -21,7 +21,7 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.39</version>
+            <version>8.0.22</version>
         </dependency>
 
 	<!-- 마이바티스 관련 라이브러리 설정 -->
@@ -106,6 +106,18 @@
 		   	<groupId>org.springframework</groupId>
 			<artifactId>spring-websocket</artifactId>
 			<version>${org.springframework-version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-messaging</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20160810</version>
 		</dependency>
 		
 		<dependency>
@@ -267,6 +279,7 @@
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
+                    <encoding>UTF-8</encoding>
                     <compilerArgument>-Xlint:all</compilerArgument>
                     <showWarnings>true</showWarnings>
                     <showDeprecation>true</showDeprecation>
@@ -280,6 +293,50 @@
                     <mainClass>org.test.int1.Main</mainClass>
                 </configuration>
             </plugin>
+            <!-- 이 부분 추가됨. 배포 관련 -->
+<!--             <plugin>
+            	<groupId>org.apache.maven.plugins</groupId>
+			  	<artifactId>maven-assembly-plugin</artifactId>
+			  	<version>2.5.5</version>
+			  	<configuration>
+			    	<descriptors>
+			      		<descriptor>src/assemble/distribution.xml</descriptor>
+			    	</descriptors>
+			  	</configuration>
+			  	<executions>
+			    	<execution>
+			      		<id>make-assembly</id> 
+			      		<phase>package</phase>
+			      		<goals>
+			        		<goal>single</goal>
+			      		</goals>
+			    	</execution>
+			  	</executions>
+			</plugin>	-->
+			<!-- 여기까지 추가 -->
+			
+			
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.3.0</version> <!-- 최신 버전으로 변경 가능 -->
+                <configuration>
+                    <descriptors>
+                        <descriptor>src/assembly/descriptor.xml</descriptor>
+                    </descriptors>
+                    <finalName>${project.artifactId}-${project.version}</finalName>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+			
         </plugins>
     </build>
 </project>

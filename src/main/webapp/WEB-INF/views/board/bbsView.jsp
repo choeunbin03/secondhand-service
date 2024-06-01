@@ -100,7 +100,7 @@
 					
 				</div>
 				
-				<c:if test="${bbsView.rgtrId == sessionScope.LoginMember.mbrId}">
+				<c:if test="${bbsView.rgtrId == sessionScope.loginMember.mbrId}">
 					<div style="text-align: right; margin:20px;">
 						<div class="action-button">
 							<a href="/board/edit?bbsId=${bbsView.bbsId}">수정</a>

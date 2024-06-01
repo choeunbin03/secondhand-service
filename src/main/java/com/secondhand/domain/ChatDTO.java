@@ -11,7 +11,6 @@ public class ChatDTO {
 	
 	private int chatId; //채팅 id
 	private int chatSpceId; //채팅방 id
-	private int bbsId; //게시글 id
 	private String sendId; //보낸 사람 아이디
 	private String rcvId; //받는 사람 아이디
 	private String chatCn; //채팅 내용

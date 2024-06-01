@@ -28,12 +28,12 @@ public class LoginServiceImpl implements LoginService, Validator{
 //        return memberDAO.findById(loginId)
 //                .filter(m -> m.getMbrPwd().equals(password))
 //                .orElse(null);l
-        MemberDTO LoginMember = memberDAO.findByMbrId(loginId);
-        if(LoginMember == null){
+        MemberDTO loginMember = memberDAO.findByMbrId(loginId);
+        if(loginMember == null){
             return null;
         }else{
-            if(LoginMember.getMbrPwd().equals(password)){
-                return LoginMember;
+            if(loginMember.getMbrPwd().equals(password)){
+                return loginMember;
             }else{
                 log.info("XXX");
                 return null;

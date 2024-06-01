@@ -42,9 +42,11 @@ public class ChatController {
 		List<ChatRoomDTO> chatRoomList = new ArrayList<>();
 		List<ChatDTO> chatContent = new ArrayList<>();
 		
-		MemberDTO member = (MemberDTO) session.getAttribute("LoginMember"); // 세션에서 로그인 멤버 가져오기
+		MemberDTO member = (MemberDTO) session.getAttribute("loginMember"); // 세션에서 로그인 멤버 가져오기
 		String mbrId = member.getMbrId();// 로그인한 멤버 id가져오기
 		int chatSpceId = Integer.parseInt(request.getParameter("chatSpceId"));//
+		String partnerId = null;
+		int bbsId = 0;
 		
 		//파라미터 값 생성
 		Map<String, Object> params = new HashMap<>();
@@ -52,6 +54,12 @@ public class ChatController {
 		params.put("chatSpceId", chatSpceId);
 		
 		if (chatSpceId != 0) {//채팅 메인 페이지는 chatSpceId값이 0
+			//채팅 상대 id 가져오기
+			partnerId = chatService.getChatPartnerId(params);	
+			
+			//채팅방 게시글 id 가져오기
+			bbsId = chatService.getBbsId(params);
+			
 			//chatRoomList 그 읽음 표시 그거 업데이트~~
 			chatService.updateIdntyYn(params);
 			
@@ -65,7 +73,9 @@ public class ChatController {
 		chatRoomList = chatService.getchatRoomList(params);		
 		
 		model.addAttribute("mbrId", mbrId);
+		model.addAttribute("partnerId", partnerId);
 		model.addAttribute("chatSpceId", chatSpceId);
+		model.addAttribute("bbsId", bbsId);
 		model.addAttribute("chatRoomList",chatRoomList);
 		model.addAttribute("chatContent",chatContent);
 		
@@ -77,7 +87,7 @@ public class ChatController {
 	public void chatRegi(HttpSession session, Model model,  HttpServletRequest request, ChatDTO chatDto) {
 		
 		//로그인한 사용자 아이디 가져오기
-		MemberDTO member = (MemberDTO) session.getAttribute("LoginMember");
+		MemberDTO member = (MemberDTO) session.getAttribute("loginMember");
 		String mbrId = member.getMbrId();
 		
 		Map<String, Object> params = new HashMap<>();
@@ -104,7 +114,7 @@ public class ChatController {
 	public String goChat(HttpSession session, Model model,  HttpServletRequest request) throws Exception{
 		
 		//로그인한 사용자 아이디 가져오기
-		MemberDTO member = (MemberDTO) session.getAttribute("LoginMember");
+		MemberDTO member = (MemberDTO) session.getAttribute("loginMember");
 		String mbrId = member.getMbrId();
 		
 		//bbsId 가져오기
@@ -116,19 +126,22 @@ public class ChatController {
 		param.put("bbsId", bbsId);
 		
 		//채팅방이 이미 존재하면 chatSpceId > 0, 존재하지 않으면 0
-		//int chatSpceId = chatService.getChatSpceId(param);
+		int chatSpceId = chatService.getChatSpceId(param);
 		
-		//bbsId과 mbrId에 해당하는 채팅방이 있을 경우, 해당 채팅방으로 redirect
-/*		if(chatSpceId > 0) {
-			//해당 채팅방으로 redirect
-		}else {
+		//채팅방이 존재하지 않을 경우 새로 생성
+		if(chatSpceId == 0) {
 			//maxChatSpceId 가져오기
-			
-			//채팅방 
-		}*/
+			chatSpceId = chatService.getMaxChatSpceId() + 1;			
+			param.put("chatSpceId", chatSpceId);
+			//채팅 상대 id가져오기.(게시글 작성자)
+			String partnerId = chatService.getPartnerId(bbsId);
+			param.put("partnerId", partnerId);
+			//채팅방 생성
+			chatService.createChatRoom(param);
+		}
 		//없을 경우, 새로운 채팅방을 생성하고 해당 채팅방으로 redirect
 		
-		return "";
+		return "redirect:/chat/chatView?chatSpceId="+chatSpceId;
 	}
 
 }

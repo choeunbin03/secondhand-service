@@ -22,7 +22,7 @@ public class LoginInterceptor implements HandlerInterceptor{
 		String requestURI = request.getRequestURI();
 		HttpSession session = request.getSession(false);
 		
-		if(session == null || session.getAttribute("LoginMember") == null) {
+		if(session == null || session.getAttribute("loginMember") == null) {
 			log.info("REQUEST [{}]", requestURI);
 			log.info("로그인 미인증 사용자");
 			response.sendRedirect("/member/login?redirectURL=" + requestURI);

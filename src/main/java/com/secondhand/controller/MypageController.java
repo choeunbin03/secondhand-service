@@ -40,7 +40,7 @@ public class MypageController{
 		HttpSession session = request.getSession();
 		List sleBbsList = new ArrayList<>(); // 판매목록 
 		List prchBbsList = new ArrayList<>(); //구매목록
-		MemberDTO member = (MemberDTO) session.getAttribute("LoginMember"); // 세션에서 로그인 멤버 가져오기
+		MemberDTO member = (MemberDTO) session.getAttribute("loginMember"); // 세션에서 로그인 멤버 가져오기
 		String mbrId = member.getMbrId();// 로그인한 멤버 id가져오기
 
 		sleBbsList = boardService.getSleBbsList(mbrId); // 멤머 id에 해당되는 구매목록 가져옴

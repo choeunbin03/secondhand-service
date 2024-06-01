@@ -50,15 +50,15 @@ public class MemberController{
             return "/member/login";
         }
         //LoginService에서 받은 데이터로 로그인 가능한지 처리해야함
-        MemberDTO LoginMember = loginService.login(login.getLoginId(), login.getPassword()); // 넘겨준 아이디에 맞는 MemberDTO객체 있으면 반환받음
-        if(LoginMember == null) { // 없는 회원일때
+        MemberDTO loginMember = loginService.login(login.getLoginId(), login.getPassword()); // 넘겨준 아이디에 맞는 MemberDTO객체 있으면 반환받음
+        if(loginMember == null) { // 없는 회원일때
             log.info("Login failed for user ID: {}", login.getLoginId());
              redirectAttributes.addFlashAttribute("error", "아이디 또는 비밀번호가 일치하지 않습니다.");
              return "redirect:/member/login";
         }
 
         HttpSession session = request.getSession();
-        session.setAttribute("LoginMember", LoginMember);
+        session.setAttribute("loginMember", loginMember);
         log.info("OO");
        
         return "redirect:" + redirectURL;

@@ -57,6 +57,35 @@ public class ChatServiceImpl implements ChatService{
 		chatDao.regiChat(chatDto);
 	}
 
+	@Override
+	public int getChatSpceId(Map<String, Object> params) {
+		int chatSpceId = getChatSpceId(params);
+		return chatSpceId;
+	}
+
+	@Override
+	public int getMaxChatSpceId() {
+		int maxChatSpceId = chatDao.getMaxChatSpceId();
+		return maxChatSpceId;
+	}
+
+	@Override
+	public String getPartnerId(int bbsId) {
+		String partnerId = chatDao.getPartnerId(bbsId);
+		return partnerId;
+	}
+
+	@Override
+	public void createChatRoom(Map<String, Object> params) {
+		chatDao.createChatRoom(params);
+	}
+
+	@Override
+	public int getBbsId(Map<String, Object> params) {
+		int bbsId = chatDao.getBbsId(params);
+		return bbsId;
+	}
+
 	
 
 }

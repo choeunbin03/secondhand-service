@@ -22,5 +22,5 @@ public interface BoardDAO {
 	//게시글 삭제 
 	public void deleteBoard(int bbsId);	
 	//게시글 작성
-	void bbsRegi(BoardDTO board);
+	public void bbsRegi(BoardDTO board);
 }

@@ -119,6 +119,7 @@ public class BoardController {
 		
 		model.addAttribute("bbsView", bbsView);
 		model.addAttribute("files", files);
+		model.addAttribute("isBMK", isbmk);
 				
 		return "/board/bbsView";
 	}
@@ -136,7 +137,7 @@ public class BoardController {
                            @RequestParam(value = "file", required = false) List<MultipartFile> fileList, 
                            RedirectAttributes redirectAttributes, HttpServletRequest request, HttpSession session) {
     	
-    	MemberDTO member = (MemberDTO) session.getAttribute("LoginMember"); // 세션에서 로그인 멤버 가져오기
+    	MemberDTO member = (MemberDTO) session.getAttribute("loginMember"); // 세션에서 로그인 멤버 가져오기
 		String mbrId = member.getMbrId();// 로그인한 멤버 id가져오기
 		int atchFileNo = 0;
 		
@@ -198,7 +199,7 @@ public class BoardController {
   	//찜 목록에 추가/삭제
   	@PostMapping("/addBmk")
   	public String addBMK(Locale locale, Model model, HttpSession session, HttpServletRequest request) {
-  		String id = ((MemberDTO)session.getAttribute("LoginMember")).getMbrId();	
+  		String id = ((MemberDTO)session.getAttribute("loginMember")).getMbrId();	
   		if (request.getParameter("bmk") != null) {				
 			memberService.updateBMK(id, request.getParameter("bbsId"));
 		}

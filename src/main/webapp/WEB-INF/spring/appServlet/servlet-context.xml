@@ -27,20 +27,22 @@
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 	</beans:bean>
 	
-	<!-- 
+	
 	<websocket:handlers>
-		<websocket:mapping handler="echoHandler" path="/echo" />
-		<websocket:sockjs />
+		<websocket:mapping handler="chatHandler" path="/chatHandle" />
+		<websocket:handshake-interceptors>
+	       <beans:bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"/>
+		</websocket:handshake-interceptors>
 	</websocket:handlers>
     
-    -->
-	<!-- <beans:bean id="echoHandler" class="com.secondhand.controller.ChatController"></beans:bean> -->
+   
+	<beans:bean id="chatHandler" class="com.secondhand.controller.ChatHandler"></beans:bean>
 	
 	
 	<interceptors>
 	    <interceptor>
 	        <mapping path="/**"/>         
-	        <exclude-mapping path="/css/**"/>
+	        <exclude-mapping path="/resources/**"/>
 			<exclude-mapping path="/fonts/**"/>
 			<exclude-mapping path="/images/**"/>
 			<exclude-mapping path="/scripts/**"/>
@@ -53,6 +55,7 @@
 	        <exclude-mapping path="/member/signin"/>
 	        <exclude-mapping path="/board/bbsView"/>
 	        <exclude-mapping path="/member/jusoPopup"/>
+	        <exclude-mapping path="/board/search"/>
 	        <beans:bean id="LoginInterceptor" class="com.secondhand.interceptor.LoginInterceptor"/>
 	    </interceptor>
 	</interceptors>
