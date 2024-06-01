@@ -1,3 +1,4 @@
+
 package com.secondhand.service;
 
 import java.util.List;
@@ -57,6 +58,17 @@ public class BoardServiceImpl implements BoardService{
 	}
 	
 	@Override
+	public List<BoardDTO>searchBbsListByBMK(String mbrId){
+		return boardDao.getBbsListByBMK(mbrId);
+	}
+	
+	@Override
+	public List<BoardDTO>searchBbsListByRecentViewed(String mbrId){
+		return boardDao.getBbsListByRecentViewed(mbrId);
+		
+	}
+	
+	@Override
     public void deleteBoard(int bbsId) {
         boardDao.deleteBoard(bbsId);
     }
@@ -80,18 +92,5 @@ public class BoardServiceImpl implements BoardService{
 	public void sleCmptnCancel(int bbsId) {
 		boardDao.sleCmptnCancel(bbsId);
 	}
-
-	@Override
-	public BoardDTO getBbsById(int bbsId) {
-		return boardDao.getBbsById(bbsId);
-	}
-
-	@Override
-	public void postReview(BoardDTO reviewBbs) {
-		boardDao.postReview(reviewBbs);	
-	}
-
-
-	
 
 }

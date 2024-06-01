@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -42,8 +43,6 @@ public class BoardController {
 	private BoardService boardService;
 	@Inject
 	private AtchFileService atchFileService;
-	@Inject
-	private PageService pageService;
 	@Inject
 	private MemberService memberService;
 	
@@ -80,17 +79,7 @@ public class BoardController {
 			fileList = atchFileService.getFileThumbNail();
 		}	
 		
-//		List<PageDTO> pageList= new ArrayList<>();
-//		// 업 케스팅 예시
-//		List<Object> objectBbsList=new ArrayList<>(bbsList); 
-//
-//		pageList=pageService.makePages(objectBbsList);
-//		// 다운 케스팅 예시
-//		List<BoardDTO> firstPage=(List<BoardDTO>)(List<?>) pageService.getPage(pageList, 0).getList();
-	
-		
 		model.addAttribute("bbsList", bbsList);
-//		model.addAttribute("bbsList", firstPage);
 		model.addAttribute("fileList", fileList);
 		return "/board/bbsList";
 	}
@@ -112,6 +101,7 @@ public class BoardController {
 		if(session.getAttribute("loginMember") != null) {
 			String id = ((MemberDTO)session.getAttribute("loginMember")).getMbrId();
 			isbmk = memberService.isBMK(id,Integer.toString(bbsView.getBbsId()));
+			memberService.updateRecentView(id, request.getParameter("bbsId"));
 		}
 		//찜 개수 가져오기
 		
@@ -119,6 +109,8 @@ public class BoardController {
 		
 		model.addAttribute("bbsView", bbsView);
 		model.addAttribute("files", files);
+		model.addAttribute("isBMK", isbmk);
+		model.addAttribute("userinfo", session.getAttribute("loginMember"));
 				
 		return "/board/bbsView";
 	}
@@ -136,7 +128,7 @@ public class BoardController {
                            @RequestParam(value = "file", required = false) List<MultipartFile> fileList, 
                            RedirectAttributes redirectAttributes, HttpServletRequest request, HttpSession session) {
     	
-    	MemberDTO member = (MemberDTO) session.getAttribute("LoginMember"); // 세션에서 로그인 멤버 가져오기
+    	MemberDTO member = (MemberDTO) session.getAttribute("loginMember"); // 세션에서 로그인 멤버 가져오기
 		String mbrId = member.getMbrId();// 로그인한 멤버 id가져오기
 		int atchFileNo = 0;
 		
@@ -198,12 +190,59 @@ public class BoardController {
   	//찜 목록에 추가/삭제
   	@PostMapping("/addBmk")
   	public String addBMK(Locale locale, Model model, HttpSession session, HttpServletRequest request) {
-  		String id = ((MemberDTO)session.getAttribute("LoginMember")).getMbrId();	
+  		String id = ((MemberDTO)session.getAttribute("loginMember")).getMbrId();	
   		if (request.getParameter("bmk") != null) {				
 			memberService.updateBMK(id, request.getParameter("bbsId"));
 		}
 		//찜하기/찜해제
     	return "redirect:/board/bbsView?bbsId="+request.getParameter("bbsId");
     }
-
+  	
+  	 //찜목록 조회
+  	@RequestMapping(value="/bmk",method=RequestMethod.GET)
+  	public String bmk(HttpSession session, Model model) {
+  		List<BoardDTO>searchResults = boardService.searchBbsListByBMK(((MemberDTO)session.getAttribute("loginMember")).getMbrId());
+  		model.addAttribute("bbsList",searchResults);
+  		return "board/bbsList";
+  	}
+    //최근 게시물 조회
+  	@RequestMapping(value="/recentViewed",method=RequestMethod.GET)
+  	public String recentViewed(HttpSession session, Model model) {
+  		List<BoardDTO>searchResults = boardService.searchBbsListByRecentViewed(((MemberDTO)session.getAttribute("loginMember")).getMbrId());
+  		model.addAttribute("bbsList",searchResults);
+  		return "board/bbsList";
+  	}
+  	
+  	//거래완료 메서드
+  	@PostMapping("/sleCmptn")
+  	@ResponseBody
+  	public void sleCmptn(@RequestParam("bbsId") int bbsId, @RequestParam("chatPartnerId") String chatPartnerId,HttpSession session, HttpServletRequest request) {
+  		String mbrId = ((MemberDTO)session.getAttribute("loginMember")).getMbrId();
+  		//chat partnerId도 가져와서
+  		//bbs rgtrId와 다른 id를 mbrID로 넘기기.
+  		
+  		Map<String, Object> param = new HashMap<>();
+  		param.put("bbsId", bbsId);
+  		
+  		BoardDTO bbsContent = boardService.getBbsView(param);
+  		String rgtrId = bbsContent.getRgtrId();
+  		
+  		if(rgtrId == mbrId) {
+  			param.put("prchId", chatPartnerId);
+  		}else {
+  			param.put("prchId", mbrId);
+  		}
+  		
+  		boardService.sleCmptn(param);
+  	}
+  	
+  	//거래 취소 메서드
+  	@PostMapping("/sleCmptnCancel")
+  	@ResponseBody
+  	public void sleCmptnCancel(@RequestParam("bbsId") int bbsId ,HttpSession session, HttpServletRequest request) {
+  		
+  		boardService.sleCmptnCancel(bbsId);
+  	}
+  	
+  	
 }

@@ -8,28 +8,29 @@
 		SELECT	MBR_ID 		AS mbrId,
 				MBR_PWD		AS mbrPwd
 		FROM TB_MBR
-		WHERE MBR_ID = #{loginId}				
+		WHERE MBR_ID = #{LoginId}				
 	</select>
 	
 	<insert id="save" parameterType="com.secondhand.domain.MemberDTO">
-		INSERT INTO tb_mbr
-		( 
-			MBR_ID,
-			MBR_NM,
-			MBR_PWD,
-			RGN,
-			RGN_SCP,
-			JOIN_DT
-		)
-		VALUES(	#{mbrId},
-				#{mbrNm},
-				#{mbrPwd},
-				0,
-				0,
-				now()
-		)
-	</insert>		
-	
+      INSERT INTO tb_mbr
+      ( 
+         MBR_ID,
+         MBR_NM,
+         MBR_PWD,
+         RGN,
+         RGN_SCP,
+         JOIN_DT
+      )
+      VALUES(   #{mbrId},
+            #{mbrNm},
+            #{mbrPwd},
+            0,
+            0,
+            now()
+      )
+   </insert>
+   
+   
 	<delete id="delete" parameterType="com.secondhand.domain.MemberDTO">
 		DELETE 
 		FROM tb_mbr
@@ -47,22 +48,4 @@
 		SET BMK = #{NewBMK}
 		WHERE MBR_ID = #{LoginId}
 	</select>
-	
-	<update id="updateProfile" parameterType="com.secondhand.domain.MemberDTO">
-      UPDATE TB_MBR
-      SET
-         PROFILE_PHOTO_URL = #{profilePhotoUrl},
-         STORE_DESCRIPTION = #{storeDescription}
-      WHERE MBR_ID = #{mbrId}
-   </update>
-
-   <select id="getUserProfile" parameterType="string" resultType="com.secondhand.domain.MemberDTO">
-      SELECT
-         MBR_ID AS mbrId,
-         PROFILE_PHOTO_URL AS profilePhotoUrl,
-         STORE_DESCRIPTION AS storeDescription
-      FROM TB_MBR
-      WHERE MBR_ID = #{mbrId}
-   </select>  
-	
 </mapper>

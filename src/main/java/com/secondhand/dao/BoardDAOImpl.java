@@ -1,6 +1,8 @@
 package com.secondhand.dao;
 
-import java.util.List; 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -18,6 +20,8 @@ public class BoardDAOImpl implements BoardDAO{
 
 	@Inject
 	private SqlSession sqlSession;
+	@Inject
+	private MemberDAO memberDao;
 	
 	private static String namespace = "com.secondhand.mappers.board";
 	
@@ -34,7 +38,12 @@ public class BoardDAOImpl implements BoardDAO{
 	}
 	
 	@Override
-
+	public BoardDTO getBbsView(Map<String, Object> param) {
+		BoardDTO bbsContent = (BoardDTO) sqlSession.selectList(namespace + ".getBbsView", param).get(0);
+		return bbsContent;
+	}
+	
+	@Override
 	public List<BoardDTO> getPrchBbsList(String mbrId){ // 해당 멤버의 구매내역에 해당되는 리스트만 가져옴
 		List<BoardDTO> bbsList = sqlSession.selectList(namespace + ".getPrchBbsList", mbrId);
 		return bbsList;
@@ -46,11 +55,6 @@ public class BoardDAOImpl implements BoardDAO{
 		return bbsList;
 	}
 
-
-	public BoardDTO getBbsView(Map<String, Object> param) {
-		BoardDTO bbsContent = (BoardDTO) sqlSession.selectList(namespace + ".getBbsView", param).get(0);
-		return bbsContent;
-	}
 	@Override
 	public void bbsRegi(BoardDTO board) {
 		sqlSession.insert(namespace+".bbsRegi",board);
@@ -65,16 +69,51 @@ public class BoardDAOImpl implements BoardDAO{
 	public void deleteBoard(int bbsId) {
 		sqlSession.delete("deleteBoard",bbsId);
 	}
-
+	
+	@Override
+	public void postReview(BoardDTO reviewBbs) {
+	    sqlSession.update(namespace+".postReview", reviewBbs);
+	}
+	
 	@Override
 	public BoardDTO getBbsById(int bbsId) {
 		return sqlSession.selectOne(namespace + ".getBbsById", bbsId);
 	}
 
 	@Override
-	public void postReview(BoardDTO reviewBbs) {
-		sqlSession.update(namespace+".postReview", reviewBbs);
+	public void sleCmptn(Map<String, Object> param) {
+		sqlSession.update(namespace+".sleCmptn", param);
 	}
 
+	@Override
+	public void sleCmptnCancel(int bbsId) {
+		sqlSession.update(namespace+".sleCmptnCancel", bbsId);
+	}
+	
+	@Override
+    public List<BoardDTO> getBbsListByBMK(String mbrId) {
+		Map<String, String> param = new HashMap<String, String>();
+		List<String> BMKList = memberDao.getBMK(mbrId);
+		List<BoardDTO> bbsLists = new ArrayList<BoardDTO>();
+		String bbsIdList = "("+String.join(",",BMKList)+")";
+		if(!bbsIdList.equals("()")) {
+			param.put("bbsIdList",bbsIdList);
+			bbsLists = sqlSession.selectList(namespace + ".searchBbsListbyBbsIdList", param);
+		}
+		return bbsLists;
+    }
+	
+	@Override
+    public List<BoardDTO> getBbsListByRecentViewed(String mbrId){
+		HashMap<String, String> param = new HashMap<String, String>();
+		List<String> RecentViewedList = memberDao.getRecentViewed(mbrId);
+		List<BoardDTO> bbsLists = new ArrayList<BoardDTO>();
+		String bbsIdList = "("+String.join(",",RecentViewedList)+")";
+		if(!bbsIdList.equals("()")) {
+			param.put("bbsIdList",bbsIdList);
+			bbsLists = sqlSession.selectList(namespace + ".searchBbsListbyBbsIdList", param);
+		}
+		return bbsLists;
+    	
+    }
 }
-
