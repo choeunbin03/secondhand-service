@@ -11,7 +11,7 @@
 		
 			<div class="member-wrapper">
 				<%
-					if(session.getAttribute("LoginMember")==null){
+					if(session.getAttribute("loginMember")==null){
 						out.println("<a href='/member/login'>로그인/회원가입</a>");
 					}else{
 						out.println("<a href='/member/logout'>로그아웃</a>");
@@ -60,7 +60,3 @@
 	 
 	</div> <!-- header-content -->
 	 <!-- End Header -->
-	 
-<script>
-
-</script>

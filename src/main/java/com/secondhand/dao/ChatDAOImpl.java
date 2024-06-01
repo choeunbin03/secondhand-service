@@ -59,6 +59,35 @@ public class ChatDAOImpl implements ChatDAO{
 		sqlSession.insert(namespace + ".regiChat", chatDto);
 	}
 
+	@Override
+	public int getChatSpceId(Map<String, Object> params) {
+		int chatSpceId = sqlSession.selectOne(namespace + ".getChatSpceId", params);
+		return chatSpceId;
+	}
+
+	@Override
+	public int getMaxChatSpceId() {
+		int maxChatSpceId = sqlSession.selectOne(namespace + ".getMaxChatSpceId");
+		return maxChatSpceId;
+	}
+
+	@Override
+	public String getPartnerId(int bbsId) {
+		String partnerId = sqlSession.selectOne(namespace + ".getPartnerId", bbsId);
+		return partnerId;
+	}
+
+	@Override
+	public void createChatRoom(Map<String, Object> params) {
+		sqlSession.insert(namespace + ".createChatRoom", params);
+	}
+
+	@Override
+	public int getBbsId(Map<String, Object> params) {
+		int bbsId = sqlSession.selectOne(namespace + ".getBbsId", params);
+		return bbsId;
+	}
+
 
 
 }

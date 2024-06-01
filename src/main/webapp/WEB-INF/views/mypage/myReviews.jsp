@@ -29,45 +29,45 @@
     </div>
     <div id="sales" class="tab-content active">
         <h2 class="header">작성한 후기</h2>
-        	<table class = "table table-hover">
-        		<tr>
-        			<th>상품명</th>
-        			<th>작성자</th>
-        			<th>후기</th>
-        			<th>작성일</th>
-        		</tr>
-        		<c:forEach var = "item" items="${prchReviewList}">
-        		 	<c:if test="${item.fdbk != null}">
-	        			<tr onclick="location.href='/board/bbsView?bbsId=${item.bbsId}'">
-	        				<td>${item.bbsTtl}</td>
-	        				<td>${item.prchId}</td>
-	        				<td>${item.fdbk}</td>
-	        				<td><fmt:formatDate value="${item.fdbkDt}" pattern="yyyy-MM-dd" /></td>
-	        			</tr>
-	        		</c:if>
-        		</c:forEach>
-        	</table>
+           <table class = "table table-hover">
+              <tr>
+                 <th>상품명</th>
+                 <th>작성자</th>
+                 <th>후기</th>
+                 <th>작성일</th>
+              </tr>
+              <c:forEach var = "item" items="${prchReviewList}">
+                  <c:if test="${item.fdbk != null}">
+                    <tr onclick="location.href='/board/bbsView?bbsId=${item.bbsId}'">
+                       <td>${item.bbsTtl}</td>
+                       <td>${item.prchId}</td>
+                       <td>${item.fdbk}</td>
+                       <td><fmt:formatDate value="${item.fdbkDt}" pattern="yyyy-MM-dd" /></td>
+                    </tr>
+                 </c:if>
+              </c:forEach>
+           </table>
     </div>
     <div id="purchases" class="tab-content">
         <h2 class="header">작성된 후기</h2>
-        	<table class = "table table-hover">
-        		<tr>
-        			<th>상품명</th>
-        			<th>작성자</th>
-        			<th>후기</th>
-        			<th>작성일</th>
-        		</tr>
-        		<c:forEach var = "item" items="${sleReviewList}">
-	        		<c:if test="${item.fdbk != null}">
-	        			<tr onclick="location.href='/board/bbsView?bbsId=${item.bbsId}'">
-	        				<td>${item.bbsTtl}</td>
-	        				<td>${item.prchId}</td>
-	        				<td>${item.fdbk}</td>
-	        				<td><fmt:formatDate value="${item.fdbkDt}" pattern="yyyy-MM-dd" /></td>
-	        			</tr>
-	        		</c:if>
-        		</c:forEach>
-        	</table>
+           <table class = "table table-hover">
+              <tr>
+                 <th>상품명</th>
+                 <th>작성자</th>
+                 <th>후기</th>
+                 <th>작성일</th>
+              </tr>
+              <c:forEach var = "item" items="${sleReviewList}">
+                 <c:if test="${item.fdbk != null}">
+                    <tr onclick="location.href='/board/bbsView?bbsId=${item.bbsId}'">
+                       <td>${item.bbsTtl}</td>
+                       <td>${item.prchId}</td>
+                       <td>${item.fdbk}</td>
+                       <td><fmt:formatDate value="${item.fdbkDt}" pattern="yyyy-MM-dd" /></td>
+                    </tr>
+                 </c:if>
+              </c:forEach>
+           </table>
     </div>
 </div>
 

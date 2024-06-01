@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -12,12 +13,27 @@
     .button { display: block; width: 20%; padding: 10px; margin-top: 5px; background-color: #007bff; color: white; text-decoration: none; border: none; border-radius: 5px; cursor: pointer; }
     .button:hover { background-color: #0056b3; }
     .button + .button { margin-top: 10px; }
-    a { text-decoration: none; } /* Remove underline from links */
+    a { text-decoration: none; }
+    .profile-section { padding: 20px; border: 1px solid #ddd; border-radius: 5px; margin-bottom: 20px; background-color: #fff; }
+    .profile-section h3 { margin-top: 0; }
+    .profile-photo { width: 150px; height: 150px; border-radius: 50%; background-color: #ddd; display: inline-block; }
+    .profile-photo img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
 </style>
 </head>
 <body>
 <div class="container">
     <h1>마이페이지</h1>
+    <div class="profile-section">
+        <h3>상점 프로필 설정</h3>
+        <div class="profile-photo">
+            <img src="${member.profilePhotoUrl != null ? member.profilePhotoUrl : '/resources/images/default.jpg'}" alt="Profile Photo">
+        </div>
+        <form action="/myPage/updateProfile" method="post" enctype="multipart/form-data">
+            <input type="file" name="profilePhoto" accept="image/*"><br><br>
+            <textarea name="storeDescription" rows="4" cols="50" placeholder="상점 소개글을 입력하세요...">${member.storeDescription}</textarea><br><br>
+            <button type="submit" class="button">저장</button>
+        </form>
+    </div>
     <div class="section">
         <h2>내 정보 관리</h2>
         <a href="/myPage/editProfile" class="button">내정보수정</a>
@@ -31,9 +47,5 @@
         <a href="/myPage/favorites" class="button">찜</a>
     </div>
 </div>
-<script>
-    // Here you can add any JavaScript needed for your page, like confirmations for account deletion.
-</script>
 </body>
 </html>
-

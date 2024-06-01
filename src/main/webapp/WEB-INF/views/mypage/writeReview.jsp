@@ -21,7 +21,7 @@
     .btn {border: 0; background-color: transparent;}
     .bbs-img-files{width: 350px; height: 315px;}
     #img-file{width: 100%; height: 100%;}
-    .bbsViewWrap {display:flex; margin-top:30px; width: 900px;}
+    .bbsViewWrap { margin-top:30px; width: 900px;}
     .bbsViewImgWrap{width: 450px; height: 315px;}
     .img-wrapper{margin-right: 50px;}
     .slick-prev:before, .slick-next:before{color: #c0c0c0;}
@@ -41,8 +41,8 @@
         margin-bottom: 10px;
     }
     .review-form textarea {
-        width: 100%;
-        height: 150px;
+        width: 80%;
+        height: 120px;
         margin-bottom: 10px;
     }
     .review-form .submit-btn {
@@ -89,10 +89,12 @@
                         ${reviewBbs.slePrc} 원
                     </div>
                     <form id="reviewForm" action="/myPage/writeReview" method="post">
-					    <textarea name="fdbk" placeholder="리뷰를 작성해주세요..."></textarea>
-					    <input type="hidden" name="bbsId" value="${reviewBbs.bbsId}"/>
-					    <button type="submit" class="submit-btn">리뷰 제출</button>
-					</form>
+                   <textarea name="fdbk" placeholder="리뷰를 작성해주세요..."></textarea>
+                   <input type="hidden" name="bbsId" value="${reviewBbs.bbsId}"/>
+                   <div>
+                   	<button type="submit" class="submit-btn">리뷰 제출</button>
+                   </div>                   
+               </form>
                 </div>
             </div>
         </div><!-- bbsViewWrap -->

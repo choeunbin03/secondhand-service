@@ -60,6 +60,26 @@ public class BoardServiceImpl implements BoardService{
     public void deleteBoard(int bbsId) {
         boardDao.deleteBoard(bbsId);
     }
+	
+	@Override
+	public BoardDTO getBbsById(int bbsId) {
+		return boardDao.getBbsById(bbsId);
+	}
+
+	@Override
+	public void postReview(BoardDTO reviewBbs) {
+		boardDao.postReview(reviewBbs);   
+	}
+
+	@Override
+	public void sleCmptn(Map<String, Object> param) {
+		boardDao.sleCmptn(param);
+	}
+
+	@Override
+	public void sleCmptnCancel(int bbsId) {
+		boardDao.sleCmptnCancel(bbsId);
+	}
 
 	@Override
 	public BoardDTO getBbsById(int bbsId) {

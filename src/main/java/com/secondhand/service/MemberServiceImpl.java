@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.secondhand.dao.MemberDAO;
 import com.secondhand.domain.MemberDTO;
 
@@ -14,11 +16,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.inject.Inject;
+
 @Service
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService, Validator { // 회원가입 확인용 필터
 
     private final MemberDAO memberDao;
+    @Inject
+    private S3Service s3Service;
     
 //MemberService 메소드
     @Override
@@ -137,6 +143,33 @@ public class MemberServiceImpl implements MemberService, Validator { // 회원�
     	params.put("NewBMK", String.join(" ",l));
     	params.put("LoginId", userId);
     	memberDao.updateBMK(params);
+    }
+    
+    @Override
+    public MemberDTO getUserProfile(String mbrId) throws Exception {
+        return memberDao.getUserProfile(mbrId);
+    }
+    
+    @Override
+    public void updateProfile(MemberDTO member, MultipartFile profilePhoto) throws Exception {
+        MemberDTO existingMember = memberDao.getUserProfile(member.getMbrId());
+        if (profilePhoto != null && !profilePhoto.isEmpty()) {
+            // 기존 프로필 사진 삭제
+            if (existingMember.getProfilePhotoUrl() != null && !existingMember.getProfilePhotoUrl().isEmpty()) {
+                String existingFileName = existingMember.getProfilePhotoUrl().substring(existingMember.getProfilePhotoUrl().lastIndexOf("/") + 1);
+                s3Service.delete(existingFileName);
+            }
+
+            // 새로운 프로필 사진 업로드
+            String newFileName = member.getMbrId() + "_" + profilePhoto.getOriginalFilename();
+            String newFileUrl = s3Service.upload(profilePhoto, newFileName);
+            member.setProfilePhotoUrl(newFileUrl);
+        }else {
+            // 프로필 사진이 없는 경우 기존 프로필 사진 URL 유지
+            member.setProfilePhotoUrl(existingMember.getProfilePhotoUrl());
+        }
+
+        memberDao.updateProfile(member);
     }
 
 	@Override

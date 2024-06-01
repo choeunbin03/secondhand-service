@@ -21,5 +21,15 @@ public interface ChatService {
 	public String getChatPartnerId(Map<String, Object> params);
 	//채팅 등록
 	public void regiChat(ChatDTO chatDto);
+	//채팅방 존재 확인(채팅방 존재 시 채팅방 번호 return, 없으면 0 return)
+	public int getChatSpceId(Map<String, Object> params);
+	//max chatSpceId 가져오기
+	public int getMaxChatSpceId();
+	//채팅 상대 id 가져오기
+	public String getPartnerId(int bbsId);
+	//채팅방 새로 생성
+	public void createChatRoom(Map<String, Object> params);
+	//채팅방 게시글 id 가져오기
+	public int getBbsId(Map<String, Object> params);//사실 상 chat_spce_id만 사용
 
 }
