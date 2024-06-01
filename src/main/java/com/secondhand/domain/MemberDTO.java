@@ -12,14 +12,12 @@ public class MemberDTO { // 회원가입할 때 여기에 로그인, 비밀번�
     private String rgn;// 지역
     private int rgnScp;// 지역반경
     private String rgnView;//최근 본 상품
-    //ivate String sleList;// 판매목록
-    //private String prchsList;// 구매목록
     private String srchWrd;//검색어목록
     private String bmk;//찜목록
-    //private String fdbk;//후기목록
     private String joinDt;//회원가입날짜
     private String profilePhotoUrl; // 프로필 사진 URL
     private String storeDescription; // 상점 소개글
+    private String mbrEmail; // 회원 이메일
 
     public MemberDTO() {}
     public MemberDTO(String mbrId, String mbrPwd){

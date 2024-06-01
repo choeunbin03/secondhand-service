@@ -28,5 +28,11 @@ public interface MemberService extends Validator{
 	public MemberDTO getUserProfile(String mbrId) throws Exception;
 	//최근방문글 업데이트
 	public void updateRecentView(String userId, String bbsId);
+	// 멤버 찾는 메소드
+	public MemberDTO findMemberById(String userId);
+	// 멤버 수정 메소드
+	public String editMember(MemberDTO beforeEditMember,MemberDTO afterEditMember);
+	
+	
 
 }

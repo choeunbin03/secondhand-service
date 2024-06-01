@@ -188,6 +188,34 @@ public class MemberServiceImpl implements MemberService, Validator { // 회원�
     	
     	memberDao.updateRecentView(params);
     }
+    
+    // 멤버 찾는 메소드
+    @Override
+    public MemberDTO findMemberById(String userId) {
+       return memberDao.findByMbrId(userId);
+    }
+    
+    @Override
+   public String editMember(MemberDTO beforeEditMember,MemberDTO afterEditMember) {
+       
+       if(beforeEditMember.equals(afterEditMember)) { // 변경 사항이 없을 경우
+          return "noChange";
+       }
+       else { // 변경 사항이 있을 경우
+          delete(beforeEditMember);
+          Set<String> errorSet=isValidate(afterEditMember,afterEditMember.getMbrPwd());
+          
+          if(errorSet.contains("noError")) { // 회원 가입 제약 조건 통과 O 경우
+             // 멤버 정보 수정
+             save(afterEditMember);
+             return "changeSuccess";
+          }
+          else { // 회원 가입 제약 조건 통과 X 경우
+             save(beforeEditMember);
+             return "invalidChange";
+          }
+       }
+    }
 
 
 

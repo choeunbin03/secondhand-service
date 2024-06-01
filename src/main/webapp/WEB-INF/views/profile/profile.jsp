@@ -6,6 +6,10 @@
 <head>
     <meta charset="UTF-8">
     <title>프로필페이지</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+    <link rel="stylesheet" href="${path}/resources/css/moduleStyle.css">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
     <link rel="stylesheet" type="text/css" href="/resources/css/profileStyle.css">
     <style>
         body { font-family: Arial, sans-serif; background-color: #f0f0f0; }
