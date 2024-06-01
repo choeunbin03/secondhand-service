@@ -34,10 +34,11 @@
 			, BBS_CN 		AS bbsCn 
 			, CTGRY_FLD 	AS ctgryFld 
 			, SLE_CMPTN_YN 	AS sleCmptnYn 
-			, SLE_ID 		AS sleId 
+			, PRCH_ID 		AS prchId 
 			, ATCH_FILE_NO 	AS atchFileNo 
 			, BMK_CNT 		AS bmkCnt 
-			, SLE_PRC 		AS slePrc 
+			, SLE_PRC 		AS slePrc
+			, FDBK			AS fdbk
 			, RGTR_ID 		AS rgtrId 
 			, RGTR_DT 		AS rgtrDt 
 			, MDFR_DT 		AS mdfrDt 
@@ -52,8 +53,11 @@
 			, SLE_PRC		AS slePrc
 			, RGTR_ID		AS rgtrId
 			, RGTR_DT		AS rgtrDt 
+			, PRCH_ID      AS prchId
+			, FDBK         AS fdbk
+			, FDBK_DT      AS fdbkDt
 		FROM TB_BBS
-		WHERE RGTR_ID = #{mbrId} 
+		WHERE PRCH_ID = #{mbrId} 
 		ORDER BY BBS_ID DESC
 	</select>
 	
@@ -64,8 +68,11 @@
 			, SLE_PRC		AS slePrc
 			, RGTR_ID		AS rgtrId
 			, RGTR_DT		AS rgtrDt 
+			, PRCH_ID      AS prchId
+			, FDBK         AS fdbk
+			, FDBK_DT      AS fdbkDt
 		FROM TB_BBS
-		WHERE SLE_ID = #{mbrId} 
+		WHERE RGTR_ID = #{mbrId} 
 		ORDER BY BBS_ID DESC
 	</select>
 	
@@ -76,7 +83,7 @@
     		, BBS_CN
     		, CTGRY_FLD
     		, SLE_CMPTN_YN
-    		, SLE_ID
+    		, PRCH_ID
     		, ATCH_FILE_NO
     		, BMK_CNT
     		, SLE_PRC
@@ -90,7 +97,7 @@
     		, #{bbsCn}
     		, #{ctgryFld}
     		, #{sleCmptnYn}
-    		, #{sleId}
+    		, #{prchId}
     		, #{atchFileNo}
     		, #{bmkCnt}
     		, #{slePrc}
@@ -115,5 +122,37 @@
 	<delete id="deleteBoard" parameterType="int">
 	    DELETE FROM TB_BBS WHERE BBS_ID = #{bbsId}
 	</delete>
+	
+	<select id="getBbsById" resultType="com.secondhand.domain.BoardDTO" parameterType="int">
+      	SELECT BBS_ID       AS bbsId
+      		, BBS_TTL       AS bbsTtl
+          	,  BBS_CN       AS bbsCn
+          	,  PRCH_ID       AS prchId
+	        ,  ATCH_FILE_NO  AS atchFileNo
+	        ,  SLE_PRC       AS slePrc
+	        ,  RGTR_ID       AS rgtrId
+	        , FDBK          AS fdbk
+	        , FDBK_DT       AS fdbkDt
+       FROM TB_BBS
+       WHERE BBS_ID = #{bbsId}
+   </select>
+   
+   <update id="postReview" parameterType="com.secondhand.domain.BoardDTO">
+       	UPDATE TB_BBS 
+      	SET FDBK = #{fdbk}, FDBK_DT = now()
+       	WHERE BBS_ID = #{bbsId}
+   </update>
+   
+   <update id="sleCmptn" parameterType="HashMap">
+       	UPDATE TB_BBS 
+      	SET SLE_CMPTN_YN = 1, PRCH_ID = #{prchId}
+       	WHERE BBS_ID = #{bbsId}
+   </update>
+   
+   <update id="sleCmptnCancel" parameterType="java.lang.Integer">
+       	UPDATE TB_BBS 
+      	SET SLE_CMPTN_YN = 0, PRCH_ID = null
+       	WHERE BBS_ID = #{bbsId}
+   </update>
 	
 </mapper>

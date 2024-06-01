@@ -18,9 +18,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.secondhand.domain.BoardDTO;
 import com.secondhand.domain.ChatDTO;
 import com.secondhand.domain.ChatRoomDTO;
 import com.secondhand.domain.MemberDTO;
+import com.secondhand.service.BoardService;
 import com.secondhand.service.ChatService;
 import com.secondhand.service.LoginService;
 import com.secondhand.service.MemberService;
@@ -34,10 +36,11 @@ public class ChatController {
 	
 	@Inject
 	private ChatService chatService;
+	@Inject
+	private BoardService boardService;
 	
-
 	@RequestMapping(value="/chatView")
-    public String goChatView(HttpSession session, Model model,  HttpServletRequest request){
+    public ModelAndView goChatView(HttpSession session, Model model,  HttpServletRequest request){
 		//interceptor??
 		List<ChatRoomDTO> chatRoomList = new ArrayList<>();
 		List<ChatDTO> chatContent = new ArrayList<>();
@@ -47,6 +50,7 @@ public class ChatController {
 		int chatSpceId = Integer.parseInt(request.getParameter("chatSpceId"));//
 		String partnerId = null;
 		int bbsId = 0;
+		BoardDTO bbsContent = new BoardDTO();
 		
 		//파라미터 값 생성
 		Map<String, Object> params = new HashMap<>();
@@ -59,11 +63,13 @@ public class ChatController {
 			
 			//채팅방 게시글 id 가져오기
 			bbsId = chatService.getBbsId(params);
+			params.put("bbsId", bbsId);
+			
+			//채팅방 게시글 정보 가져오기
+			bbsContent = boardService.getBbsView(params);
 			
 			//chatRoomList 그 읽음 표시 그거 업데이트~~
-			chatService.updateIdntyYn(params);
-			
-			//채팅 상대방 프로필? 정보 가져오기
+			chatService.updateIdntyYn(params);		
 			
 			//선택된 채팅방의 채팅 내용 가져오기
 			chatContent = chatService.getChat(params);
@@ -72,16 +78,19 @@ public class ChatController {
 		//채팅방 리스트 가져오기
 		chatRoomList = chatService.getchatRoomList(params);		
 		
-		model.addAttribute("mbrId", mbrId);
-		model.addAttribute("partnerId", partnerId);
-		model.addAttribute("chatSpceId", chatSpceId);
-		model.addAttribute("bbsId", bbsId);
-		model.addAttribute("chatRoomList",chatRoomList);
-		model.addAttribute("chatContent",chatContent);
-		
-        return "/chat/chatView";
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("mbrId", mbrId);
+		mav.addObject("partnerId", partnerId);
+		mav.addObject("chatSpceId", chatSpceId);
+		mav.addObject("bbsId", bbsId);
+		mav.addObject("bbsContent", bbsContent);
+		mav.addObject("chatRoomList", chatRoomList);
+		mav.addObject("chatContent", chatContent);
+		mav.setViewName("/chat/chatView");
+		return mav;
+
     }
-	
+/*	
 	@PostMapping("/chatRegi")
 	@ResponseBody
 	public void chatRegi(HttpSession session, Model model,  HttpServletRequest request, ChatDTO chatDto) {
@@ -102,14 +111,14 @@ public class ChatController {
 		
 				
 		//chatDto 객체에 남은 정보 insert
-		chatDto.setSendId(mbrId);
-		chatDto.setRcvId(rcvId);
-		chatDto.setChatId(maxChatId + 1);
+		//chatDto.setSendId(mbrId);
+		//chatDto.setRcvId(rcvId);
+		//chatDto.setChatId(maxChatId + 1);
 		
 		//등록하기~
 		chatService.regiChat(chatDto);
 	}
-	
+*/	
 	@GetMapping("/goChat")
 	public String goChat(HttpSession session, Model model,  HttpServletRequest request) throws Exception{
 		

@@ -69,13 +69,25 @@ public class MemberDAOImpl implements MemberDAO{ //리포지터리
 	
 	@Override
     public List<String> getBMK(String loginId) {
-		List<String> bbsList = sqlSession.selectList(namespace + ".getBMKByMbrId",loginId);
-		System.out.println(bbsList);
-		return Arrays.asList(bbsList.get(0).split(" "));
+		List<String> bmkList = sqlSession.selectList(namespace + ".getBMKByMbrId",loginId);
+		if(bmkList.get(0) == null) {
+			return bmkList;
+		}
+		return Arrays.asList(bmkList.get(0).split(" "));
 			
 		}
     @Override
     public void updateBMK(Map<String, Object> param) {
 		sqlSession.selectList(namespace + ".updateBMKByMbrId",param);			
 	}
+    
+    @Override
+    public void updateProfile(MemberDTO member) throws Exception {
+        sqlSession.update(namespace + ".updateProfile", member);
+    }
+
+    @Override
+    public MemberDTO getUserProfile(String mbrId) throws Exception {
+        return sqlSession.selectOne(namespace + ".getUserProfile", mbrId);
+    }
 }

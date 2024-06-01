@@ -9,8 +9,8 @@
 			<!-- 클릭 시 상세페이지 이동. -->
 				<!-- <a href="/chat/chatRoom?chatSpceId=${chatRoomList.chatSpceId}">	-->
 					<div class="chatRoomList">
-						<!-- <div class="chatRoom-content" onclick='fn_chatView(${chatRoomList.chatSpceId})'>	-->
 						<div class="chatRoom-content" onclick='location.href="/chat/chatView?chatSpceId=${chatRoomList.chatSpceId}"'>
+						<!-- <div class="chatRoom-content" onclick='fn_goChatView(${chatRoomList.chatSpceId})'>	-->
 							<!-- 채팅 상대 프로필(이름) -->
 							<div class="chatRoom-chatPartner">${chatRoomList.chatPartner}</div>
 							<!-- 최근 채팅 정보 -->
@@ -22,7 +22,7 @@
 								<div class="chat-idntyYn">
 									<c:choose>
 										<c:when test='${chatRoomList.chkYn eq 1}'> 
-											<div class="sleCmptnYn-btn">알람 표시</div>
+											<i class="xi-lightbulb xi-2x"></i>
 										</c:when>
 										<c:otherwise></c:otherwise>
 									</c:choose>

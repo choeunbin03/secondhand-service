@@ -2,11 +2,17 @@ package com.secondhand.domain;
 
 import java.util.Date;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ChatDTO {
 	
 	private int chatId; //채팅 id
@@ -15,7 +21,6 @@ public class ChatDTO {
 	private String rcvId; //받는 사람 아이디
 	private String chatCn; //채팅 내용
 	private Date sendDt; //채팅 보낸 일시
-	private int atchFileNo; //첨부파일 번호 구현 가능할지 모르겠음.
 	private int idntyYn; //읽음 여부
 	
 	

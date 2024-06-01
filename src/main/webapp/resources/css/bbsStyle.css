@@ -134,3 +134,30 @@
 	.bbsViewBtnWrap{
 		margin-right:25px;
 	}
+	
+	.action-button, .btn-heart, .btn-chat {
+	    padding: 10px 20px;
+	    background-color: #fafafa;
+	    color: black;
+	    text-decoration: none;
+	    border-radius: 5px;
+	    border: 1px solid #ccc;
+	    transition: background-color 0.3s;
+	    font-family: 'Arial', sans-serif; /* 폰트 변경 */
+	    font-size: 16px; /* 폰트 크기 */
+	    font-weight: bold; /* 폰트 두께 */
+	}
+	
+	.action-button:hover, .btn-heart:hover, .btn-chat:hover {
+	    background-color: #f0f0f0;
+	}
+	
+	.btn-heart {
+	    background-color: #ffcccc;
+	    color: black;
+	}
+	
+	.btn-chat {
+	    background-color: #f06292;
+	    color: black; /* 버튼의 길이 조정을 위해 추가 */
+	}

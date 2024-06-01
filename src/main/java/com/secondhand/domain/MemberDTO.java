@@ -18,6 +18,8 @@ public class MemberDTO { // 회원가입할 때 여기에 로그인, 비밀번�
     private String bmk;//찜목록
     //private String fdbk;//후기목록
     private String joinDt;//회원가입날짜
+    private String profilePhotoUrl; // 프로필 사진 URL
+    private String storeDescription; // 상점 소개글
 
     public MemberDTO() {}
     public MemberDTO(String mbrId, String mbrPwd){

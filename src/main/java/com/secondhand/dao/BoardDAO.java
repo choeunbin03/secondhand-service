@@ -23,4 +23,12 @@ public interface BoardDAO {
 	public void deleteBoard(int bbsId);	
 	//게시글 작성
 	public void bbsRegi(BoardDTO board);
+	//게시글 후기 등록
+	public void postReview(BoardDTO reviewBbs);
+	//게시글 정보 조회
+	public BoardDTO getBbsById(int bbsId);
+	//거래완료 메서드
+	public void sleCmptn(Map<String, Object> param);
+	//거래 취소 메서드
+	public void sleCmptnCancel(int bbsId);
 }

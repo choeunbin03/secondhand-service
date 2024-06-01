@@ -48,4 +48,21 @@
 		WHERE MBR_ID = #{LoginId}
 	</select>
 	
+	<update id="updateProfile" parameterType="com.secondhand.domain.MemberDTO">
+      UPDATE TB_MBR
+      SET
+         PROFILE_PHOTO_URL = #{profilePhotoUrl},
+         STORE_DESCRIPTION = #{storeDescription}
+      WHERE MBR_ID = #{mbrId}
+   </update>
+
+   <select id="getUserProfile" parameterType="string" resultType="com.secondhand.domain.MemberDTO">
+      SELECT
+         MBR_ID AS mbrId,
+         PROFILE_PHOTO_URL AS profilePhotoUrl,
+         STORE_DESCRIPTION AS storeDescription
+      FROM TB_MBR
+      WHERE MBR_ID = #{mbrId}
+   </select>  
+	
 </mapper>

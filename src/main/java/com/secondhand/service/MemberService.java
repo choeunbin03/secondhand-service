@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.validation.Validator;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.secondhand.domain.MemberDTO;
 
@@ -21,5 +22,7 @@ public interface MemberService extends Validator{
 	public boolean isBMK(String s, String bbsId);
 	//찜 추가 및 삭제
 	public void updateBMK(String userId, String bbsId);
+	void updateProfile(MemberDTO member, MultipartFile profilePhoto) throws Exception;
+	MemberDTO getUserProfile(String mbrId) throws Exception;
 
 }

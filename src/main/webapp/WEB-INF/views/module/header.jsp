@@ -60,7 +60,3 @@
 	 
 	</div> <!-- header-content -->
 	 <!-- End Header -->
-	 
-<script>
-
-</script>

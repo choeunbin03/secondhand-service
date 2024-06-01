@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -83,14 +84,10 @@ public class BoardController {
 		List<PageDTO> pageList= new ArrayList<>();
 		// 업 케스팅 예시
 		List<Object> objectBbsList=new ArrayList<>(bbsList); 
-
-		pageList=pageService.makePages(objectBbsList);
-		// 다운 케스팅 예시
-		List<BoardDTO> firstPage=(List<BoardDTO>)(List<?>) pageService.getPage(pageList, 0).getList();
-	
+		// 다운 케스팅 예시	
 		
 		//model.addAttribute("bbsList", bbsList);
-		model.addAttribute("bbsList", firstPage);
+		model.addAttribute("bbsList", bbsList);
 		model.addAttribute("fileList", fileList);
 		return "/board/bbsList";
 	}
@@ -206,5 +203,37 @@ public class BoardController {
 		//찜하기/찜해제
     	return "redirect:/board/bbsView?bbsId="+request.getParameter("bbsId");
     }
-
+  	
+  	//거래완료 메서드
+  	@PostMapping("/sleCmptn")
+  	@ResponseBody
+  	public void sleCmptn(@RequestParam("bbsId") int bbsId, @RequestParam("chatPartnerId") String chatPartnerId,HttpSession session, HttpServletRequest request) {
+  		String mbrId = ((MemberDTO)session.getAttribute("loginMember")).getMbrId();
+  		//chat partnerId도 가져와서
+  		//bbs rgtrId와 다른 id를 mbrID로 넘기기.
+  		
+  		Map<String, Object> param = new HashMap<>();
+  		param.put("bbsId", bbsId);
+  		
+  		BoardDTO bbsContent = boardService.getBbsView(param);
+  		String rgtrId = bbsContent.getRgtrId();
+  		
+  		if(rgtrId == mbrId) {
+  			param.put("prchId", chatPartnerId);
+  		}else {
+  			param.put("prchId", mbrId);
+  		}
+  		
+  		boardService.sleCmptn(param);
+  	}
+  	
+  	//거래 취소 메서드
+  	@PostMapping("/sleCmptnCancel")
+  	@ResponseBody
+  	public void sleCmptnCancel(@RequestParam("bbsId") int bbsId ,HttpSession session, HttpServletRequest request) {
+  		
+  		boardService.sleCmptnCancel(bbsId);
+  	}
+  	
+  	
 }

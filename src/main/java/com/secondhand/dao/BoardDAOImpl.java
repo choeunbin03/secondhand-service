@@ -65,5 +65,25 @@ public class BoardDAOImpl implements BoardDAO{
 	public void deleteBoard(int bbsId) {
 		sqlSession.delete("deleteBoard",bbsId);
 	}
+	
+	@Override
+	public void postReview(BoardDTO reviewBbs) {
+	    sqlSession.update(namespace+".postReview", reviewBbs);
+	}
+	
+	@Override
+	public BoardDTO getBbsById(int bbsId) {
+		return sqlSession.selectOne(namespace + ".getBbsById", bbsId);
+	}
+
+	@Override
+	public void sleCmptn(Map<String, Object> param) {
+		sqlSession.update(namespace+".sleCmptn", param);
+	}
+
+	@Override
+	public void sleCmptnCancel(int bbsId) {
+		sqlSession.update(namespace+".sleCmptnCancel", bbsId);
+	}
 }
 

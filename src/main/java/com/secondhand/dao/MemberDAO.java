@@ -18,4 +18,8 @@ public interface MemberDAO {
 	public List<String> getBMK(String mbrId);
 	//찜 추가 및 삭제
 	public void updateBMK(Map<String, Object> param);
+	
+	public void updateProfile(MemberDTO member) throws Exception;
+	   
+    MemberDTO getUserProfile(String mbrId) throws Exception;
 }

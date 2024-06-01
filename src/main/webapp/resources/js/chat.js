@@ -1,3 +1,4 @@
+/*
 function fn_chatView(chatSpceId)
 {
 	$.ajax({
@@ -39,3 +40,5 @@ function fn_regiChat()
 		}
 	});
 }
+*/
+
