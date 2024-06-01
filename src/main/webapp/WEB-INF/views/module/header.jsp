@@ -40,7 +40,7 @@
 				
 				<!-- 찜 목록 -->
 				<div class="show-heart-list header-element">
-					<a href="/myPage/heartList">찜 목록</a>
+					<a href="/board/bmk">찜 목록</a>
 				</div>
 				
 				<!-- 채팅 목록 -->

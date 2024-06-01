@@ -116,6 +116,7 @@
 
             </div>
         </div>
+        <button type="submit" onclick="fn_goback()">목록</button>
     </div>
 </div>
 
@@ -123,6 +124,11 @@
     $(document).ready(function() {
         $('.img-wrapper').slick();
     });
+    
+    function fn_goback(){
+    	var referrer = document.referrer;
+    	location.href = referrer;
+    }
 </script>
 
 </body>
