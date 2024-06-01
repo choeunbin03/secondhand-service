@@ -8,7 +8,9 @@
     <meta charset="UTF-8">
     <title>게시글 등록</title>
     <link rel="stylesheet" href="${path}/resources/css/bbsStyle.css">
-    
+    <style>
+    	button{margin-right: 5px;}
+    </style>
   
 </head>
 
@@ -53,8 +55,19 @@
                 <label for="slePrc">가격:</label>
                 <form:input path="slePrc" id="slePrc" required="true" type="number" class="form-control" />
             </div>
-            <button type="submit">등록하기</button>
+            <div style="display:flex;">
+            	 <button type="submit">등록하기</button>
+            	<button type="submit" onclick="fn_goback()">취소</button>
+            </div>
+           
         </form:form>
     </div>
+    
+<script>
+	function fn_goback(){
+		var referrer = document.referrer;
+		location.href = referrer;
+	}
+</script>
 </body>
 </html>

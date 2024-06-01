@@ -31,4 +31,8 @@ public interface BoardDAO {
 	public void sleCmptn(Map<String, Object> param);
 	//거래 취소 메서드
 	public void sleCmptnCancel(int bbsId);
+	//찜한 게시물 리스트 가져오기
+    public List<BoardDTO> getBbsListByBMK(String mbrId);
+    //최근 본 게시물 리스트 가져오기
+    public List<BoardDTO> getBbsListByRecentViewed(String mbrId);
 }

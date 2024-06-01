@@ -22,7 +22,11 @@ public interface MemberService extends Validator{
 	public boolean isBMK(String s, String bbsId);
 	//찜 추가 및 삭제
 	public void updateBMK(String userId, String bbsId);
-	void updateProfile(MemberDTO member, MultipartFile profilePhoto) throws Exception;
-	MemberDTO getUserProfile(String mbrId) throws Exception;
+	//프로필 업데이트
+	public void updateProfile(MemberDTO member, MultipartFile profilePhoto) throws Exception;
+	//사용자 프로필 가져오기
+	public MemberDTO getUserProfile(String mbrId) throws Exception;
+	//최근방문글 업데이트
+	public void updateRecentView(String userId, String bbsId);
 
 }

@@ -76,7 +76,7 @@
 											</c:when>
 											<c:otherwise>
 												<div style="display:flex;">
-													<button id="serviceBtn" onclick="fn_adiService(${bbsContent.bbsId}, '${partnerId}')">거래완료취소</button>
+													<button id="sleCmptnCancel" onclick="fn_sleCmptnCancel(${bbsContent.bbsId})">거래완료취소</button>
 													<button id="serviceBtn" onclick="fn_adiService(${bbsContent.bbsId}, '${partnerId}')">후기작성</button>
 												</div>												
 											</c:otherwise>
@@ -342,24 +342,25 @@
 		else if(serviceType == '후기작성'){
 			location.href = "/myPage/writeReview?bbsId="+bbsId;
 		}
-		else if(serviceType == '거래완료취소'){
-			$.ajax({
-				type: "POST",
-				url: "/board/sleCmptnCancel",
-				data: {bbsId: bbsId},
-				success:function(data){
-					$(".bbs-content").load(location.href + " .bbs-content");	//부분 업데데이트
-				},
-				error: function(data){
-					alert("실패");
-					console.log(data);
-				}
-			});
-		}
 		else{
 			alert("이미 후기를 작성하셨습니다.");
 		}
 		
+	}
+	
+	function fn_sleCmptnCancel(bbsId){
+		$.ajax({
+			type: "POST",
+			url: "/board/sleCmptnCancel",
+			data: {bbsId: bbsId},
+			success:function(data){
+				$(".bbs-content").load(location.href + " .bbs-content");	//부분 업데데이트
+			},
+			error: function(data){
+				alert("실패");
+				console.log(data);
+			}
+		});
 	}
 	
 

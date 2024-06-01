@@ -18,10 +18,10 @@
 <script src="${path}/resources/js/board.js" type="text/javascript" defer="defer"></script>
 
 <style type="text/css">
-    .btn {border: 0; background-color: transparent;}
+    .btn {border: 0; background-color: transparent; margin-right: 5px;}
     .bbs-img-files{width: 350px; height: 315px;}
     #img-file{width: 100%; height: 100%;}
-    .bbsViewWrap { margin-top:30px; width: 900px;}
+    .bbsViewWrap { margin-top:30px; width: 900px; display:flex;}
     .bbsViewImgWrap{width: 450px; height: 315px;}
     .img-wrapper{margin-right: 50px;}
     .slick-prev:before, .slick-next:before{color: #c0c0c0;}
@@ -41,11 +41,11 @@
         margin-bottom: 10px;
     }
     .review-form textarea {
-        width: 80%;
+        width: 60%;
         height: 120px;
         margin-bottom: 10px;
     }
-    .review-form .submit-btn {
+    .review-form button {
         padding: 10px 20px;
         background-color: #fafafa;
         color: black;
@@ -91,8 +91,9 @@
                     <form id="reviewForm" action="/myPage/writeReview" method="post">
                    <textarea name="fdbk" placeholder="리뷰를 작성해주세요..."></textarea>
                    <input type="hidden" name="bbsId" value="${reviewBbs.bbsId}"/>
-                   <div>
-                   	<button type="submit" class="submit-btn">리뷰 제출</button>
+                   <div style="display:flex;">
+	                   <button type="submit" class="submit-btn">리뷰 제출</button>
+	                   <button type="submit" onclick="fn_goback()">취소</button>
                    </div>                   
                </form>
                 </div>
@@ -105,6 +106,11 @@
     $(document).ready(function(){
         $('.img-wrapper').slick();
     });
+    
+    function fn_goback(){
+    	var referrer = document.referrer;
+    	location.href = referrer;
+    }
 
 </script>
 

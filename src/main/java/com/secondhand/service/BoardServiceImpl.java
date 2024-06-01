@@ -57,6 +57,17 @@ public class BoardServiceImpl implements BoardService{
 	}
 	
 	@Override
+	public List<BoardDTO>searchBbsListByBMK(String mbrId){
+		return boardDao.getBbsListByBMK(mbrId);
+	}
+	
+	@Override
+	public List<BoardDTO>searchBbsListByRecentViewed(String mbrId){
+		return boardDao.getBbsListByRecentViewed(mbrId);
+		
+	}
+	
+	@Override
     public void deleteBoard(int bbsId) {
         boardDao.deleteBoard(bbsId);
     }

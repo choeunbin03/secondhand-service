@@ -44,8 +44,6 @@ public class BoardController {
 	@Inject
 	private AtchFileService atchFileService;
 	@Inject
-	private PageService pageService;
-	@Inject
 	private MemberService memberService;
 	
 	//혹시라도 콘솔 창에서 값 출력해보고 싶으면 사용하셔도 됩니다~!
@@ -81,12 +79,6 @@ public class BoardController {
 			fileList = atchFileService.getFileThumbNail();
 		}	
 		
-		List<PageDTO> pageList= new ArrayList<>();
-		// 업 케스팅 예시
-		List<Object> objectBbsList=new ArrayList<>(bbsList); 
-		// 다운 케스팅 예시	
-		
-		//model.addAttribute("bbsList", bbsList);
 		model.addAttribute("bbsList", bbsList);
 		model.addAttribute("fileList", fileList);
 		return "/board/bbsList";
@@ -109,6 +101,7 @@ public class BoardController {
 		if(session.getAttribute("loginMember") != null) {
 			String id = ((MemberDTO)session.getAttribute("loginMember")).getMbrId();
 			isbmk = memberService.isBMK(id,Integer.toString(bbsView.getBbsId()));
+			memberService.updateRecentView(id, request.getParameter("bbsId"));
 		}
 		//찜 개수 가져오기
 		
@@ -117,6 +110,7 @@ public class BoardController {
 		model.addAttribute("bbsView", bbsView);
 		model.addAttribute("files", files);
 		model.addAttribute("isBMK", isbmk);
+		model.addAttribute("userinfo", session.getAttribute("loginMember"));
 				
 		return "/board/bbsView";
 	}
@@ -203,6 +197,21 @@ public class BoardController {
 		//찜하기/찜해제
     	return "redirect:/board/bbsView?bbsId="+request.getParameter("bbsId");
     }
+  	
+  	 //찜목록 조회
+  	@RequestMapping(value="/bmk",method=RequestMethod.GET)
+  	public String bmk(HttpSession session, Model model) {
+  		List<BoardDTO>searchResults = boardService.searchBbsListByBMK(((MemberDTO)session.getAttribute("loginMember")).getMbrId());
+  		model.addAttribute("bbsList",searchResults);
+  		return "board/bbsList";
+  	}
+    //최근 게시물 조회
+  	@RequestMapping(value="/recentViewed",method=RequestMethod.GET)
+  	public String recentViewed(HttpSession session, Model model) {
+  		List<BoardDTO>searchResults = boardService.searchBbsListByRecentViewed(((MemberDTO)session.getAttribute("loginMember")).getMbrId());
+  		model.addAttribute("bbsList",searchResults);
+  		return "board/bbsList";
+  	}
   	
   	//거래완료 메서드
   	@PostMapping("/sleCmptn")

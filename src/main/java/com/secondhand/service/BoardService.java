@@ -20,16 +20,20 @@ public interface BoardService {
 	//6. 게시물 추가기능
 	public void bbsRegi(BoardDTO board);
 	//7. 게시글 검색기능
-	public List<BoardDTO>searchBbsListByKeyword(String keyword);		
-	//8. 게시글 삭제기능
+	public List<BoardDTO>searchBbsListByKeyword(String keyword);	
+	//8. 찜목록 조회기능
+	public List<BoardDTO>searchBbsListByBMK(String mbrId);		
+	//9. 최근 본 게시물 조회기능
+	public List<BoardDTO>searchBbsListByRecentViewed(String mbrId);
+	//10. 게시글 삭제기능
 	public void deleteBoard(int bbsId);
-	// 후기 작성할 게시글 가져오기
+	//11. 후기 작성할 게시글 가져오기
 	public BoardDTO getBbsById(int bbsId);
-	// 작성된 후기 게시글에 등록하기
+	//12. 작성된 후기 게시글에 등록하기
 	public void postReview(BoardDTO reviewBbs);
-	//거래완료 메서드
+	//13. 거래완료 메서드
 	public void sleCmptn(Map<String, Object> param);
-	//거래 취소 메서드
+	//14. 거래 취소 메서드
 	public void sleCmptnCancel(int bbsId);
 }
 
