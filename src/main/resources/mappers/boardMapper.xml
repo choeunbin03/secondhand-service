@@ -1,99 +1,167 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
-	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.secondhand.mappers.board">
-	
-	<select id="getBbsList" resultType="com.secondhand.domain.BoardDTO">
-		SELECT BBS_ID		AS bbsId			
-			, BBS_TTL		AS bbsTtl
-			, SLE_CMPTN_YN	AS sleCmptnYn
-			, SLE_PRC		AS slePrc
-			, RGTR_ID		AS rgtrId
-			, RGTR_DT		AS rgtrDt 
-			, ATCH_FILE_NO 	AS atchFileNo
-		FROM TB_BBS
-		ORDER BY BBS_ID DESC
-	</select>
-	
-	<select id="getBbsListByCtgry" resultType="com.secondhand.domain.BoardDTO" parameterType="HashMap">
-		SELECT BBS_ID		AS bbsId			
-			, BBS_TTL		AS bbsTtl
-			, SLE_CMPTN_YN	AS sleCmptnYn
-			, SLE_PRC		AS slePrc
-			, RGTR_ID		AS rgtrId
-			, RGTR_DT		AS rgtrDt 
-			, ATCH_FILE_NO 	AS atchFileNo
-		FROM TB_BBS
-		WHERE CTGRY_FLD = ${ctgryFld}
-		ORDER BY BBS_ID DESC
-	</select>
-	
-	<select id="getPrchBbsList" resultType="com.secondhand.domain.BoardDTO" parameterType="String">
-		SELECT BBS_ID		AS bbsId			
-			, BBS_TTL		AS bbsTtl
-			, SLE_CMPTN_YN	AS sleCmptnYn
-			, SLE_PRC		AS slePrc
-			, RGTR_ID		AS rgtrId
-			, RGTR_DT		AS rgtrDt 
-		FROM TB_BBS
-		WHERE RGTR_ID = #{mbrId}
-		ORDER BY BBS_ID DESC
-	</select>
-	
-	<select id="getSleBbsList" resultType="com.secondhand.domain.BoardDTO" parameterType="String">
-		SELECT BBS_ID		AS bbsId			
-			, BBS_TTL		AS bbsTtl
-			, SLE_CMPTN_YN	AS sleCmptnYn
-			, SLE_PRC		AS slePrc
-			, RGTR_ID		AS rgtrId
-			, RGTR_DT		AS rgtrDt 
-		FROM TB_BBS
-		WHERE SLE_ID = #{mbrId} 
-		ORDER BY BBS_ID DESC
-	</select>
-	
-	<select id="getBbsView" resultType="com.secondhand.domain.BoardDTO" parameterType="HashMap">
-		SELECT BBS_ID		AS bbsId			
-			, BBS_TTL		AS bbsTtl
-			, BBS_CN		AS bbsCn
-			, CTGRY_FLD		AS ctgryFld
-			, SLE_CMPTN_YN	AS sleCmptnYn
-			, SLE_ID		AS sleId
-			, ATCH_FILE_NO 	AS atchFileNo
-			, BMK_CNT		AS bmkCnt
-			, SLE_PRC		AS slePrc
-			, RGTR_ID		AS rgtrId
-			, RGTR_DT		AS rgtrDt
-			, MDFR_DT		AS mdfrDt 
-		FROM TB_BBS
-		WHERE BBS_ID = ${bbsId}
-		ORDER BY BBS_ID DESC
-	</select>
-	
-<insert id="insertBoard" parameterType="com.secondhand.domain.BoardDTO">
-    INSERT INTO TB_BBS (BBS_ID, BBS_TTL, BBS_CN, CTGRY_FLD, SLE_CMPTN_YN, SLE_ID, ATCH_FILE_NO, BMK_CNT, SLE_PRC, RGTR_ID, RGTR_DT, MDFR_DT, MDFR_ID)
-    VALUES (#{bbsId}, #{bbsTtl}, #{bbsCn}, #{ctgryFld}, #{sleCmptnYn}, #{sleId}, #{atchFileNo}, #{bmkCnt}, #{slePrc}, #{rgtrId}, #{rgtrDt}, #{mdfrDt}, #{mdfrId})
-</insert>
+   
+   <select id="getBbsList" resultType="com.secondhand.domain.BoardDTO">
+      SELECT BBS_ID      AS bbsId         
+         , BBS_TTL      AS bbsTtl
+         , SLE_CMPTN_YN   AS sleCmptnYn
+         , SLE_PRC      AS slePrc
+         , RGTR_ID      AS rgtrId
+         , RGTR_DT      AS rgtrDt 
+         , ATCH_FILE_NO    AS atchFileNo
+      FROM TB_BBS
+      ORDER BY BBS_ID DESC
+   </select>
+   
+   <select id="getBbsListByCtgry" resultType="com.secondhand.domain.BoardDTO" parameterType="HashMap">
+      SELECT BBS_ID      AS bbsId         
+         , BBS_TTL      AS bbsTtl
+         , SLE_CMPTN_YN   AS sleCmptnYn
+         , SLE_PRC      AS slePrc
+         , RGTR_ID      AS rgtrId
+         , RGTR_DT      AS rgtrDt 
+         , ATCH_FILE_NO    AS atchFileNo
+      FROM TB_BBS
+      WHERE CTGRY_FLD = ${ctgryFld}
+      ORDER BY BBS_ID DESC
+   </select>
+   
+   <select id="getPrchBbsList" resultType="com.secondhand.domain.BoardDTO" parameterType="String">
+      SELECT BBS_ID      AS bbsId         
+         , BBS_TTL      AS bbsTtl
+         , SLE_CMPTN_YN   AS sleCmptnYn
+         , SLE_PRC      AS slePrc
+         , PRCH_ID      AS prchId
+         , RGTR_ID      AS rgtrId
+         , RGTR_DT      AS rgtrDt 
+         , FDBK         AS fdbk
+         , FDBK_DT      AS fdbkDt
+      FROM TB_BBS
+      WHERE prch_ID = #{mbrId} 
+      ORDER BY BBS_ID DESC
+   </select>
+   
+   <select id="getSleBbsList" resultType="com.secondhand.domain.BoardDTO" parameterType="String">
+      SELECT BBS_ID      AS bbsId         
+         , BBS_TTL      AS bbsTtl
+         , SLE_CMPTN_YN   AS sleCmptnYn
+         , SLE_PRC      AS slePrc
+         , PRCH_ID      AS prchId
+         , RGTR_ID      AS rgtrId
+         , RGTR_DT      AS rgtrDt 
+         , FDBK         AS fdbk
+         , FDBK_DT      AS fdbkDt
+      FROM TB_BBS
+      WHERE RGTR_ID = #{mbrId} 
+      ORDER BY BBS_ID DESC
+   </select>
+   
+   <select id="getBbsView" resultType="com.secondhand.domain.BoardDTO" parameterType="HashMap">
+      SELECT BBS_ID      AS bbsId         
+         , BBS_TTL      AS bbsTtl
+         , BBS_CN      AS bbsCn
+         , CTGRY_FLD      AS ctgryFld
+         , SLE_CMPTN_YN   AS sleCmptnYn
+         , PRCH_ID      AS prchId
+         , ATCH_FILE_NO    AS atchFileNo
+         , BMK_CNT      AS bmkCnt
+         , SLE_PRC      AS slePrc
+         , RGTR_ID      AS rgtrId
+         , RGTR_DT      AS rgtrDt
+         , MDFR_DT      AS mdfrDt 
+      FROM TB_BBS
+      WHERE BBS_ID = ${bbsId}
+      ORDER BY BBS_ID DESC
+   </select>
 
-
-<select id="searchBbsList" resultType="com.secondhand.domain.BoardDTO">
-		SELECT BBS_ID		AS bbsId			
-			, BBS_TTL		AS bbsTtl
-			, SLE_CMPTN_YN	AS sleCmptnYn
-			, SLE_PRC		AS slePrc
-			, RGTR_ID		AS rgtrId
-			, RGTR_DT		AS rgtrDt 
-			, ATCH_FILE_NO 	AS atchFileNo
-		FROM TB_BBS WHERE BBS_TTL LIKE CONCAT('%', #{keyword}, '%') 
-		ORDER BY BBS_ID DESC
-	</select>
-	
-<delete id="deleteBoard" parameterType="int">
-    DELETE FROM TB_BBS WHERE BBS_ID = #{bbsId}
-</delete>
-
-	
-
-	
+   
+   <insert id="bbsRegi" parameterType="com.secondhand.domain.BoardDTO">
+       INSERT INTO TB_BBS (
+          BBS_ID
+          , BBS_TTL
+          , BBS_CN
+          , CTGRY_FLD
+          , SLE_CMPTN_YN
+          , PRCH_ID
+          , ATCH_FILE_NO
+          , BMK_CNT
+          , SLE_PRC
+          , RGTR_ID
+          , RGTR_DT
+          , MDFR_DT
+          , MDFR_ID
+          , FDBK
+          , FDBK_DT)
+       VALUES (
+          #{bbsId}
+          , #{bbsTtl}
+          , #{bbsCn}
+          , #{ctgryFld}
+          , #{sleCmptnYn}
+          , #{prchId}
+          , #{atchFileNo}
+          , #{bmkCnt}
+          , #{slePrc}
+          , #{rgtrId}
+          , #{rgtrDt}
+          , #{mdfrDt}
+          , #{mdfrId}
+          , #{fdbk}
+          , #{fdbkDt})
+   </insert>
+   
+   <select id="searchBbsList" resultType="com.secondhand.domain.BoardDTO">
+      SELECT BBS_ID      AS bbsId         
+         , BBS_TTL      AS bbsTtl
+         , SLE_CMPTN_YN   AS sleCmptnYn
+         , SLE_PRC      AS slePrc
+         , RGTR_ID      AS rgtrId
+         , RGTR_DT      AS rgtrDt 
+         , ATCH_FILE_NO    AS atchFileNo
+      FROM TB_BBS WHERE BBS_TTL LIKE CONCAT('%', #{keyword}, '%') 
+      ORDER BY BBS_ID DESC
+   </select>
+   
+   <update id="updateBoard" parameterType="com.secondhand.domain.BoardDTO">
+    UPDATE TB_BBS
+    SET 
+        BBS_TTL = #{bbsTtl},
+        BBS_CN = #{bbsCn},
+        CTGRY_FLD = #{ctgryFld},
+        ATCH_FILE_NO = #{atchFileNo},
+        SLE_PRC = #{slePrc},
+        MDFR_ID = #{mdfrId},
+        MDFR_DT = #{mdfrDt}
+    WHERE BBS_ID = #{bbsId}
+	</update>
+   
+   
+   <delete id="deleteBoard" parameterType="int">
+       DELETE FROM TB_BBS WHERE BBS_ID = #{bbsId}
+   </delete>
+   
+   <select id="getBbsById" resultType="com.secondhand.domain.BoardDTO" parameterType="int">
+      SELECT BBS_ID       AS bbsId
+         ,  BBS_TTL       AS bbsTtl
+          ,  BBS_CN       AS bbsCn
+          ,  PRCH_ID       AS prchId
+          ,  ATCH_FILE_NO  AS atchFileNo
+          ,  SLE_PRC       AS slePrc
+          ,  RGTR_ID       AS rgtrId
+          , FDBK          AS fdbk
+          , FDBK_DT       AS fdbkDt
+       FROM TB_BBS
+       WHERE BBS_ID = #{bbsId}
+   </select>
+   
+   <update id="postReview" parameterType="com.secondhand.domain.BoardDTO">
+       UPDATE TB_BBS 
+       SET FDBK = #{fdbk}, FDBK_DT = now()
+       WHERE BBS_ID = #{bbsId}
+   </update>
+   
+   
 </mapper>

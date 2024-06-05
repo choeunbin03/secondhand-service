@@ -1,11 +1,13 @@
 package com.secondhand.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.secondhand.dao.BoardDAO;
 import com.secondhand.domain.BoardDTO;
@@ -15,6 +17,9 @@ public class BoardServiceImpl implements BoardService{
 	
 	@Inject
 	private BoardDAO boardDao;
+	
+	private S3Service s3Service;
+	private BoardDTO board;
 
 	@Override
 	public List<BoardDTO> getBbsList() {
@@ -33,7 +38,7 @@ public class BoardServiceImpl implements BoardService{
 		BoardDTO bbsContent = boardDao.getBbsView(param);
 		return bbsContent;
 	}
-
+	
 	@Override
 	public List<BoardDTO> getPrchBbsList(String mbrId) {
 		List<BoardDTO> bbsList = boardDao.getPrchBbsList(mbrId);
@@ -47,16 +52,27 @@ public class BoardServiceImpl implements BoardService{
 	}
 	
 	@Override
-	public void addBoard(BoardDTO board) {
-		boardDao.insertBoard(board);
+	public void bbsRegi(BoardDTO board) {
+		boardDao.bbsRegi(board);
 	}
+	
 	@Override
 	public List<BoardDTO>searchBbsListByKeyword(String keyword){
 		return boardDao.getBbsListByKeyword(keyword);
 	}
-	 @Override
-	    public void deleteBoard(int bbsId) {
-	        boardDao.deleteBoard(bbsId);
-	    }
+	
+	@Override
+    public void deleteBoard(int bbsId) {
+        boardDao.deleteBoard(bbsId);
+    } 
+	@Override
+    public BoardDTO findById(int bbsId) {
+        return boardDao.findById(bbsId);
+    }
+
+    @Override
+    public void updateBoard(BoardDTO board) {
+        boardDao.updateBoard(board);
+    }
 
 }

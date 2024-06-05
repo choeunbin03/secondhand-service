@@ -28,6 +28,11 @@ public class S3Service {
 	@Value("${cloud.aws.s3.bucketName}")
 	private String bucket;
 	
+	@Value("${cloud.aws.s3.profilebucketName}")
+	private String prbucket;
+	
+	
+	
 	private final AmazonS3 amazonS3;
 	private static final String CONTENT_TYPE = "multipart/formed-data";
 
@@ -44,12 +49,37 @@ public class S3Service {
 			// 등록된 객체의 url 반환 (decoder: url 안의 한글or특수문자 깨짐 방지)
 	        return URLDecoder.decode(amazonS3.getUrl(bucket, s3FileName).toString(), "utf-8");
 	    }
+	 
+	 /* 1. 프로필 파일 업로드 */
+	 public String prupload(MultipartFile multipartFile, String s3FileName) throws IOException {
+	    	// 메타데이터 생성
+	        ObjectMetadata objMeta = new ObjectMetadata();
+
+	        objMeta.setContentLength(multipartFile.getInputStream().available());
+	        objMeta.setContentType(CONTENT_TYPE);
+			// putObject(버킷명, 파일명, 파일데이터, 메타데이터)로 S3에 객체 등록
+	        amazonS3.putObject(bucket, s3FileName, multipartFile.getInputStream(), objMeta);
+		       // amazonS3.putObject(new PutObjectRequest(bucket, s3FileName, multipartFile.getInputStream(), objMeta).withCannedAcl(CannedAccessControlList.PublicRead));
+			// 등록된 객체의 url 반환 (decoder: url 안의 한글or특수문자 깨짐 방지)
+	        return URLDecoder.decode(amazonS3.getUrl(prbucket, s3FileName).toString(), "utf-8");
+	    }
 
 	    /* 2. 파일 삭제 */
 	    public void delete (String keyName) {
 	        try {
 	        	// deleteObject(버킷명, 키값)으로 객체 삭제
 	            amazonS3.deleteObject(bucket, keyName);
+	        } catch (AmazonServiceException e) {
+	            log.error(e.toString());
+	        }
+	    }
+	    
+
+	    /* 2. 프로필파일 삭제 */
+	    public void deletepr (String keyName) {
+	        try {
+	        	// deleteObject(버킷명, 키값)으로 객체 삭제
+	            amazonS3.deleteObject(prbucket, keyName);
 	        } catch (AmazonServiceException e) {
 	            log.error(e.toString());
 	        }

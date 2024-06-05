@@ -3,78 +3,94 @@
 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.secondhand.mappers.atchFile">
-
-	<select id="getMaxAtchFileNo" resultType="java.lang.Integer">
-		SELECT IFNULL(MAX(ATCH_FILE_NO), 0) FROM TB_ATCH_FILE
+	<select id="getMaxAtchFileNo" resultType="java.lang.Integer"> 
+		SELECT IFNULL(MAX(ATCH_FILE_NO), 0) FROM TB_ATCH_FILE 
 	</select>
 	
-	<select id="getMaxAtchFileSeq" resultType="java.lang.Integer" parameterType="java.lang.Integer">
-		SELECT IFNULL(MAX(ATCH_FILE_SEQ), 0) FROM TB_ATCH_FILE WHERE ATCH_FILE_NO=#{atchFileNo}
+	<select id="getMaxAtchFileSeq" resultType="java.lang.Integer" parameterType="java.lang.Integer"> 
+		SELECT IFNULL(MAX(ATCH_FILE_SEQ), 0) 
+		FROM TB_ATCH_FILE 
+		WHERE ATCH_FILE_NO=#{atchFileNo} 
 	</select>
 	
-	<insert id="saveInfo" parameterType="HashMap">
-		INSERT INTO TB_ATCH_FILE
-		( 
-			ATCH_FILE_NO,
-			ATCH_FILE_SEQ,
-			ATCH_FILE_PATH,
-			ATCH_FILE_NM,
-			ATCH_FILE_ORG_NM,
-			ATCH_FILE_SZ,
-			RGTR_ID,
-			RGTR_DT,
-			MDFR_ID,
-			MDFR_DT
-		)
-		VALUES(	#{atchFileNo},
-				#{atchFileSeq},
-				#{fileUrl},
-				#{fileNm},
-				#{orgFileNm},
-				0,
-				#{mbrId},
-				now(),
-				#{mbrId},
-				now()
-		)
+	<insert id="saveInfo" parameterType="HashMap"> 
+		INSERT INTO TB_ATCH_FILE 
+			( ATCH_FILE_NO
+			, ATCH_FILE_SEQ
+			, ATCH_FILE_PATH
+			, ATCH_FILE_NM
+			, ATCH_FILE_ORG_NM
+			, ATCH_FILE_SZ
+			, RGTR_ID
+			, RGTR_DT
+			, MDFR_ID
+			, MDFR_DT ) 
+		VALUES( #{atchFileNo}
+			, #{atchFileSeq}
+			, #{fileUrl}
+			, #{fileNm}
+			, #{orgFileNm}
+			, 0
+			, #{mbrId}
+			, now()
+			, #{mbrId}
+			, now() ) 
 	</insert>
 	
-	<select id="getFileList" resultType="com.secondhand.domain.AtchFileDTO">
-		SELECT B.ATCH_FILE_NO AS atchFileNo,
-				B.ATCH_FILE_SEQ AS atchFileSeq,
-				B.ATCH_FILE_PATH AS atchFilePath,
-				B.ATCH_FILE_NM AS atchFileNm,
-				B.ATCH_FILE_ORG_NM AS atchFileOrgNm,
-				B.ATCH_FILE_SZ AS atchFileSz
-		FROM TB_BBS a
-		LEFT JOIN TB_ATCH_FILE B ON A.ATCH_FILE_NO = B.ATCH_FILE_NO
-		ORDER BY A.BBS_ID DESC
+	<select id="getFiles" resultType="com.secondhand.domain.AtchFileDTO" parameterType="HashMap"> 
+		SELECT B.ATCH_FILE_NO 	AS atchFileNo
+			, B.ATCH_FILE_SEQ 	AS atchFileSeq
+			, B.ATCH_FILE_PATH 	AS atchFilePath
+			, B.ATCH_FILE_NM 	AS atchFileNm
+			, B.ATCH_FILE_ORG_NM AS atchFileOrgNm
+			, B.ATCH_FILE_SZ 	AS atchFileSz 
+		FROM TB_BBS a 
+		LEFT JOIN TB_ATCH_FILE B ON A.ATCH_FILE_NO = B.ATCH_FILE_NO 
+		WHERE A.BBS_ID = #{bbsId}
 	</select>
 	
-	<select id="getFileThumbNail" resultType="com.secondhand.domain.AtchFileDTO">
-		SELECT B.ATCH_FILE_NO AS atchFileNo,
-				B.ATCH_FILE_SEQ AS atchFileSeq,
-				B.ATCH_FILE_PATH AS atchFilePath,
-				B.ATCH_FILE_NM AS atchFileNm,
-				B.ATCH_FILE_ORG_NM AS atchFileOrgNm,
-				B.ATCH_FILE_SZ AS atchFileSz
-		FROM TB_BBS a
-		LEFT JOIN TB_ATCH_FILE B ON A.ATCH_FILE_NO = B.ATCH_FILE_NO
-		WHERE B.ATCH_FILE_NO IS NULL OR 1
-		ORDER BY A.BBS_ID DESC
+	<select id="getFileThumbNail" resultType="com.secondhand.domain.AtchFileDTO"> 
+		SELECT B.ATCH_FILE_NO 	AS atchFileNo
+			, B.ATCH_FILE_SEQ 	AS atchFileSeq
+			, B.ATCH_FILE_PATH 	AS atchFilePath
+			, B.ATCH_FILE_NM 	AS atchFileNm
+			, B.ATCH_FILE_ORG_NM AS atchFileOrgNm
+			, B.ATCH_FILE_SZ 	AS atchFileSz 
+		FROM TB_BBS a 
+		LEFT JOIN TB_ATCH_FILE B ON A.ATCH_FILE_NO = B.ATCH_FILE_NO 
+		WHERE B.ATCH_FILE_SEQ IS NULL OR 1 
+		ORDER BY A.BBS_ID DESC 
 	</select>
 	
-	<select id="getFileThumbNailByCtgry" resultType="com.secondhand.domain.AtchFileDTO" parameterType="HashMap">
-		SELECT B.ATCH_FILE_NO AS atchFileNo,
-				B.ATCH_FILE_SEQ AS atchFileSeq,
-				B.ATCH_FILE_PATH AS atchFilePath,
-				B.ATCH_FILE_NM AS atchFileNm,
-				B.ATCH_FILE_ORG_NM AS atchFileOrgNm,
-				B.ATCH_FILE_SZ AS atchFileSz
-		FROM TB_BBS a
-		LEFT JOIN TB_ATCH_FILE B ON A.ATCH_FILE_NO = B.ATCH_FILE_NO
-		WHERE (B.ATCH_FILE_NO IS NULL OR 1) AND a.CTGRY_FLD = #{ctgryFld}
-		ORDER BY A.BBS_ID DESC
+	<select id="getFileThumbNailSrch" resultType="com.secondhand.domain.AtchFileDTO"> 
+	    SELECT B.ATCH_FILE_NO  AS atchFileNo,
+	           B.ATCH_FILE_SEQ AS atchFileSeq,
+	           B.ATCH_FILE_PATH AS atchFilePath,
+	           B.ATCH_FILE_NM  AS atchFileNm,
+	           B.ATCH_FILE_ORG_NM AS atchFileOrgNm,
+	           B.ATCH_FILE_SZ AS atchFileSz 
+	    FROM TB_BBS A 
+	    LEFT JOIN TB_ATCH_FILE B ON A.ATCH_FILE_NO = B.ATCH_FILE_NO 
+	    WHERE (B.ATCH_FILE_SEQ IS NULL OR B.ATCH_FILE_SEQ = 1) 
+	      AND (A.BBS_TTL LIKE CONCAT('%', #{keyword}, '%'))
+	    ORDER BY A.BBS_ID DESC 
 	</select>
 
+	
+	<select id="getFileThumbNailByCtgry" resultType="com.secondhand.domain.AtchFileDTO" parameterType="HashMap"> 
+		SELECT B.ATCH_FILE_NO AS atchFileNo
+			, B.ATCH_FILE_SEQ AS atchFileSeq
+			, B.ATCH_FILE_PATH AS atchFilePath
+			, B.ATCH_FILE_NM AS atchFileNm
+			, B.ATCH_FILE_ORG_NM AS atchFileOrgNm
+			, B.ATCH_FILE_SZ AS atchFileSz 
+		FROM TB_BBS a 
+		LEFT JOIN TB_ATCH_FILE B ON A.ATCH_FILE_NO = B.ATCH_FILE_NO 
+		WHERE (B.ATCH_FILE_NO IS NULL OR 1) AND a.CTGRY_FLD = #{ctgryFld} 
+		ORDER BY A.BBS_ID DESC 
+	</select>
+	
+	
+	
+	
 </mapper>

@@ -35,12 +35,6 @@ public class LoginServiceImpl implements LoginService, Validator{
 //LoginService 메소드
 	@Override
     public MemberDTO login(String loginId, String password) {
-//        return memberDAO.findById(loginId);
-        // ==> MemberDAO의 public Optional<MemberDTO> findByLoginId(String LoginId) 개발하면, 아래로 대체
-
-//        return memberDAO.findById(loginId)
-//                .filter(m -> m.getMbrPwd().equals(password))
-//                .orElse(null);l
         MemberDTO loginMember = memberDAO.findByMbrId(loginId);
 
         if(loginMember == null){

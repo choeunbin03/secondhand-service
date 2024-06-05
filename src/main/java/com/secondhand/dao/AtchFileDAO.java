@@ -14,10 +14,12 @@ public interface AtchFileDAO {
 	public void saveInfo(Map<String, Object> fileObj);
 	
 	//첨부파일 목록 가져오기
-	public List<AtchFileDTO> getFileList();
+	public List<AtchFileDTO> getFiles(Map<String, Object> params);
 	//첨부파일 썸네일 목록 가져오기
 	public List<AtchFileDTO> getFileThumbNail();
 	//첨부파일 썸네일 목록 가져오기(카테고리 선택)
 	public List<AtchFileDTO> getFileThumbNail(Map<String, Object> params);
+	//검색시 첨부파일 썸네일 목록 가져오기
+	public List<AtchFileDTO>getFileThumbNailSrch(String keyword);
 	
 }

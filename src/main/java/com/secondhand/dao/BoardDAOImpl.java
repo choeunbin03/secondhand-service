@@ -1,6 +1,5 @@
 package com.secondhand.dao;
 
-import java.util.HashMap;
 import java.util.List; 
 import java.util.Map;
 
@@ -52,10 +51,9 @@ public class BoardDAOImpl implements BoardDAO{
 		BoardDTO bbsContent = (BoardDTO) sqlSession.selectList(namespace + ".getBbsView", param).get(0);
 		return bbsContent;
 	}
-	
 	@Override
-	public void insertBoard(BoardDTO board) {
-		sqlSession.insert(namespace+".insertBoard",board);
+	public void bbsRegi(BoardDTO board) {
+		sqlSession.insert(namespace+".bbsRegi",board);
 	}
 	
 	@Override
@@ -66,10 +64,17 @@ public class BoardDAOImpl implements BoardDAO{
 	@Override
 	public void deleteBoard(int bbsId) {
 		sqlSession.delete("deleteBoard",bbsId);
-	}
+	} 
+	@Override
+    public BoardDTO findById(int bbsId) {
+        return sqlSession.selectOne(namespace + ".getBbsById", bbsId);
+    }
+	@Override
+    public void updateBoard(BoardDTO board) {
+        sqlSession.update(namespace + ".updateBoard", board);
+    }
 
-
-	   
-
+	
+	 
 }
 

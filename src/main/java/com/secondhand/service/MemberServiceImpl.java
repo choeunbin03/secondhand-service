@@ -4,11 +4,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.secondhand.dao.MemberDAO;
 import com.secondhand.domain.MemberDTO;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -16,6 +22,7 @@ import java.util.Set;
 public class MemberServiceImpl implements MemberService, Validator { // 회원가입 확인용 필터
 
     private final MemberDAO memberDao;
+    private final S3Service s3Service;
     
 //MemberService 메소드
     @Override
@@ -62,6 +69,12 @@ public class MemberServiceImpl implements MemberService, Validator { // 회원�
 	public void save(MemberDTO member) {		
 		memberDao.save(member);
 	}
+	
+	// 회원 탈퇴 메소드
+	@Override
+	public boolean delete(MemberDTO member) {
+		return memberDao.delete(member);
+	}
 
 //Validator 메소드
     @Override
@@ -97,5 +110,66 @@ public class MemberServiceImpl implements MemberService, Validator { // 회원�
             return false;
         }
     }
+    
+//찜 관련 메소드
+    
+    @Override
+    public List<String> getALLBMK(String userId) {
+    	 return memberDao.getBMK(userId);
+    }
+
+    @Override
+    public boolean isBMK(String userId, String bbsId) {
+    	 return getALLBMK(userId).contains(bbsId);
+    }
+    
+    @Override
+    public void updateBMK(String userId, String bbsId) {
+    	Map<String, Object> params = new HashMap<String, Object>();
+		List<String> l =  new ArrayList<String>();
+		l.addAll(getALLBMK(userId));
+		System.out.println(l);
+		System.out.println(1234);
+		System.out.println(l);
+		
+    	if(isBMK(userId,bbsId)){
+    		l.remove(bbsId);
+    	}
+    	else {
+       	 	l.add(bbsId);
+    	}
+    	params.put("NewBMK", String.join(" ",l));
+    	params.put("LoginId", userId);
+    	memberDao.updateBMK(params);
+    }
+    
+
+    @Override
+    public MemberDTO getUserProfile(String mbrId) throws Exception {
+        return memberDao.getUserProfile(mbrId);
+    }
+
+    @Override
+    public void updateProfile(MemberDTO member, MultipartFile profilePhoto) throws Exception {
+        MemberDTO existingMember = memberDao.getUserProfile(member.getMbrId());
+        if (profilePhoto != null && !profilePhoto.isEmpty()) {
+            // 기존 프로필 사진 삭제
+            if (existingMember.getProfilePhotoUrl() != null && !existingMember.getProfilePhotoUrl().isEmpty()) {
+                String existingFileName = existingMember.getProfilePhotoUrl().substring(existingMember.getProfilePhotoUrl().lastIndexOf("/") + 1);
+                s3Service.delete(existingFileName);
+            }
+
+            // 새로운 프로필 사진 업로드
+            String newFileName = member.getMbrId() + "_" + profilePhoto.getOriginalFilename();
+            String newFileUrl = s3Service.upload(profilePhoto, newFileName);
+            member.setProfilePhotoUrl(newFileUrl);
+        }else {
+            // 프로필 사진이 없는 경우 기존 프로필 사진 URL 유지
+            member.setProfilePhotoUrl(existingMember.getProfilePhotoUrl());
+        }
+
+        memberDao.updateProfile(member);
+    }
+
 
 }

@@ -3,6 +3,8 @@ package com.secondhand.service;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.secondhand.domain.BoardDTO;
 
 public interface BoardService {
@@ -17,18 +19,15 @@ public interface BoardService {
 
 	//게시글 상세정보 가져오기
 	public BoardDTO getBbsView(Map<String, Object> param);
-	
-	//게시물 추가기능
-	public void addBoard(BoardDTO board);
-	
-	//게시글 검색기능
-	public List<BoardDTO>searchBbsListByKeyword(String keyword);
-	
-	//게시글 삭제기능
+	public void bbsRegi(BoardDTO board);
+	public List<BoardDTO> searchBbsListByKeyword(String keyword);
+	//게시글 삭제
 	public void deleteBoard(int bbsId);
 	
-	
-	
+	//게시글 정보 가져오기
+	BoardDTO findById(int bbsId);
+    
+    void updateBoard(BoardDTO board) throws Exception;
 
 
 }

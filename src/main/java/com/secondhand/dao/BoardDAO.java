@@ -14,16 +14,16 @@ public interface BoardDAO {
 
 	public List<BoardDTO> getPrchBbsList(String mbrId);
 	public List<BoardDTO> getSleBbsList(String mbrId);
-
-
 	public BoardDTO getBbsView(Map<String, Object> param);
-	
-	void insertBoard(BoardDTO board);
-	
 	//게시물 검색
-	public List<BoardDTO> getBbsListByKeyword(String keyword);
-	
+	public List<BoardDTO> getBbsListByKeyword(String keyword);		
 	//게시글 삭제 
-	public void deleteBoard(int bbsId);
+	public void deleteBoard(int bbsId);	
+	//게시글 작성
+	public void bbsRegi(BoardDTO board);
 	
+	//게시글 정보 불러오기
+	public BoardDTO findById(int bbsId);
+	//게시글 정보 수정
+	public void updateBoard(BoardDTO board);
 }

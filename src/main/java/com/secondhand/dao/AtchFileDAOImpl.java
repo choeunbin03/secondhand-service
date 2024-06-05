@@ -36,8 +36,8 @@ public class AtchFileDAOImpl implements AtchFileDAO{
 	}
 
 	@Override
-	public List<AtchFileDTO> getFileList() {
-		List<AtchFileDTO> result = sqlSession.selectList(namespace + ".getFileList");
+	public List<AtchFileDTO> getFiles(Map<String, Object> params) {
+		List<AtchFileDTO> result = sqlSession.selectList(namespace + ".getFiles", params);
 		return result;
 	}
 
@@ -50,6 +50,12 @@ public class AtchFileDAOImpl implements AtchFileDAO{
 	@Override
 	public List<AtchFileDTO> getFileThumbNail(Map<String, Object> params) {
 		List<AtchFileDTO> result = sqlSession.selectList(namespace + ".getFileThumbNailByCtgry", params);
+		return result;
+	}
+
+	@Override
+	public List<AtchFileDTO> getFileThumbNailSrch(String keyword) {
+		List<AtchFileDTO> result = sqlSession.selectList(namespace+".getFileThumbNailSrch",keyword);
 		return result;
 	}
 	

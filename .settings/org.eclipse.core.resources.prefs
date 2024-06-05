@@ -1,4 +1,2 @@
 eclipse.preferences.version=1
-encoding//src/main/webapp/WEB-INF/views/board/bbsList.jsp=UTF-8
-encoding//src/main/webapp/WEB-INF/views/member/login.jsp=UTF-8
-encoding//src/main/webapp/WEB-INF/views/member/signin.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/views/profile/profile.jsp=UTF-8

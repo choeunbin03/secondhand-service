@@ -25,6 +25,7 @@
 		left: 0;
 		box-sizing: border-box;
 		border-bottom: 1px solid #c0c0c0;
+		z-index:100;
 	}
 	
 	.member-wrapper {
@@ -56,6 +57,7 @@
 	
 	
 	.ctgryBar-wrapper {
+		padding:20px;
 		width:200px;
 		float:left;
 		background-color: white;
@@ -80,13 +82,8 @@
 	}
 	.menu-v1:hover{background-color:#000;}
 	.menu-v1:hover>a{color:white;font-weight:bold;}
-	.menu-v1 .submenu{
-		margin-top:7px;
-		background-color:#fff;
-		display:none;
-	}
 	
-	.ctgryBar-wrapper{padding:20px;}
+	
 	.ctgry-content-container{display:none; }
 	.ctgry-menu-btn{float:right;}
 	
