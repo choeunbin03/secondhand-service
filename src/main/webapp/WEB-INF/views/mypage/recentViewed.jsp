@@ -31,7 +31,8 @@
 	<%@ include file="../module/header.jsp" %>
 	<div class="content">
 		<%@ include file="../module/ctgryBar.jsp" %>
- 	
+ 		
+ 		<h2>최근 본 상품</h2>
 		<div class="bbsContent">
 			<br>		
 			<br>	
@@ -89,18 +90,6 @@
 		
 		</div><!-- //bbs_content -->		
 	</div>
-
-
-<script>
-	//var ctgry = document.querySelector('.menu-v1');
-	//ctgry.addEventListener('click', function(){
-		
-	//	var ctgryVal = ctgry.attr("value");
-	//	location.href = "/board/bbsList?ctgryFld="+ctgryVal;
-		
-	//})
-
-</script>
 
 </body>
 </html>

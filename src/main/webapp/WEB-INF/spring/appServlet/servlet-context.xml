@@ -3,9 +3,11 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:websocket="http://www.springframework.org/schema/websocket"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket.xsd">
 
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
 	
@@ -26,8 +28,40 @@
 	</beans:bean>
 	
 	
+	<websocket:handlers>
+		<websocket:mapping handler="chatHandler" path="/chatHandle" />
+		<websocket:handshake-interceptors>
+	       <beans:bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"/>
+		</websocket:handshake-interceptors>
+	</websocket:handlers>
+    
+   
+	<beans:bean id="chatHandler" class="com.secondhand.controller.ChatHandler"></beans:bean>
+	
+	
+	<interceptors>
+	    <interceptor>
+	        <mapping path="/**"/>         
+	        <exclude-mapping path="/resources/**"/>
+			<exclude-mapping path="/fonts/**"/>
+			<exclude-mapping path="/images/**"/>
+			<exclude-mapping path="/scripts/**"/>
+			<exclude-mapping path="*.jsp"/>
+			<exclude-mapping path="*.js"/>
+			<exclude-mapping path="*.html"/>
+	        <exclude-mapping path="/board/bbsList"/>
+	        <exclude-mapping path="/"/>
+	        <exclude-mapping path="/member/login"/>
+	        <exclude-mapping path="/member/signin"/>
+	        <exclude-mapping path="/board/bbsView"/>
+	        <exclude-mapping path="/member/jusoPopup"/>
+	        <exclude-mapping path="/board/search"/>
+	        <beans:bean id="LoginInterceptor" class="com.secondhand.interceptor.LoginInterceptor"/>
+	    </interceptor>
+	</interceptors>
 		
 	<context:component-scan base-package="com.secondhand.controller" />
+	<context:component-scan base-package="com.secondhand.interceptor" />
 	<context:component-scan base-package="com.secondhand.service" />	
 	<context:component-scan base-package="com.secondhand.dao" />	
 	<context:component-scan base-package="com.secondhand.domain" />

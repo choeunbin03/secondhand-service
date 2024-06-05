@@ -1,6 +1,8 @@
 package com.secondhand.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -14,20 +16,24 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.amazonaws.services.datapipeline.model.Field;
+import com.secondhand.domain.AtchFileDTO;
 import com.secondhand.domain.BoardDTO;
-<<<<<<< Updated upstream
-=======
 import com.secondhand.domain.MemberDTO;
+import com.secondhand.domain.PageDTO;
 import com.secondhand.service.AtchFileService;
->>>>>>> Stashed changes
 import com.secondhand.service.BoardService;
 import com.secondhand.service.MemberService;
+import com.secondhand.service.PageService;
 
 @Controller
 @RequestMapping(value="/board/*")
@@ -35,24 +41,23 @@ public class BoardController {
 	
 	@Inject
 	private BoardService boardService;
-<<<<<<< Updated upstream
-=======
 	@Inject
 	private AtchFileService atchFileService;
 	@Inject
 	private MemberService memberService;
->>>>>>> Stashed changes
 	
 	//혹시라도 콘솔 창에서 값 출력해보고 싶으면 사용하셔도 됩니다~!
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
-	//게시글 리스트 불러오기.(홈 화면)
+	//1. 게시글 리스트 불러오기.(홈 화면)(default 및 카테고리 보기)
 	@RequestMapping(value = "/bbsList", method = RequestMethod.GET)
 	public String bbsList(Locale locale, Model model, HttpSession session, HttpServletRequest request) {
 		//게시글은 사용자의 동네에서 작성된 글이 아니더라도 볼 수 있음.
-		List bbsList = new ArrayList<>();
+		List<BoardDTO> bbsList = new ArrayList<>();
+		List<AtchFileDTO> fileList = new ArrayList<>();
+		
 		try {
-			//혹시 카테고리를 선택한 경우.
+			//카테고리를 선택한 경우.
 			int ctgryFld = Integer.parseInt((String)request.getParameter("ctgryFld"));
 			Map<String, Object> param = new HashMap<>();
 			param.put("ctgryFld", ctgryFld);
@@ -60,88 +65,56 @@ public class BoardController {
 			//카테고리를 선택한 경우 게시글 리스트 가져오기
 			bbsList = boardService.getBbsList(param);
 			
+			//카테고리 선택한 경우 첨부파일 목록 가져오기.
+			fileList = atchFileService.getFileThumbNail(param);
+			
 			//카테고리 필드 값 model에 담기
-			model.addAttribute("ctgryFld", ctgryFld);
-			//카테고리 값 list를 어디다 저장해야될지 모르겠음
+			model.addAttribute("ctgryFld", ctgryFld);		
+			
 		}catch(Exception e) {
 			//카테고리를 선택하지 않은 경우 게시글 리스트 가져오기
 			bbsList = boardService.getBbsList();
-		}		
-				
+			
+			//첨부파일 목록 가져오기.
+			fileList = atchFileService.getFileThumbNail();
+		}	
+		
 		model.addAttribute("bbsList", bbsList);
+		model.addAttribute("fileList", fileList);
 		return "/board/bbsList";
 	}
-	//게시글 상세페이지 불러오기.
+	
+	//2. 게시글 상세페이지 불러오기.
 	@RequestMapping(value = "/bbsView", method = RequestMethod.GET)
-	public String bbs(Locale locale, Model model, HttpSession session, HttpServletRequest request) {
-		Map<String, Object> param = new HashMap<>();
-		boolean isbmk = false;
-		param.put("bbsId", request.getParameter("bbsId"));
-		BoardDTO bbsView = boardService.getBbsView(param);
-<<<<<<< Updated upstream
-		System.out.println("========1111==========");
-		System.out.println(bbsView);
-		System.out.println("========1111==========");
+	public String bbsView(Locale locale, Model model, HttpSession session, HttpServletRequest request) {
 		
-<<<<<<< Updated upstream
-		model.addAttribute("bbsView", bbsView);
-				
-		return "/board/bbsView";
-	}
-=======
-		//이용자 id 가져오기
-		if(session.getAttribute("loginMember") != null) {
-			String id = ((MemberDTO)session.getAttribute("loginMember")).getMbrId();
-=======
+		boolean isbmk = false;
+		Map<String, Object> param = new HashMap<>();
+		param.put("bbsId", request.getParameter("bbsId"));
+		//게시글 정보 가져오기
+		BoardDTO bbsView = boardService.getBbsView(param);
+		
 		//첨부파일 가져오기
 		List<AtchFileDTO> files = atchFileService.getFiles(param);
 		
 		//로그인한 사용자 찜 여부 가져오기
-		System.out.println("12312");
-		if(session.getAttribute("LoginMember") != null) {
-			String id = ((MemberDTO)session.getAttribute("LoginMember")).getMbrId();
->>>>>>> Stashed changes
+		if(session.getAttribute("loginMember") != null) {
+			String id = ((MemberDTO)session.getAttribute("loginMember")).getMbrId();
 			isbmk = memberService.isBMK(id,Integer.toString(bbsView.getBbsId()));
 			memberService.updateRecentView(id, request.getParameter("bbsId"));
-			System.out.println(isbmk);
 		}
-<<<<<<< Updated upstream
-		//첨부파일 가져오기
-		List<AtchFileDTO> files = atchFileService.getFiles(param);
-		//좋아요 체크 여부 및 좋아요 개수 가져오기
-		
-		//채팅 개수 가져오기
-
-=======
-		System.out.println("12312");
 		//찜 개수 가져오기
 		
 		//채팅 개수 가져오기
-
-
->>>>>>> Stashed changes
+		
 		model.addAttribute("bbsView", bbsView);
-		model.addAttribute("isBMK", isbmk);
 		model.addAttribute("files", files);
+		model.addAttribute("isBMK", isbmk);
 		model.addAttribute("userinfo", session.getAttribute("loginMember"));
 				
 		return "/board/bbsView";
 	}
 	
-<<<<<<< Updated upstream
-	//3. 찜목록에 추가/삭제.
-	@RequestMapping(value = "/bbsView", method = RequestMethod.POST)
-    public String addBMK(Locale locale, Model model, HttpSession session, HttpServletRequest request) {
-		if(session.getAttribute("loginMember") != null) {
-			if (request.getParameter("bmk") != null) {
-				String id = ((MemberDTO)session.getAttribute("loginMember")).getMbrId();
-				System.out.println("========1111==========");
-				System.out.println(request.getParameter("bbsId"));
-				System.out.println(id);
-				System.out.println("========1111==========");
-				memberService.updateBMK(id, request.getParameter("bbsId"));
-			}
-=======
 	//게시글 등록 페이지로 이동
 	@RequestMapping(value = "/bbsRegi", method = RequestMethod.GET)
     public String addBoardForm(Model model) {
@@ -155,7 +128,7 @@ public class BoardController {
                            @RequestParam(value = "file", required = false) List<MultipartFile> fileList, 
                            RedirectAttributes redirectAttributes, HttpServletRequest request, HttpSession session) {
     	
-    	MemberDTO member = (MemberDTO) session.getAttribute("LoginMember"); // 세션에서 로그인 멤버 가져오기
+    	MemberDTO member = (MemberDTO) session.getAttribute("loginMember"); // 세션에서 로그인 멤버 가져오기
 		String mbrId = member.getMbrId();// 로그인한 멤버 id가져오기
 		int atchFileNo = 0;
 		
@@ -198,24 +171,10 @@ public class BoardController {
         return "redirect:/board/bbsList";
     }
     
-    //게시글 검색
+  //게시글 검색
   	@RequestMapping(value="/search",method=RequestMethod.GET)
   	public String search(@RequestParam("searchKeyword")String keyword,Model model) {
   		List<BoardDTO>searchResults = boardService.searchBbsListByKeyword(keyword);
-  		model.addAttribute("bbsList",searchResults);
-  		return "board/bbsList";
-  	}
-    //찜목록 조회
-  	@RequestMapping(value="/bmk",method=RequestMethod.GET)
-  	public String bmk(HttpSession session, Model model) {
-  		List<BoardDTO>searchResults = boardService.searchBbsListByBMK(((MemberDTO)session.getAttribute("LoginMember")).getMbrId());
-  		model.addAttribute("bbsList",searchResults);
-  		return "board/bbsList";
-  	}
-    //최근 게시물 조회
-  	@RequestMapping(value="/recentViewed",method=RequestMethod.GET)
-  	public String recentViewed(HttpSession session, Model model) {
-  		List<BoardDTO>searchResults = boardService.searchBbsListByRecentViewed(((MemberDTO)session.getAttribute("LoginMember")).getMbrId());
   		model.addAttribute("bbsList",searchResults);
   		return "board/bbsList";
   	}
@@ -231,21 +190,78 @@ public class BoardController {
   	//찜 목록에 추가/삭제
   	@PostMapping("/addBmk")
   	public String addBMK(Locale locale, Model model, HttpSession session, HttpServletRequest request) {
-  		String id = ((MemberDTO)session.getAttribute("LoginMember")).getMbrId();	
-  		System.out.println("====0=====");
-  		System.out.println(request.getParameter("bbsId"));
-  		System.out.println(id);
-  		System.out.println("====0=====");
-  		if (request.getParameter("bmk") != null) {		
-  	  		System.out.println("updateBMK...");		
+  		String id = ((MemberDTO)session.getAttribute("loginMember")).getMbrId();	
+  		if (request.getParameter("bmk") != null) {				
 			memberService.updateBMK(id, request.getParameter("bbsId"));
->>>>>>> Stashed changes
 		}
 		//찜하기/찜해제
     	return "redirect:/board/bbsView?bbsId="+request.getParameter("bbsId");
     }
-    
-	
+  	
+  	 //찜목록 조회
+  	@RequestMapping(value="/bmk",method=RequestMethod.GET)
+  	public String bmk(HttpSession session, Model model) {
+		List<AtchFileDTO> fileList = new ArrayList<>();
+  		List<BoardDTO>searchResults = boardService.searchBbsListByBMK(((MemberDTO)session.getAttribute("loginMember")).getMbrId());
+		Map<String, Object> param = new HashMap<String, Object>();
+		String bbsIdList = "("+String.join(",",memberService.getALLBMK(((MemberDTO)session.getAttribute("loginMember")).getMbrId()))+")";
+		if(!bbsIdList.equals("()")) {
+			param.put("bbsIdList",bbsIdList);
+			fileList = atchFileService.getFileThumbNailByIdlist(param);
+		}
+		model.addAttribute("bbsList",searchResults);
+		model.addAttribute("fileList", fileList);
+  		return "board/bbsList";
+  	}
+    //최근 게시물 조회
+  	@RequestMapping(value="/recentViewed",method=RequestMethod.GET)
+  	public String recentViewed(HttpSession session, Model model) {
+		List<AtchFileDTO> fileList = new ArrayList<>();
+  		List<BoardDTO>searchResults = boardService.searchBbsListByRecentViewed(((MemberDTO)session.getAttribute("loginMember")).getMbrId());
 
->>>>>>> Stashed changes
+		Map<String, Object> param = new HashMap<String, Object>();
+		String bbsIdList = "("+String.join(",",memberService.getALLRecentView(((MemberDTO)session.getAttribute("loginMember")).getMbrId()))+")";
+		if(!bbsIdList.equals("()")) {
+			param.put("bbsIdList",bbsIdList);
+			fileList = atchFileService.getFileThumbNailByIdlist(param);
+		}
+		Map<String, Object> params = new HashMap<String, Object>();
+		//fileList = atchFileService.getFileThumbNailByIdlist(param);
+		model.addAttribute("bbsList",searchResults);
+		model.addAttribute("fileList", fileList);
+  		return "board/bbsList";
+  	}
+  	
+  	//거래완료 메서드
+  	@PostMapping("/sleCmptn")
+  	@ResponseBody
+  	public void sleCmptn(@RequestParam("bbsId") int bbsId, @RequestParam("chatPartnerId") String chatPartnerId,HttpSession session, HttpServletRequest request) {
+  		String mbrId = ((MemberDTO)session.getAttribute("loginMember")).getMbrId();
+  		//chat partnerId도 가져와서
+  		//bbs rgtrId와 다른 id를 mbrID로 넘기기.
+  		
+  		Map<String, Object> param = new HashMap<>();
+  		param.put("bbsId", bbsId);
+  		
+  		BoardDTO bbsContent = boardService.getBbsView(param);
+  		String rgtrId = bbsContent.getRgtrId();
+  		
+  		if(rgtrId == mbrId) {
+  			param.put("prchId", chatPartnerId);
+  		}else {
+  			param.put("prchId", mbrId);
+  		}
+  		
+  		boardService.sleCmptn(param);
+  	}
+  	
+  	//거래 취소 메서드
+  	@PostMapping("/sleCmptnCancel")
+  	@ResponseBody
+  	public void sleCmptnCancel(@RequestParam("bbsId") int bbsId ,HttpSession session, HttpServletRequest request) {
+  		
+  		boardService.sleCmptnCancel(bbsId);
+  	}
+  	
+  	
 }

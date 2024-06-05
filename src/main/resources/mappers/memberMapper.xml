@@ -8,29 +8,73 @@
 		SELECT	MBR_ID 		AS mbrId,
 				MBR_PWD		AS mbrPwd
 		FROM TB_MBR
-		WHERE MBR_ID = #{LoginId}				
+		WHERE MBR_ID = #{loginId}				
 	</select>
+	
+	<insert id="save" parameterType="com.secondhand.domain.MemberDTO">
+		INSERT INTO tb_mbr
+		( 
+			MBR_ID,
+			MBR_NM,
+			MBR_PWD,
+			RGN,
+			RGN_SCP,
+			JOIN_DT
+		)
+		VALUES(	#{mbrId},
+				#{mbrNm},
+				#{mbrPwd},
+				0,
+				0,
+				now()
+		)
+	</insert>		
+	
+	<delete id="delete" parameterType="com.secondhand.domain.MemberDTO">
+		DELETE 
+		FROM tb_mbr
+		WHERE mbr_id = #{mbrId}
+	</delete>
+	
 	<select id="getBMKByMbrId" resultType = "String" parameterType = "String">
 		SELECT	BMK 		AS BMK
 		FROM TB_MBR
 		WHERE MBR_ID = #{loginId}				
 	</select>
 	
-	<select id="getRecentViewedByMbrId" resultType = "String" parameterType = "String">
+	<select id="updateBMKByMbrId" parameterType = "HashMap">
+		UPDATE TB_MBR 
+		SET BMK = #{NewBMK}
+		WHERE MBR_ID = #{loginId}
+	</select>
+	
+	<update id="updateProfile" parameterType="com.secondhand.domain.MemberDTO">
+      UPDATE TB_MBR
+      SET
+         PROFILE_PHOTO_URL = #{profilePhotoUrl},
+         STORE_DESCRIPTION = #{storeDescription}
+      WHERE MBR_ID = #{mbrId}
+   </update>
+
+   <select id="getUserProfile" parameterType="string" resultType="com.secondhand.domain.MemberDTO">
+      SELECT
+         MBR_ID AS mbrId,
+         PROFILE_PHOTO_URL AS profilePhotoUrl,
+         STORE_DESCRIPTION AS storeDescription
+      FROM TB_MBR
+      WHERE MBR_ID = #{mbrId}
+   </select>  
+   
+   <select id="getRecentViewedByMbrId" resultType = "String" parameterType = "String">
 		SELECT	RCNT_VIEW
 		FROM TB_MBR
 		WHERE MBR_ID = #{loginId}				
-	</select>
-	<select id="updateBMKByMbrId" parameterType = "HashMap">
-		UPDATE TB_MBR 
-		SET BMK = "${NewBMK}"
-		WHERE MBR_ID = ${loginId}
 	</select>
 	
 	<select id="updateRecentView" parameterType = "HashMap">
 		UPDATE TB_MBR 
 		SET RCNT_VIEW = "${NewRecentView}"
-		WHERE MBR_ID = ${loginId}
+		WHERE MBR_ID = #{loginId}
 	</select>
 	
 </mapper>

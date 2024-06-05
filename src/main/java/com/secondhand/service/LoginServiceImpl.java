@@ -61,4 +61,5 @@ public class LoginServiceImpl implements LoginService, Validator{
             errors.rejectValue("password", null, "비밀번호를 입력해주세요.");
         }
     }
+	
 }

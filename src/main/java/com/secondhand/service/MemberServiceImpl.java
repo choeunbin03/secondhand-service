@@ -4,21 +4,27 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.secondhand.dao.MemberDAO;
 import com.secondhand.domain.MemberDTO;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.ArrayList;
 import java.util.Set;
+
+import javax.inject.Inject;
 
 @Service
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService, Validator { // 회원가입 확인용 필터
 
     private final MemberDAO memberDao;
+    @Inject
+    private S3Service s3Service;
     
 //MemberService 메소드
     @Override
@@ -65,6 +71,12 @@ public class MemberServiceImpl implements MemberService, Validator { // 회원�
 	public void save(MemberDTO member) {		
 		memberDao.save(member);
 	}
+	
+	// 회원 탈퇴 메소드
+	@Override
+	public boolean delete(MemberDTO member) {
+		return memberDao.delete(member);
+	}
 
 //Validator 메소드
     @Override
@@ -100,13 +112,19 @@ public class MemberServiceImpl implements MemberService, Validator { // 회원�
             return false;
         }
     }
-//
 
+  //최근본글 조회 관련 메소드
+    @Override
+    public List<String> getALLRecentView(String userId) {
+    	 return memberDao.getALLRecentView(userId);
+    }
+//찜 관련 메소드
+    
     @Override
     public List<String> getALLBMK(String userId) {
-    	
     	 return memberDao.getBMK(userId);
     }
+    
 
     @Override
     public boolean isBMK(String userId, String bbsId) {
@@ -117,11 +135,8 @@ public class MemberServiceImpl implements MemberService, Validator { // 회원�
     public void updateBMK(String userId, String bbsId) {
     	Map<String, Object> params = new HashMap<String, Object>();
 		List<String> l =  new ArrayList<String>();
-		System.out.println(123455);
-		System.out.println(userId);
-		System.out.println(123455);
-		
 		l.addAll(getALLBMK(userId));
+		
     	if(isBMK(userId,bbsId)){
     		l.remove(bbsId);
     	}
@@ -130,11 +145,40 @@ public class MemberServiceImpl implements MemberService, Validator { // 회원�
     	}
     	params.put("NewBMK", String.join(" ",l).trim());
     	params.put("loginId", userId);
-		System.out.println(params);
-    	
     	memberDao.updateBMK(params);
     }
-	public void updateRecentView(String userId, String bbsId) {
+    
+//사용자 프로필 관련
+    @Override
+    public MemberDTO getUserProfile(String mbrId) throws Exception {
+        return memberDao.getUserProfile(mbrId);
+    }
+    
+    @Override
+    public void updateProfile(MemberDTO member, MultipartFile profilePhoto) throws Exception {
+        MemberDTO existingMember = memberDao.getUserProfile(member.getMbrId());
+        if (profilePhoto != null && !profilePhoto.isEmpty()) {
+            // 기존 프로필 사진 삭제
+            if (existingMember.getProfilePhotoUrl() != null && !existingMember.getProfilePhotoUrl().isEmpty()) {
+                String existingFileName = existingMember.getProfilePhotoUrl().substring(existingMember.getProfilePhotoUrl().lastIndexOf("/") + 1);
+                s3Service.delete(existingFileName);
+            }
+
+            // 새로운 프로필 사진 업로드
+            String newFileName = member.getMbrId() + "_" + profilePhoto.getOriginalFilename();
+            String newFileUrl = s3Service.upload(profilePhoto, newFileName);
+            member.setProfilePhotoUrl(newFileUrl);
+        }else {
+            // 프로필 사진이 없는 경우 기존 프로필 사진 URL 유지
+            member.setProfilePhotoUrl(existingMember.getProfilePhotoUrl());
+        }
+
+        memberDao.updateProfile(member);
+    }
+    
+//최근 본 게시물 관련
+    @Override
+    public void updateRecentView(String userId, String bbsId) {
     	Map<String, Object> params = new HashMap<String, Object>();
 		List<String> l =  new ArrayList<String>();
 		l.addAll(memberDao.getRecentViewed(userId));
@@ -150,5 +194,7 @@ public class MemberServiceImpl implements MemberService, Validator { // 회원�
     	
     	memberDao.updateRecentView(params);
     }
+
+
 
 }

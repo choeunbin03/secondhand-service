@@ -27,13 +27,12 @@ public class BoardServiceImpl implements BoardService{
 		List<BoardDTO> bbsList = boardDao.getBbsList(param);
 		return bbsList;
 	}
+	
 	@Override
 	public BoardDTO getBbsView(Map<String, Object> param) {
-		BoardDTO bbs = boardDao.getBbsView(param);
-		return bbs;
+		BoardDTO bbsContent = boardDao.getBbsView(param);
+		return bbsContent;
 	}
-<<<<<<< Updated upstream
-=======
 	
 	@Override
 	public List<BoardDTO> getPrchBbsList(String mbrId) {
@@ -56,17 +55,41 @@ public class BoardServiceImpl implements BoardService{
 	public List<BoardDTO>searchBbsListByKeyword(String keyword){
 		return boardDao.getBbsListByKeyword(keyword);
 	}
+	
+	@Override
 	public List<BoardDTO>searchBbsListByBMK(String mbrId){
 		return boardDao.getBbsListByBMK(mbrId);
 	}
+	
+	@Override
 	public List<BoardDTO>searchBbsListByRecentViewed(String mbrId){
 		return boardDao.getBbsListByRecentViewed(mbrId);
 		
 	}
+	
 	@Override
     public void deleteBoard(int bbsId) {
         boardDao.deleteBoard(bbsId);
     }
->>>>>>> Stashed changes
+	
+	@Override
+	public BoardDTO getBbsById(int bbsId) {
+		return boardDao.getBbsById(bbsId);
+	}
+
+	@Override
+	public void postReview(BoardDTO reviewBbs) {
+		boardDao.postReview(reviewBbs);   
+	}
+
+	@Override
+	public void sleCmptn(Map<String, Object> param) {
+		boardDao.sleCmptn(param);
+	}
+
+	@Override
+	public void sleCmptnCancel(int bbsId) {
+		boardDao.sleCmptnCancel(bbsId);
+	}
 
 }
