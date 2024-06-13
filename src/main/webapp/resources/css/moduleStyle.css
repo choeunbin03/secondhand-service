@@ -19,12 +19,12 @@
 		height: 130px;
 		padding: 30px;
 		display: flex;		
-		background: #fff0f5;
+		background: white;
 		position: fixed;
 		width: 100%;
 		left: 0;
 		box-sizing: border-box;
-		border-bottom: 1px solid #c0c0c0;
+		border-bottom: 1px solid #808080;
 		z-index:100;
 	}
 	

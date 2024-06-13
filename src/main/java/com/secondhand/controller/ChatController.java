@@ -66,7 +66,9 @@ public class ChatController {
 			params.put("bbsId", bbsId);
 			
 			//채팅방 게시글 정보 가져오기
-			bbsContent = boardService.getBbsView(params);
+			if(bbsId != 0) {
+				bbsContent = boardService.getBbsView(params);
+			}			
 			
 			//chatRoomList 그 읽음 표시 그거 업데이트~~
 			chatService.updateIdntyYn(params);		
@@ -133,6 +135,9 @@ public class ChatController {
 		Map<String, Object> param = new HashMap<>();
 		param.put("mbrId", mbrId);
 		param.put("bbsId", bbsId);
+		
+		//채팅방 존재 여부 가져오기. 채팅방 존재하면 1, 존재하지 않으면 0.
+	//	int chatRoomExists = chatService.chatRoomExists(param);
 		
 		//채팅방이 이미 존재하면 chatSpceId > 0, 존재하지 않으면 0
 		int chatSpceId = chatService.getChatSpceId(param);

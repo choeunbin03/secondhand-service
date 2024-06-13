@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>FarmFarm</title>
 	<style type="text/css">
 		.btn {border: 0; background-color: transparent;}
 		.bbs-img-files{width: 200px; height: 180px;}

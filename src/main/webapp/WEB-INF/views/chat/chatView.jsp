@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>FarmFarm</title>
 	<style type="text/css">
 		.content{
 			display: flex;
@@ -47,24 +47,37 @@
 					<input type="hidden" id="partnerId" name="partnerId" value="${partnerId}" class="partnerId">
 					<!-- 채팅 상대 프로필 -->
 					<div class="partner-profile">
-						<div>${partnerId}</div>
+						<c:choose>
+							<c:when test="${empty partnerId}">(알 수 없음)</c:when>
+							<c:otherwise>
+								<a href="/myPage/profile?userId=${partnerId}">${partnerId}</a>
+							</c:otherwise>
+						</c:choose>						
 					</div>
 					
 					<!-- 게시글 정보 -->
 					<div class="bbs-content">
-						<a class="product-item" href="/board/bbsView?bbsId=${bbsContent.bbsId}">
-							<div class="product-item">
-								<div class="product-title">${bbsContent.bbsTtl}</div>
-								<div class="price-wrapper">
-									<c:choose>
-										<c:when test='${bbsContent.sleCmptnYn eq 1}'> <!-- 판매 완료(sleCmptnYn==1) -->
-											<div class="sleCmptnYn-btn">판매완료</div>
-										</c:when>
-									</c:choose>
-									<div class="product-price">&#8361;${bbsContent.slePrc}원</div>
-								</div>	
-							</div>
-						</a>
+						<c:choose>
+							<c:when test="${bbsContent.bbsId ne 0}">
+								<a class="product-item" href="/board/bbsView?bbsId=${bbsContent.bbsId}">
+									<div class="product-item">
+										<div class="product-title">${bbsContent.bbsTtl}</div>
+										<div class="price-wrapper">
+											<c:choose>
+												<c:when test='${bbsContent.sleCmptnYn eq 1}'> <!-- 판매 완료(sleCmptnYn==1) -->
+													<div class="sleCmptnYn-btn">판매완료</div>
+												</c:when>
+											</c:choose>
+											<div class="product-price">&#8361;${bbsContent.slePrc}원</div>
+										</div>	
+									</div>
+								</a>
+							</c:when>
+							<c:otherwise>
+								<h4>삭제된 게시글입니다.</h4>
+							</c:otherwise>
+						</c:choose>
+						
 						<!-- 거래완료 및 후기 작성 버튼 -->
 						<c:choose>
 							<c:when test='${bbsContent.sleCmptnYn eq 1}'> <!-- 판매 완료(sleCmptnYn==1) -->
@@ -134,7 +147,7 @@
 					<div class="chat_input">
 						<!-- <form id="chatFrm">	-->
 						<div id="chatFrm">
-							<input type="hidden" id="chatSpceId" name="chatSpceId" value="${chatContent[0].chatSpceId}">
+							<input type="hidden" id="chatSpceId" name="chatSpceId" value="${chatSpceId}">
 							<input type="hidden" id="bbsId" name="bbsId" value="${bbsId}">
 							<div class="chat_input_area">
 				                <input type="text" id="chatCn" name="chatCn" placeholder="메세지를 입력하세요." class="chat-text" value="">
@@ -185,33 +198,48 @@
 		var arrRefTmp = (referrer||"").split("=");
 		var arrCurrTmp = (curr||"").split("=");
 		
-		var arrRefPath = arrRefTmp[0].split("/");
-		var arrCurrPath = arrCurrTmp[0].split("/");
-		//만약 이전 url이 chat 페이지가 아닌 경우 return.
-		if(arrRefPath[3] != arrCurrPath[3])	return;
-		
-		//이전 chatSpceId와 현재 chatSpceId 비교.
 		var refChatSpceId = arrRefTmp[1];
 		var currChatSpceId = arrCurrTmp[1];	
 		
+		if(currChatSpceId == 0)	return;
+		
+		var arrRefPath = arrRefTmp[0].split("/");
+		var arrCurrPath = arrCurrTmp[0].split("/");
+		//만약 이전 url이 chat 페이지가 아닌 경우 return.
+		
+		if(arrRefPath[3] == arrCurrPath[3])	{
+			if(arrRefTmp[1] == arrCurrTmp[1]) return;
+		}		
+		//이전 chatSpceId와 현재 chatSpceId 비교.
+		
+		
 		//혹시라도 chatSpceId 외의 다른 param이 있을 경우 수행하여 채팅방 번호 가져오기.
-		if((arrRefTmp[1].split("?")).length != 1){
+		/*if((arrRefTmp[1].split("?")).length != 1){
 			var arrRef = arrRefTmp[1].split("?");
 			refChatSpceId = arrRef[0];
 		}
 		if((arrCurrTmp[1].split("?")).length != 1){
 			var arrCurr = arrCurrTmp[1].split("?");
 			currChatSpceId = arrCurr[0];
-		}	
+		}	*/
 		
 		//채팅방 번호가 바뀌지 않은 경우 return.
-		if(refChatSpceId == currChatSpceId)	return;
-		else{ //다른 채팅방에 입장했을 경우 소켓 재연결
+		//if(refChatSpceId == currChatSpceId)	return;
+		//else{ //다른 채팅방에 입장했을 경우 소켓 재연결
+			
+			
 			
 			ws = new WebSocket('ws://localhost:8181/chatHandle?chatSpceId='+currChatSpceId);
 			
 			ws.onopen = function() {
 				console.log('연결 생성');
+				var connectedCnt = sessionStorage.getItem(currChatSpceId);
+				if(connectedCnt == 1){
+					sessionStorage.setItem(currChatSpceId, 2);
+				}
+				else{
+					sessionStorage.setItem(currChatSpceId, 1);
+				}
 			};	
 			
 			ws.onmessage = function(e) {
@@ -227,9 +255,11 @@
 			
 			ws.onerror = function (evt) {
 				console.log(evt.data);
+				var connectedCnt = sessionStorage.getItem(currChatSpceId);
+				sessionStorage.setItem(currChatSpceId, connectedCnt - 1);
 			};
 			
-		}
+		//}
 		
 		
 	}
@@ -247,16 +277,21 @@
 		
 		var chatCn = jsonObj.chatCn;
 		var sendDt = jsonObj.sendDt;
+		var idntyYn = jsonObj.idntyYn;
 		
 		var appendHtml = '<div class="chatPartner-chat chat-part">'
-							+'<div class="additional-info">'											
-								+'<div class="idntyYn">1</div>'									
-								+'<div class="sendDt">'+sendDt+'</div>'
-							+'</div>'										
-							+'<div class="chatBox">'
-								+'<div class="chatCn">'+chatCn+'</div>'
-							+'</div>'										
-						+'</div>'
+							+'<div class="additional-info">';
+							
+		if(idntyYn == 1){
+			appendHtml += '<div class="idntyYn">'+idntyYn+'</div>';
+		}
+		
+		appendHtml += '<div class="sendDt">'+sendDt+'</div>'
+				+'</div>'										
+				+'<div class="chatBox">'
+					+'<div class="chatCn">'+chatCn+'</div>'
+				+'</div>'										
+			+'</div>'
 		
 		
 		$('.chatting-wrapper').append(appendHtml);
@@ -285,22 +320,32 @@
 		let now = new Date();
 		sendDt = dateFormat(now);
 		
+		var chatSpceId = document.getElementById("chatSpceId").value;
+		
 		var chatCn = document.getElementById("chatCn").value;
+		var idntyYn = 1;
+		
+		var connectedCnt = sessionStorage.getItem(chatSpceId);
+		if(connectedCnt == 2)	idntyYn = 0;
 		
 		var appendHtml = '<div class="loginMember-chat chat-part">'
-						+'<div class="additional-info">'											
-							+'<div class="idntyYn">1</div>'									
-							+'<div class="sendDt">'+sendDt+'</div>'
-						+'</div>'										
-						+'<div class="chatBox">'
-							+'<div class="chatCn">'+chatCn+'</div>'
-						+'</div>'										
-					+'</div>'
-
+						+'<div class="additional-info">';
+						
+		if(idntyYn == 1){
+			appendHtml += '<div class="idntyYn">'+idntyYn+'</div>';
+		}	
+		
+		appendHtml += '<div class="sendDt">'+sendDt+'</div>'
+					+'</div>'										
+					+'<div class="chatBox">'
+						+'<div class="chatCn">'+chatCn+'</div>'
+					+'</div>'										
+				+'</div>'
+			
 		
 		$('.chatting-wrapper').append(appendHtml);
 		sendMsg(sendDt);
-		document.getElementById("chatCn").val("");
+		document.querySelector(".chatCn").innerText = "";
 	});
 	
 	function dateFormat(date) {

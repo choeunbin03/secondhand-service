@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>회원 탈퇴</title>
+    <title>FarmFarm</title>
 </head>
 <body>
     <div>
@@ -15,7 +15,7 @@
 		<form action="/member/deleteMember" method="POST" style="display: inline;">
         	<button type="submit">예</button>
     	</form>        
-    	<a href="/board/bbsList" style="display: inline-block;"><button>아니오</button></a>
+    	<a href="/" style="display: inline-block;"><button>아니오</button></a>
     </div>
 </body>
 </html>

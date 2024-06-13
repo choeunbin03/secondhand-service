@@ -6,7 +6,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>게시글 등록</title>
+    <title>FarmFarm</title>
     <link rel="stylesheet" href="${path}/resources/css/bbsStyle.css">
     <style>
     	button{margin-right: 5px;}

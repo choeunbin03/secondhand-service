@@ -70,9 +70,10 @@ public class MemberController{
     public String logout(HttpServletRequest request) {
     	
     	HttpSession session=request.getSession();
-    	session.invalidate();
+    	//session.invalidate();
+    	session.removeAttribute("loginMember");
     	
-    	return "redirect:/board/bbsList";
+    	return "redirect:/";
     }
 
     
@@ -127,7 +128,7 @@ public class MemberController{
     	memberService.delete(deleteMember);
     	session.invalidate();
 
-    	return "redirect:/board/bbsList";
+    	return "redirect:/";
     }
  
     //회원가입 시 동네설정
@@ -140,4 +141,56 @@ public class MemberController{
 	public String jusoPopupPost() throws Exception {
 		return "/member/jusoPopup";
 	}
+    
+// 내 정보 수정(회원 정보 수정)
+    @GetMapping("/editMember")
+    public String editMember(Model model,
+          HttpServletRequest request) {
+       
+       HttpSession session=request.getSession();
+       log.info("로그인된 멤버 정보 = {}", ((MemberDTO)session.getAttribute("loginMember")).getMbrId());
+       MemberDTO editMember=memberService.findMemberById(((MemberDTO)session.getAttribute("loginMember")).getMbrId());
+       
+       model.addAttribute("editMember", editMember);
+       
+       return "/member/editMember";
+    }
+    
+    @PostMapping("/editMember")
+    public String editMember(HttpServletRequest request,
+          @ModelAttribute MemberDTO afterEditMember,
+          Model model) {
+       
+       HttpSession session=request.getSession();
+       MemberDTO beforeEditMember=memberService.findMemberById(((MemberDTO)session.getAttribute("loginMember")).getMbrId());
+       model.addAttribute("editMember",beforeEditMember);
+       
+
+       System.out.println(beforeEditMember.getMbrNm());
+       System.out.println(beforeEditMember.getMbrId());
+       System.out.println(beforeEditMember.getMbrPwd());
+       System.out.println(beforeEditMember.getMbrEmail());
+       System.out.println(beforeEditMember.getRgn());
+
+       System.out.println(afterEditMember.getMbrNm());
+       System.out.println(afterEditMember.getMbrId());
+       System.out.println(afterEditMember.getMbrPwd());
+       System.out.println(afterEditMember.getMbrEmail());
+       System.out.println(afterEditMember.getRgn());
+
+       String editMessage=memberService.editMember(beforeEditMember, afterEditMember);
+       switch(editMessage) {
+          case "noChange":
+             break;
+          case "changeSuccess":
+             break;
+          case "invalidChange":
+             model.addAttribute("invalidChange",true);
+             return "/member/editMember";
+       }
+       
+       session.setAttribute("loginMember", afterEditMember);
+       return "redirect:/";
+    }
+    
 }
