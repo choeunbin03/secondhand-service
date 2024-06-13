@@ -5,7 +5,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<title>내 상점 관리</title>
+<title>FarmFarm</title>
 	
 	<link rel="stylesheet" href="${path}/resources/css/moduleStyle.css">
 	<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">

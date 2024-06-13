@@ -5,7 +5,7 @@
 <!-- Begin Wrapper -->
 	<div class="ctgryBar-wrapper">		
 		<div class="ctgry-menu-control">
-			<button type="button" class="ctgry-menu-btn btn">
+			<button type="button" class="ctgry-menu-btn btn" style="position:fixed; left:150px;">
 				<i class="xi-bars xi-2x"></i>
 			</button>
 			<div class="ctgry-content-container">

@@ -25,15 +25,19 @@ public interface BoardService {
 	public List<BoardDTO>searchBbsListByBMK(String mbrId);		
 	//9. 최근 본 게시물 조회기능
 	public List<BoardDTO>searchBbsListByRecentViewed(String mbrId);
-	//10. 게시글 삭제기능
+	//10. 게시글 정보 가져오기
+	public BoardDTO findById(int bbsId);
+	//11. 게시글 수정기능
+	public void updateBoard(BoardDTO board) throws Exception;
+	//12. 게시글 삭제기능
 	public void deleteBoard(int bbsId);
-	//11. 후기 작성할 게시글 가져오기
+	//13. 후기 작성할 게시글 가져오기
 	public BoardDTO getBbsById(int bbsId);
-	//12. 작성된 후기 게시글에 등록하기
+	//14. 작성된 후기 게시글에 등록하기
 	public void postReview(BoardDTO reviewBbs);
-	//13. 거래완료 메서드
+	//15. 거래완료 메서드
 	public void sleCmptn(Map<String, Object> param);
-	//14. 거래 취소 메서드
+	//16. 거래 취소 메서드
 	public void sleCmptnCancel(int bbsId);
 }
 

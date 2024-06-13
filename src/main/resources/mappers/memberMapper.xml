@@ -6,7 +6,9 @@
 	
 	<select id="findByMbrId" resultType = "com.secondhand.domain.MemberDTO" parameterType = "String">
 		SELECT	MBR_ID 		AS mbrId,
-				MBR_PWD		AS mbrPwd
+				MBR_PWD		AS mbrPwd, 
+				MBR_EMAIL   AS mbrEmail,
+             	RGN         AS rgn
 		FROM TB_MBR
 		WHERE MBR_ID = #{loginId}				
 	</select>
@@ -19,14 +21,16 @@
 			MBR_PWD,
 			RGN,
 			RGN_SCP,
-			JOIN_DT
+			JOIN_DT,
+			MBR_EMAIL
 		)
 		VALUES(	#{mbrId},
 				#{mbrNm},
 				#{mbrPwd},
-				0,
-				0,
-				now()
+				#{rgn},
+				3,
+				now(), 
+				#{mbrEmail}
 		)
 	</insert>		
 	

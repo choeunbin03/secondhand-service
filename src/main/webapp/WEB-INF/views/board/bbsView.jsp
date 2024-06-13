@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>상품 상세</title>
+<title>FarmFarm</title>
 
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
@@ -21,7 +21,7 @@
     .bbsViewWrap {display:flex; flex-wrap: wrap; margin-top:30px; width: 100%; max-width: 1200px; margin: 0 auto;}
     .bbsViewImgWrap {flex: 1; max-width: 50%; padding: 20px; box-sizing: border-box;}
     .bbsViewContentWrap {flex: 1; max-width: 50%; padding: 20px; box-sizing: border-box;}
-    .bbs-img-files {width: 100%; height: auto; margin-bottom: 10px;}
+    .bbs-img-files {width: 450px; height: 350px; margin-bottom: 10px;}
     #img-file {width: 100%; height: auto;}
     .price {font-size: 24px; color: #333; margin: 20px 0;}
     .bbsViewInfo {margin: 20px 0;}
@@ -37,6 +37,16 @@
     .bbsViewBtnWrap .btn-heart:hover {background-color: #ff9999;}
     .bbsViewBtnWrap .btn-chat {background-color: #E6E6FA; color: black;} /* 연한 파랑색 */
     .bbsViewBtnWrap .btn-chat:hover {background-color: #D8BFD8;} /* 호버 시 더 진한 라벤더 색깔 */
+    .back-btn {
+	    position: fixed;
+	    top: 150px;
+	    right: 20px;
+	    border: 1px solid #c0c0c0;
+	    width: 70px;
+	    height: 30px;
+	    border-radius: 10px;
+	    font-weight: 600;
+    }
 </style>
 
 </head>
@@ -79,31 +89,38 @@
                 
                 <!-- 게시글 작성자 -->
                 <div class="bbsViewInfo">
-                    <div class="profile">
-                        작성자: <a href="/myPage/profile?userId=${bbsView.rgtrId}">${bbsView.rgtrId}</a>
-                    </div>
-                    <div class="dateWrap">
+	                <c:choose>
+	                	<c:when test="${not empty bbsView.rgtrId}">		                	 
+		                    <div class="profile">
+		                        작성자: <a href="/myPage/profile?userId=${bbsView.rgtrId}">${bbsView.rgtrId}</a>
+		                    </div>		                
+	                	</c:when>
+	                	<c:otherwise>
+	                		<div class="profile">
+		                        작성자: (알 수 없음)
+		                    </div>
+	                	</c:otherwise>
+	                </c:choose>
+	                <div class="dateWrap">
                         <div class="date">
                             작성일시 | <fmt:formatDate value="${bbsView.rgtrDt}" pattern="yyyy-MM-dd" />
                         </div>
                         <div>
                             수정일시 | <fmt:formatDate value="${bbsView.mdfrDt}" pattern="yyyy-MM-dd" />
                         </div>
-                    </div>
-                </div>
+                    </div>	                
+	            </div>	<!-- bbsViewInfo -->
+                <c:if test="${not empty bbsView.rgtrId}">
+	               
+                </c:if>
+                
                 
                 <div class="bbsViewContent">
                     <p>상품 정보: ${bbsView.bbsCn}</p>
                 </div>
                          
-                <!-- 수정 및 삭제 버튼 -->
-               <c:if test="${bbsView.rgtrId == sessionScope.loginMember.mbrId}">
-                   <div class="action-buttons">
-                       <a href="/board/edit?bbsId=${bbsView.bbsId}" class="action-button">수정</a>
-                       <a href="/board/delete?bbsId=${bbsView.bbsId}" class="action-button" onclick="return confirm('이 게시글을 삭제하시겠습니까?');">삭제</a>
-                   </div>
-               </c:if>
-                   
+                
+        
                 <!-- 찜 및 채팅 버튼 -->
             <!-- 찜 및 채팅 버튼 -->
             <div class="bbsViewBtnWrap">
@@ -111,12 +128,26 @@
                     <input type="hidden" name="bbsId" value="${bbsView.bbsId}" />
                     <input type="submit" name="bmk" value="찜하기" class="btn btn-heart action-button" />
                 </form>
-                <div class="btn btn-chat action-button" onclick="location.href='/chat/goChat?bbsId=${bbsView.bbsId}'">채팅하기</div>
+                
+               	<c:if test="${not empty bbsView.rgtrId}"><!-- 게시글 작성자가 탈퇴하지 않았을 때 경우. -->
+               		<c:choose>
+               			<c:when test="${bbsView.rgtrId == sessionScope.loginMember.mbrId}"><!-- 게시글 작성자가 로그인한 사용자 본인일 경우 -->
+               				<!-- 수정 및 삭제 버튼 -->
+               				<div class="action-buttons">
+		                       <a href="/board/edit?bbsId=${bbsView.bbsId}" class="action-button">수정</a>
+		                       <a href="/board/delete?bbsId=${bbsView.bbsId}" class="action-button" onclick="return confirm('이 게시글을 삭제하시겠습니까?');">삭제</a>
+		                   </div>
+               			</c:when>
+               			<c:otherwise>
+               				<div class="btn btn-chat action-button" onclick="location.href='/chat/goChat?bbsId=${bbsView.bbsId}'">채팅하기</div>
+               			</c:otherwise>
+               		</c:choose>
+               	</c:if>                
             </div>
 
             </div>
         </div>
-        <button type="submit" onclick="fn_goback()">목록</button>
+        <button class="back-btn" onclick="fn_goback()">목록</button>
     </div>
 </div>
 
@@ -127,6 +158,11 @@
     
     function fn_goback(){
     	var referrer = document.referrer;
+    	//이 부분 쿼리 좀 수저해야함 원래,,
+    	var tmpUrl = (referrer||"").split("8181");
+    	if(tmpUrl[1] == '/board/bbsList:'){
+    		location.href = '/';
+    	}
     	location.href = referrer;
     }
 </script>

@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>FarmFarm</title>
 
 	<link rel="stylesheet" href="${path}/resources/css/moduleStyle.css">
 	<link rel="stylesheet" href="${path}/resources/css/bbsStyle.css">

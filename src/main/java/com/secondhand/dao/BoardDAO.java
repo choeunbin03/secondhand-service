@@ -19,6 +19,10 @@ public interface BoardDAO {
 	public List<BoardDTO> getSleBbsList(String mbrId);
 	//게시물 검색
 	public List<BoardDTO> getBbsListByKeyword(String keyword);		
+	//게시글 정보 불러오기
+	public BoardDTO findById(int bbsId);
+	//게시글 정보 수정
+	public void updateBoard(BoardDTO board);
 	//게시글 삭제 
 	public void deleteBoard(int bbsId);	
 	//게시글 작성

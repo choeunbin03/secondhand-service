@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>회원 가입</title>
+    <title>FarmFarm</title>
     <style>
         /* CSS 스타일링은 선택사항입니다. */
         .register-container {
@@ -69,7 +69,8 @@
 	        <br>
 	        <input type="email" id="email" name="email" class="register-input" placeholder="이메일" required>
 	        <br>
-	        <input type="button" name="mbrRoadAddr" id="mbrRoadAddr" value="동네 입력" onclick="goPopup()"class="register-input" style="width: calc(100% - 20px);">
+	        <input type="button" value="동네 입력" onclick="goPopup()"class="register-input" style="width: calc(100% - 20px);">
+	        <input type="text" name="rgn" id="rgn" class="register-input" value="" readonly="readonly">
 	        <br>
 	        <button type="submit" class="register-btn" style="width: calc(100% - 20px);">가입하기</button>
 	    </form>
@@ -90,7 +91,7 @@
 	function jusoCallBack(roadFullAddr,roadAddrPart1,addrDetail,roadAddrPart2,engAddr, jibunAddr, zipNo, admCd, rnMgtSn, bdMgtSn,detBdNmList,bdNm,bdKdcd,siNm,sggNm,emdNm,liNm,rn,udrtYn,buldMnnm,buldSlno,mtYn,lnbrMnnm,lnbrSlno,emdNo){
 			// 팝업페이지에서 주소입력한 정보를 받아서, 현 페이지에 정보를 등록합니다.
 			
-			document.getElementById("mbrRoadAddr").value = roadAddrPart1;
+			document.getElementById("rgn").value = roadAddrPart1;
 			//document.getElementById("mbrAddrDetail").value = addrDetail;
 			//document.getElementById("mbrZipNo").value = zipNo;
 	

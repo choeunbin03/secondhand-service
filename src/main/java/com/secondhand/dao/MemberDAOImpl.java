@@ -82,6 +82,16 @@ public class MemberDAOImpl implements MemberDAO{ //리포지터리
 	}
     
     @Override
+    public List<String> getALLRecentView(String loginId) {
+		List<String> RecentList = sqlSession.selectList(namespace + ".getRecentViewedByMbrId",loginId);
+		if(RecentList.get(0) == null) {
+			return RecentList;
+		}
+		return Arrays.asList(RecentList.get(0).split(" "));
+			
+	}
+    
+    @Override
 	public List<String> getRecentViewed(String loginId) {
 		List<String> bbsList = sqlSession.selectList(namespace + ".getRecentViewedByMbrId", loginId);
 		if(bbsList.get(0) == null) {
