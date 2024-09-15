@@ -136,6 +136,19 @@
 		FROM TB_BBS WHERE BBS_ID IN ${bbsIdList}
 	</select>
 	
+	<update id="updateBoard" parameterType="com.secondhand.domain.BoardDTO">
+	    UPDATE TB_BBS
+	    SET 
+	        BBS_TTL = #{bbsTtl},
+	        BBS_CN = #{bbsCn},
+	        CTGRY_FLD = #{ctgryFld},
+	        ATCH_FILE_NO = #{atchFileNo},
+	        SLE_PRC = #{slePrc},
+	        MDFR_ID = #{mdfrId},
+	        MDFR_DT = #{mdfrDt}
+	    WHERE BBS_ID = #{bbsId}
+	</update>
+	
 	<delete id="deleteBoard" parameterType="int">
 	    DELETE FROM TB_BBS WHERE BBS_ID = #{bbsId}
 	</delete>

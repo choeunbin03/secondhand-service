@@ -128,6 +128,7 @@ html, body{
 		text-align: right;
 		overflow: auto;
 		margin-top: 110px;
+		height: calc(100% - 100px);
 	}
 
 	.chat-part{

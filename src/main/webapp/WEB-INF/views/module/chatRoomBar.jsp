@@ -12,7 +12,15 @@
 						<div class="chatRoom-content" onclick='location.href="/chat/chatView?chatSpceId=${chatRoomList.chatSpceId}"'>
 						<!-- <div class="chatRoom-content" onclick='fn_goChatView(${chatRoomList.chatSpceId})'>	-->
 							<!-- 채팅 상대 프로필(이름) -->
-							<div class="chatRoom-chatPartner">${chatRoomList.chatPartner}</div>
+							<c:choose>
+								<c:when test="${empty chatRoomList.chatPartner}">
+									<div class="chatRoom-chatPartner">(알 수 없음)</div>
+								</c:when>
+								<c:otherwise>
+									<div class="chatRoom-chatPartner">${chatRoomList.chatPartner}</div>
+								</c:otherwise>
+							</c:choose>						
+							
 							<!-- 최근 채팅 정보 -->
 							<div class="chatRoom-detail">
 								<!-- 최근 채팅 내용 -->									

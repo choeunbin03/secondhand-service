@@ -61,7 +61,12 @@ public class ChatDAOImpl implements ChatDAO{
 
 	@Override
 	public int getChatSpceId(Map<String, Object> params) {
-		int chatSpceId = sqlSession.selectOne(namespace + ".getChatSpceId", params);
+		int chatSpceId = 0;
+		try {//채팅방이 존재하지 않으면 NullPointerException
+			chatSpceId = sqlSession.selectOne(namespace + ".getChatSpceId", params);
+		}catch(NullPointerException e) {
+			//채팅방이 존재하지 않을 때 chatSpceId를 할당해서 새로운 채팅방을 생성하는 쿼리를 여기다가 넣을까? 고민
+		}		
 		return chatSpceId;
 	}
 
@@ -86,6 +91,11 @@ public class ChatDAOImpl implements ChatDAO{
 	public int getBbsId(Map<String, Object> params) {
 		int bbsId = sqlSession.selectOne(namespace + ".getBbsId", params);
 		return bbsId;
+	}
+
+	@Override
+	public void deleteBbs(int bbsId) {
+		sqlSession.update(namespace + ".deleteBbs", bbsId);
 	}
 
 

@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
 import javax.websocket.OnMessage;
@@ -116,6 +117,9 @@ public class ChatHandler extends TextWebSocketHandler{
 				}
 			}
 		}
+		
+		//전달할 jsonObject에 idntyYn정보 추가
+		jsonObject.put("idntyYn", idntyYn);
 		
 		//chatDTO에 정보 저장.
 		ChatDTO chatDto = ChatDTO.builder()

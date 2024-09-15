@@ -53,4 +53,15 @@ public class AtchFileDAOImpl implements AtchFileDAO{
 		return result;
 	}
 	
+	@Override
+	public List<AtchFileDTO> getFileThumbNailSrch(String keyword) {
+		List<AtchFileDTO> result = sqlSession.selectList(namespace+".getFileThumbNailSrch",keyword);
+		return result;
+	}
+	
+	@Override
+	public List<AtchFileDTO> getFileThumbNailByIdlist(Map<String, Object> params) {
+		List<AtchFileDTO> result = sqlSession.selectList(namespace + ".getFileThumbNailByIdlist", params);
+		return result;
+	}
 }

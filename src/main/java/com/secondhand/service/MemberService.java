@@ -26,12 +26,19 @@ public interface MemberService extends Validator{
 	public void updateProfile(MemberDTO member, MultipartFile profilePhoto) throws Exception;
 	//사용자 프로필 가져오기
 	public MemberDTO getUserProfile(String mbrId) throws Exception;
+	//최근본글 조회
+	public List<String> getALLRecentView(String s);
 	//최근방문글 업데이트
 	public void updateRecentView(String userId, String bbsId);
 	// 멤버 찾는 메소드
 	public MemberDTO findMemberById(String userId);
 	// 멤버 수정 메소드
 	public String editMember(MemberDTO beforeEditMember,MemberDTO afterEditMember);
+<<<<<<< HEAD
 	// 멤버 수종 메소드
 	public void edit(MemberDTO member);
 }
+=======
+
+}
+>>>>>>> 67c7351913d3d7b685702f20c8a57c2edc988ea0

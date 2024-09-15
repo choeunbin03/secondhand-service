@@ -109,7 +109,7 @@
 	</select>
 	
 	<select id="getMaxChatSpceId" resultType="java.lang.Integer">
-		SELECT IFNULL(MAX(CHAT_SPCE_ID), 0) FROM TB_CHAT
+		SELECT IFNULL(MAX(CHAT_SPCE_ID), 0) FROM TB_CHAT_ROOM
 	</select>
 	
 	<select id="getPartnerId" parameterType="java.lang.Integer" resultType="String">
@@ -135,6 +135,12 @@
 	<select id="getBbsId" parameterType="HashMap" resultType="java.lang.Integer">
 		SELECT BBS_ID	FROM TB_CHAT_ROOM	WHERE CHAT_SPCE_ID = #{chatSpceId}
 	</select>
+	
+	<update id="deleteBbs" parameterType="java.lang.Integer">
+		UPDATE TB_CHAT_ROOM
+		SET BBS_ID = 0
+		WHERE BBS_ID = #{bbsId}
+	</update>
 	
 	
 </mapper>

@@ -19,5 +19,9 @@ public interface AtchFileDAO {
 	public List<AtchFileDTO> getFileThumbNail();
 	//첨부파일 썸네일 목록 가져오기(카테고리 선택)
 	public List<AtchFileDTO> getFileThumbNail(Map<String, Object> params);
+	//검색시 첨부파일 썸네일 목록 가져오기
+	public List<AtchFileDTO>getFileThumbNailSrch(String keyword);
+	//첨부파일 썸네일 목록 가져오기(id로)
+	public List<AtchFileDTO> getFileThumbNailByIdlist(Map<String, Object> params);
 	
 }

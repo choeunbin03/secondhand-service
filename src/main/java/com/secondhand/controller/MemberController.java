@@ -108,9 +108,10 @@ public class MemberController{
     public String logout(HttpServletRequest request) {
     	
     	HttpSession session=request.getSession();
-    	session.invalidate();
+    	//session.invalidate();
+    	session.removeAttribute("loginMember");
     	
-    	return "redirect:/board/bbsList";
+    	return "redirect:/";
     }
     
     // 회원 삭제 관련 메소드
@@ -128,7 +129,7 @@ public class MemberController{
     	memberService.delete(deleteMember);
     	session.invalidate();
 
-    	return "redirect:/board/bbsList";
+    	return "redirect:/";
     }
  
     //회원가입 시 동네설정
@@ -142,7 +143,11 @@ public class MemberController{
 		return "/member/jusoPopup";
 	}
     
+<<<<<<< HEAD
     // 내 정보 수정(회원 정보 수정)
+=======
+// 내 정보 수정(회원 정보 수정)
+>>>>>>> 67c7351913d3d7b685702f20c8a57c2edc988ea0
     @GetMapping("/editMember")
     public String editMember(Model model,
           HttpServletRequest request) {
@@ -165,6 +170,22 @@ public class MemberController{
        MemberDTO beforeEditMember=memberService.findMemberById(((MemberDTO)session.getAttribute("loginMember")).getMbrId());
        model.addAttribute("editMember",beforeEditMember);
        
+<<<<<<< HEAD
+=======
+
+       System.out.println(beforeEditMember.getMbrNm());
+       System.out.println(beforeEditMember.getMbrId());
+       System.out.println(beforeEditMember.getMbrPwd());
+       System.out.println(beforeEditMember.getMbrEmail());
+       System.out.println(beforeEditMember.getRgn());
+
+       System.out.println(afterEditMember.getMbrNm());
+       System.out.println(afterEditMember.getMbrId());
+       System.out.println(afterEditMember.getMbrPwd());
+       System.out.println(afterEditMember.getMbrEmail());
+       System.out.println(afterEditMember.getRgn());
+
+>>>>>>> 67c7351913d3d7b685702f20c8a57c2edc988ea0
        String editMessage=memberService.editMember(beforeEditMember, afterEditMember);
        switch(editMessage) {
           case "noChange":
@@ -179,4 +200,9 @@ public class MemberController{
        session.setAttribute("loginMember", afterEditMember);
        return "redirect:/";
     }
+<<<<<<< HEAD
 }
+=======
+    
+}
+>>>>>>> 67c7351913d3d7b685702f20c8a57c2edc988ea0

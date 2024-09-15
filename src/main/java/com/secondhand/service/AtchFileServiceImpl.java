@@ -97,4 +97,15 @@ public class AtchFileServiceImpl implements AtchFileService{
 		return files;
 	}
 	
+	@Override
+	public List<AtchFileDTO> getFileThumbNailSrch(String keyword) {
+	    List<AtchFileDTO> files = atchFileDao.getFileThumbNailSrch(keyword);
+	    return files;
+	}
+	
+	@Override
+	public List<AtchFileDTO> getFileThumbNailByIdlist(Map<String, Object> params) {
+		List<AtchFileDTO> files = atchFileDao.getFileThumbNailByIdlist(params);
+		return files;
+	}
 }

@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,8 +33,10 @@ import com.secondhand.domain.MemberDTO;
 import com.secondhand.domain.PageDTO;
 import com.secondhand.service.AtchFileService;
 import com.secondhand.service.BoardService;
+import com.secondhand.service.ChatService;
 import com.secondhand.service.MemberService;
 import com.secondhand.service.PageService;
+import com.secondhand.service.S3Service;
 
 @Controller
 @RequestMapping(value="/board/*")
@@ -45,6 +48,10 @@ public class BoardController {
 	private AtchFileService atchFileService;
 	@Inject
 	private MemberService memberService;
+	@Inject
+	private S3Service s3Service;
+	@Inject
+	private ChatService chatService;
 	
 	//혹시라도 콘솔 창에서 값 출력해보고 싶으면 사용하셔도 됩니다~!
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
@@ -168,24 +175,130 @@ public class BoardController {
             logger.error("Failed to bbsRegi board: ", e);
             return "redirect:/board/bbsRegi";
         }
-        return "redirect:/board/bbsList";
+        return "redirect:/";
     }
     
   //게시글 검색
   	@RequestMapping(value="/search",method=RequestMethod.GET)
   	public String search(@RequestParam("searchKeyword")String keyword,Model model) {
-  		List<BoardDTO>searchResults = boardService.searchBbsListByKeyword(keyword);
-  		model.addAttribute("bbsList",searchResults);
-  		return "board/bbsList";
+  		List<BoardDTO> searchResults = boardService.searchBbsListByKeyword(keyword);
+        List<AtchFileDTO> fileList = atchFileService.getFileThumbNailSrch(keyword);
+        model.addAttribute("bbsList", searchResults);
+        model.addAttribute("fileList", fileList);
+        return "board/bbsList";
   	}
   	
   	//게시글 삭제
   	 @RequestMapping(value="/delete", method=RequestMethod.GET)
-  	    public String deleteBoard(@RequestParam("bbsId") int bbsId, RedirectAttributes redirectAttributes) {
-  	        boardService.deleteBoard(bbsId);
-  	        redirectAttributes.addFlashAttribute("msg", "게시글 삭제 성공");
-  	        return "redirect:/board/bbsList";
-  	    }
+  	 public String deleteBoard(@RequestParam("bbsId") int bbsId, RedirectAttributes redirectAttributes) {
+  		 boardService.deleteBoard(bbsId);
+  		 redirectAttributes.addFlashAttribute("msg", "게시글 삭제 성공");
+  		 //chat room table에서 게시글 번호 0으로 업데이트.
+  		 chatService.deleteBbs(bbsId);
+  		 return "redirect:/";
+  	 }
+  	 
+  // 게시글 수정 페이지로 이동
+     @GetMapping("/edit")
+     public String editBoard(@RequestParam("bbsId") int bbsId, Model model) {
+         BoardDTO board = boardService.findById(bbsId);
+         model.addAttribute("board", board);
+         return "board/edit";
+     }
+
+     // 게시글 수정 메소드
+     @PostMapping("/edit")
+     public String updateBoard(@RequestParam("bbsId") int bbsId,
+                               @ModelAttribute("board") BoardDTO board,
+                               BindingResult result,
+                               @RequestParam(value = "file", required = false) List<MultipartFile> fileList,
+                               HttpSession session,
+                               RedirectAttributes redirectAttributes) {
+
+         // 세션에서 현재 로그인한 사용자의 ID 가져오기
+         MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
+         String mbrId = loginMember.getMbrId();
+         Map<String, Object> params = new HashMap<String, Object>();
+         params.put("mbrId", mbrId);
+
+         if (loginMember == null) {
+             System.out.println("로그인되지 않았습니다.");
+             return "redirect:/login"; // 로그인 페이지로 리디렉션
+         }
+
+         // 기존 게시글 조회
+         BoardDTO existingBoard = boardService.findById(bbsId);
+         if (existingBoard == null) {
+             System.out.println("해당 ID에 해당하는 게시글이 없습니다.");
+             return "redirect:/board/bbsList"; // 게시글 목록 페이지로 리디렉션
+         }
+         // 사용자가 입력한 데이터로 기존 데이터 업데이트
+         existingBoard.setBbsTtl(board.getBbsTtl()); // 게시글 제목
+         existingBoard.setBbsCn(board.getBbsCn());   // 게시글 내용
+         existingBoard.setCtgryFld(board.getCtgryFld()); // 카테고리
+         existingBoard.setSlePrc(board.getSlePrc()); // 판매가격      
+         // 수정자 정보와 수정 날짜 업데이트
+         existingBoard.setMdfrId(loginMember.getMbrId());
+         existingBoard.setMdfrDt(new Date());
+
+         // 파일 처리 로직
+         //첨부파일이 들어온 경우
+          //첨부파일의 변경이 있는 경우:1, 첨부파일의 변경이 없는 경우:2 
+         
+         try {
+         	if(fileList != null && !fileList.get(0).isEmpty()) {//첨부파일이 들어온 경우
+         		if(existingBoard.getAtchFileNo()==0) {//기존첨부파일이없는 경우
+         			int atchFileNo = atchFileService.getMaxAtchFileNo() + 1;
+         			params.put("atchFileNo", atchFileNo);
+                     List<Map<String, Object>> filesInfo = atchFileService.submitFiles(fileList);
+                     if (!filesInfo.isEmpty()) {                   
+                         
+                         params.put("filesInfo", filesInfo);
+                         
+                         atchFileService.saveInfo(params);
+                         
+                         int fileNo = Integer.parseInt(filesInfo.get(0).get("atchFileNo").toString());
+                         existingBoard.setAtchFileNo(fileNo);
+                       }
+                     
+         		}
+         		else {//기존 첨부파일이 있는경우
+ 	        			Map<String, Object> param = new HashMap<>();
+ 	        			param.put("bbsID", bbsId);
+ 	        			//첨부파일 가져오기
+ 	        			List<AtchFileDTO> files = atchFileService.getFiles(param);
+ 	        			
+ 	        			for (AtchFileDTO atchFileDTO : files) {
+ 	        				String atchFilePath = atchFileDTO.getAtchFilePath();  // Initialize inside the loop
+ 	        				String objectKey = atchFilePath.substring(atchFilePath.lastIndexOf("/") + 1);
+ 	        				s3Service.delete(objectKey);
+ 	        			}
+ 	        			int atchFileNo =  atchFileService.getMaxAtchFileNo() + 1;
+ 	        			params.put("atchFileNo", atchFileNo);
+ 	                    List<Map<String, Object>> filesInfo = atchFileService.submitFiles(fileList);
+ 	                    if (!filesInfo.isEmpty()) {                   
+ 	                        
+ 	                        params.put("filesInfo", filesInfo);
+ 	                        
+ 	                        atchFileService.saveInfo(params);
+ 	                        
+ 	                        int fileNo = Integer.parseInt(filesInfo.get(0).get("atchFileNo").toString());
+ 	                        existingBoard.setAtchFileNo(fileNo);
+ 	                      }
+         			
+         		}
+         	
+         	}
+             boardService.updateBoard(existingBoard);
+         } catch (Exception e) {
+             e.printStackTrace();
+             redirectAttributes.addFlashAttribute("msg", "게시글 수정 중 오류가 발생했습니다.");
+             return "redirect:/board/bbsList";
+         }
+
+         redirectAttributes.addFlashAttribute("msg", "게시글이 성공적으로 수정되었습니다.");
+         return "redirect:/board/bbsList";
+     }
   	 
   	//찜 목록에 추가/삭제
   	@PostMapping("/addBmk")
@@ -201,15 +314,34 @@ public class BoardController {
   	 //찜목록 조회
   	@RequestMapping(value="/bmk",method=RequestMethod.GET)
   	public String bmk(HttpSession session, Model model) {
+  		List<AtchFileDTO> fileList = new ArrayList<>();
   		List<BoardDTO>searchResults = boardService.searchBbsListByBMK(((MemberDTO)session.getAttribute("loginMember")).getMbrId());
-  		model.addAttribute("bbsList",searchResults);
+		Map<String, Object> param = new HashMap<String, Object>();
+		String bbsIdList = "("+String.join(",",memberService.getALLBMK(((MemberDTO)session.getAttribute("loginMember")).getMbrId()))+")";
+		if(!bbsIdList.equals("()")) {
+			param.put("bbsIdList",bbsIdList);
+			fileList = atchFileService.getFileThumbNailByIdlist(param);
+		}
+		model.addAttribute("bbsList",searchResults);
+		model.addAttribute("fileList", fileList);
   		return "board/bbsList";
   	}
     //최근 게시물 조회
   	@RequestMapping(value="/recentViewed",method=RequestMethod.GET)
   	public String recentViewed(HttpSession session, Model model) {
+  		List<AtchFileDTO> fileList = new ArrayList<>();
   		List<BoardDTO>searchResults = boardService.searchBbsListByRecentViewed(((MemberDTO)session.getAttribute("loginMember")).getMbrId());
-  		model.addAttribute("bbsList",searchResults);
+
+		Map<String, Object> param = new HashMap<String, Object>();
+		String bbsIdList = "("+String.join(",",memberService.getALLRecentView(((MemberDTO)session.getAttribute("loginMember")).getMbrId()))+")";
+		if(!bbsIdList.equals("()")) {
+			param.put("bbsIdList",bbsIdList);
+			fileList = atchFileService.getFileThumbNailByIdlist(param);
+		}
+		Map<String, Object> params = new HashMap<String, Object>();
+		//fileList = atchFileService.getFileThumbNailByIdlist(param);
+		model.addAttribute("bbsList",searchResults);
+		model.addAttribute("fileList", fileList);
   		return "board/bbsList";
   	}
   	

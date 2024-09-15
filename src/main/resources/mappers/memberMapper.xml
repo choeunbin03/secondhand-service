@@ -5,6 +5,7 @@
 <mapper namespace="com.secondhand.mappers.member">
 	
 	<select id="findByMbrId" resultType = "com.secondhand.domain.MemberDTO" parameterType = "String">
+<<<<<<< HEAD
        SELECT   MBR_NM      AS mbrNm,
              MBR_ID       AS mbrId,
              MBR_PWD      AS mbrPwd,
@@ -34,6 +35,36 @@
             #{mbrEmail}
       )
    </insert>		
+=======
+		SELECT	MBR_ID 		AS mbrId,
+				MBR_PWD		AS mbrPwd, 
+				MBR_EMAIL   AS mbrEmail,
+             	RGN         AS rgn
+		FROM TB_MBR
+		WHERE MBR_ID = #{loginId}				
+	</select>
+	
+	<insert id="save" parameterType="com.secondhand.domain.MemberDTO">
+		INSERT INTO tb_mbr
+		( 
+			MBR_ID,
+			MBR_NM,
+			MBR_PWD,
+			RGN,
+			RGN_SCP,
+			JOIN_DT,
+			MBR_EMAIL
+		)
+		VALUES(	#{mbrId},
+				#{mbrNm},
+				#{mbrPwd},
+				#{rgn},
+				3,
+				now(), 
+				#{mbrEmail}
+		)
+	</insert>		
+>>>>>>> 67c7351913d3d7b685702f20c8a57c2edc988ea0
 	
 	<delete id="delete" parameterType="com.secondhand.domain.MemberDTO">
 		DELETE 

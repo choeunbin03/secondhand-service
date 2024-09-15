@@ -1,7 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-
+<style>
+	.logo-wrapper {
+		height: 100px;
+		box-sizing: border-box;
+	}
+	
+	.logo-text {
+		font-family: fantasy;
+		font-size: 40px;
+		margin-top: 50px;
+		color: black;
+		padding: 10px;
+	}
+</style>
 
 <!-- Begin Wrapper -->
 	<div class="header-content">
@@ -9,7 +22,7 @@
 		<!-- Begin Header -->
 		<div class="header-wrapper">
 		
-			<div class="member-wrapper">
+			<div class="member-wrapper">				
 				<%
 					if(session.getAttribute("loginMember")==null){
 						out.println("<a href='/member/login'>로그인/회원가입</a>");
@@ -17,13 +30,25 @@
 						out.println("<a href='/member/logout'>로그아웃</a>");
 					}
 				%>
-				
+				<!-- <c:choose>
+         			<c:when test="${not empty sessionScope.loginMember.mbrId}">
+         				<a href='/member/logout'>로그아웃</a>
+         			</c:when>
+         			<c:otherwise>
+         				<a href='/member/login'>로그인/회원가입</a>
+         			</c:otherwise>
+         		</c:choose>
+				-->
 			</div>
 			
 			<div class="header-menu-block">
 				<!-- 홈화면(로고) -->
 				<div class="flex-center logo-wrapper header-element">
-					<a href="/board/bbsList"><span class="logo-text">중고게시판</span></a>
+					<a href="/">
+						<div class="flex-center logo-wrapper">
+							<span class="logo-text">FarmFarm</span>
+						</div>
+					</a>
 				</div>
 				
 				<!-- 검색 -->

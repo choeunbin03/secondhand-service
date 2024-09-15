@@ -148,6 +148,6 @@ public class MypageController{
 	     log.info("후기 등록 bbsId = {}, 리뷰내용 = {}", reviewBbs.getBbsId(), reviewBbs.getFdbk());
 	      
 	      boardService.postReview(reviewBbs); // 변경된 게시글 객체 정보 SQL에 저장   
-	      return "redirect:/board/bbsList"; // 홈 화면 리다이렉트
+	      return "redirect:/"; // 홈 화면 리다이렉트
 	  }
 }

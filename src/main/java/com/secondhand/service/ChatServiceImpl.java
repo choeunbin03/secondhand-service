@@ -56,10 +56,15 @@ public class ChatServiceImpl implements ChatService{
 	public void regiChat(ChatDTO chatDto) {
 		chatDao.regiChat(chatDto);
 	}
+	
+/*	@Override
+	public int chatRoomExists(Map<String, Object> params) {
+		int result = chatDao.
+	}*/
 
 	@Override
 	public int getChatSpceId(Map<String, Object> params) {
-		int chatSpceId = getChatSpceId(params);
+		int chatSpceId = chatDao.getChatSpceId(params);
 		return chatSpceId;
 	}
 
@@ -85,6 +90,13 @@ public class ChatServiceImpl implements ChatService{
 		int bbsId = chatDao.getBbsId(params);
 		return bbsId;
 	}
+
+	@Override
+	public void deleteBbs(int bbsId) {
+		chatDao.deleteBbs(bbsId);
+	}
+
+	
 
 	
 

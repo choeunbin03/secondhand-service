@@ -58,7 +58,7 @@
 			, B.ATCH_FILE_SZ 	AS atchFileSz 
 		FROM TB_BBS a 
 		LEFT JOIN TB_ATCH_FILE B ON A.ATCH_FILE_NO = B.ATCH_FILE_NO 
-		WHERE B.ATCH_FILE_SEQ IS NULL OR 1 
+		WHERE B.ATCH_FILE_SEQ IS NULL OR B.ATCH_FILE_SEQ = 1 
 		ORDER BY A.BBS_ID DESC 
 	</select>
 	
@@ -73,6 +73,32 @@
 		LEFT JOIN TB_ATCH_FILE B ON A.ATCH_FILE_NO = B.ATCH_FILE_NO 
 		WHERE (B.ATCH_FILE_NO IS NULL OR 1) AND a.CTGRY_FLD = #{ctgryFld} 
 		ORDER BY A.BBS_ID DESC 
+	</select>
+	
+	<select id="getFileThumbNailSrch" resultType="com.secondhand.domain.AtchFileDTO"> 
+	    SELECT B.ATCH_FILE_NO  AS atchFileNo,
+	           B.ATCH_FILE_SEQ AS atchFileSeq,
+	           B.ATCH_FILE_PATH AS atchFilePath,
+	           B.ATCH_FILE_NM  AS atchFileNm,
+	           B.ATCH_FILE_ORG_NM AS atchFileOrgNm,
+	           B.ATCH_FILE_SZ AS atchFileSz 
+	    FROM TB_BBS A 
+	    LEFT JOIN TB_ATCH_FILE B ON A.ATCH_FILE_NO = B.ATCH_FILE_NO 
+	    WHERE (B.ATCH_FILE_SEQ IS NULL OR B.ATCH_FILE_SEQ = 1) 
+	      AND (A.BBS_TTL LIKE CONCAT('%', #{keyword}, '%'))
+	    ORDER BY A.BBS_ID DESC 
+	</select>
+	
+	<select id="getFileThumbNailByIdlist" resultType="com.secondhand.domain.AtchFileDTO" parameterType="HashMap"> 
+		SELECT B.ATCH_FILE_NO AS atchFileNo
+			, B.ATCH_FILE_SEQ AS atchFileSeq
+			, B.ATCH_FILE_PATH AS atchFilePath
+			, B.ATCH_FILE_NM AS atchFileNm
+			, B.ATCH_FILE_ORG_NM AS atchFileOrgNm
+			, B.ATCH_FILE_SZ AS atchFileSz 
+		FROM TB_BBS a 
+		LEFT JOIN TB_ATCH_FILE B ON A.ATCH_FILE_NO = B.ATCH_FILE_NO 
+		WHERE (B.ATCH_FILE_NO IS NULL OR 1) AND a.BBS_ID IN ${bbsIdList}
 	</select>
 	
 </mapper>

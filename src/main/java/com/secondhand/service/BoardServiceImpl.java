@@ -16,6 +16,8 @@ public class BoardServiceImpl implements BoardService{
 	
 	@Inject
 	private BoardDAO boardDao;
+	private S3Service s3Service;
+	private BoardDTO board;
 
 	@Override
 	public List<BoardDTO> getBbsList() {
@@ -67,6 +69,16 @@ public class BoardServiceImpl implements BoardService{
 		return boardDao.getBbsListByRecentViewed(mbrId);
 		
 	}
+	
+	@Override
+    public BoardDTO findById(int bbsId) {
+        return boardDao.findById(bbsId);
+    }
+
+    @Override
+    public void updateBoard(BoardDTO board) {
+        boardDao.updateBoard(board);
+    }
 	
 	@Override
     public void deleteBoard(int bbsId) {

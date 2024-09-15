@@ -66,6 +66,15 @@ public class BoardDAOImpl implements BoardDAO{
     }
 	
 	@Override
+    public BoardDTO findById(int bbsId) {
+        return sqlSession.selectOne(namespace + ".getBbsById", bbsId);
+    }
+	@Override
+    public void updateBoard(BoardDTO board) {
+        sqlSession.update(namespace + ".updateBoard", board);
+    }
+	
+	@Override
 	public void deleteBoard(int bbsId) {
 		sqlSession.delete("deleteBoard",bbsId);
 	}
