@@ -1,5 +1,7 @@
+
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <html>
 <html lang="en" xmlns:c="http://java.sun.com/jsp/jstl/core">
@@ -47,34 +49,30 @@
   </style>
 </head>
 <body>
-	<div class="login-container">
-		<h2>로그인</h2>
-	  	<c:if test="${not empty error}">
-	    	<div class="error-message">${error}</div>
-	   	</c:if>
-		
-	  	<form action="/member/login" method="post">
-		    <input type="text" id="loginId" name="loginId"
-		           class="login-input" placeholder="사용자 아이디"
-		           value="${loginId}" required> <!-- value 속성 추가 -->
-	    	<c:if test="${not empty errors and errors.hasFieldErrors('loginId')}">
-	      		<div class="error-message">${errors.getFieldError('loginId').defaultMessage}</div>
-	    	</c:if>
-	    	<br>
-	    	<input type="password" id="password" name="password"
-		           class="login-input" placeholder="비밀번호"
-		           value="${password}" required> <!-- value 속성 추가 -->
-	    	<c:if test="${not empty errors and errors.hasFieldErrors('password')}">
-	    		<div class="error-message">${errors.getFieldError('password').defaultMessage}</div>
-	    	</c:if>
-	    	<br>
-	    	<button type="submit" class="login-btn">로그인</button>
-	  	</form>
-	  
-	  	<c:if test="${not empty successMessage}">
-	    	<div class="success-message">${successMessage}</div>
-	  	</c:if>
-	  	<p>계정이 없으신가요? <a href="/member/signin" class="register-link">가입하기</a></p>
-	</div>
+<div class="login-container">
+  <h2>로그인</h2>
+   <c:if test="${not empty error}">
+    <div class="error-message">${error}</div>
+	</c:if>
+
+  <form action="/member/login" method="post">
+    <input type="text" id="loginId" name="loginId"
+           class="login-input" placeholder="사용자 아이디"
+           value="${loginId}" required> <!-- value 속성 추가 -->
+    <br>
+    <input type="password" id="password" name="password"
+           class="login-input" placeholder="비밀번호"
+           value="${password}" required> <!-- value 속성 추가 -->
+    <c:if test="${not empty errors and errors.hasFieldErrors('password')}">
+      <div class="error-message">${errors.getFieldError('password').defaultMessage}</div>
+    </c:if>
+    <br>
+    <button type="submit" class="login-btn">로그인</button>
+  </form>
+  <c:if test="${not empty successMessage}">
+    <div class="success-message">${successMessage}</div>
+  </c:if>
+  <p>계정이 없으신가요? <a href="/member/signin" class="register-link">가입하기</a></p>
+</div>
 </body>
 </html>

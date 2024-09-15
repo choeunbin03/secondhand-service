@@ -5,7 +5,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<<<<<<< HEAD
+   <title>Change Info</title>
+=======
    <title>FarmFarm</title>
+>>>>>>> 67c7351913d3d7b685702f20c8a57c2edc988ea0
 
    <style>
         body { font-family: Arial, sans-serif; }
@@ -28,12 +32,20 @@
             
                 <tr>
                     <th>이름</th>
+<<<<<<< HEAD
+                    <td><input type="text" name="mbrNm" id="mbrNm" value="${editMember.mbrNm}" ></td>
+=======
                     <td><input type="text" name="mbrNm" id="mbrNm" value="${editMember.mbrNm}" readonly></td>
+>>>>>>> 67c7351913d3d7b685702f20c8a57c2edc988ea0
                 </tr>
                 
                 <tr>
                     <th>ID</th>
+<<<<<<< HEAD
+                    <td><input type="text" name="mbrId" id="mbrId" value="${editMember.mbrId}" readonly></td>
+=======
                     <td><input type="text" name="mbrId" id="mbrId" value="${editMember.mbrId}" ></td>
+>>>>>>> 67c7351913d3d7b685702f20c8a57c2edc988ea0
                 </tr>
                 
                 <tr>
@@ -47,8 +59,12 @@
                 
                 <tr>
                     <th>주소</th>
+<<<<<<< HEAD
+                    <td><input type="text" name="rgn" id="rgn" value="${editMember.rgn}" ></td>
+=======
                     <td><input type="button" value="동네 입력" onclick="goPopup()"class="register-input" style="width: 80px;">
 	        		<input type="text" name="rgn" id="rgn" class="register-input" value="${editMember.rgn}" readonly="readonly"></td>
+>>>>>>> 67c7351913d3d7b685702f20c8a57c2edc988ea0
                 </tr>
             </table>
             
@@ -62,6 +78,8 @@
             alert('회원 가입 제약 조건이 맞지 않습니다.');
         </script>
     </c:if>
+<<<<<<< HEAD
+=======
 
 <script>
 	function goPopup(){
@@ -85,5 +103,6 @@
 			
 	}
 </script>
+>>>>>>> 67c7351913d3d7b685702f20c8a57c2edc988ea0
 </body>
 </html>

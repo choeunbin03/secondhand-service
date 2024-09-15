@@ -2,7 +2,9 @@ package com.secondhand.domain;
 
 import java.sql.Date;
 
+
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
@@ -17,6 +19,6 @@ public class BoardDTO extends BaseDTO{
 	private int atchFileNo; //첨부파일 번호
 	private int bmkCnt; //찜 개수
 	private int slePrc; // 판매 가격
-	private String fdbk;//후기목록
-	private Date fdbkDt;//후기 날짜 추가
+	private String fdbk;//후기
+	private Date fdbkDt;//후기 날짜
 }

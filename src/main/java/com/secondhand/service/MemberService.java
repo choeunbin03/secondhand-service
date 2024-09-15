@@ -34,5 +34,11 @@ public interface MemberService extends Validator{
 	public MemberDTO findMemberById(String userId);
 	// 멤버 수정 메소드
 	public String editMember(MemberDTO beforeEditMember,MemberDTO afterEditMember);
+<<<<<<< HEAD
+	// 멤버 수종 메소드
+	public void edit(MemberDTO member);
+}
+=======
 
 }
+>>>>>>> 67c7351913d3d7b685702f20c8a57c2edc988ea0

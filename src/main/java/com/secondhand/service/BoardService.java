@@ -40,4 +40,3 @@ public interface BoardService {
 	//16. 거래 취소 메서드
 	public void sleCmptnCancel(int bbsId);
 }
-

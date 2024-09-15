@@ -1,9 +1,21 @@
 package com.secondhand.service;
 
+import javax.annotation.PostConstruct;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
+
+
+import com.secondhand.dao.MemberDAOImpl;
+import com.secondhand.domain.LoginDTO;
+import com.secondhand.domain.MemberDTO;
+
+import java.util.Optional;
 
 import com.secondhand.dao.MemberDAO;
 import com.secondhand.domain.LoginDTO;
@@ -15,6 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 @RequiredArgsConstructor
+
 public class LoginServiceImpl implements LoginService, Validator{
 
 	private final MemberDAO memberDAO;
@@ -22,13 +35,8 @@ public class LoginServiceImpl implements LoginService, Validator{
 //LoginService 메소드
 	@Override
     public MemberDTO login(String loginId, String password) {
-//        return memberDAO.findById(loginId);
-        // ==> MemberDAO의 public Optional<MemberDTO> findByLoginId(String loginId) 개발하면, 아래로 대체
-
-//        return memberDAO.findById(loginId)
-//                .filter(m -> m.getMbrPwd().equals(password))
-//                .orElse(null);l
         MemberDTO loginMember = memberDAO.findByMbrId(loginId);
+
         if(loginMember == null){
             return null;
         }else{
@@ -41,7 +49,6 @@ public class LoginServiceImpl implements LoginService, Validator{
         }
     }
 
-//Validator 메소드
     @Override
     public boolean supports(Class<?> clazz) {
         return LoginDTO.class.isAssignableFrom(clazz);
@@ -61,5 +68,9 @@ public class LoginServiceImpl implements LoginService, Validator{
             errors.rejectValue("password", null, "비밀번호를 입력해주세요.");
         }
     }
-	
+
 }
+
+	
+
+

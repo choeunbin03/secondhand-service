@@ -1,6 +1,7 @@
 package com.secondhand.controller;
 
 import javax.annotation.PostConstruct;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,11 @@ import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.secondhand.dao.MemberDAOImpl;
+import com.secondhand.domain.LoginDTO;
+import com.secondhand.domain.MemberDTO;
+import com.secondhand.service.LoginServiceImpl;
 
 import com.secondhand.dao.MemberDAO;
 import com.secondhand.domain.LoginDTO;
@@ -27,8 +33,8 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class MemberController{
 
+    private final LoginServiceImpl loginService; // 멤버 조회역할'
     private final MemberService memberService;
-    private final LoginService loginService; // 멤버 조회역할
 
 
     @GetMapping("/login") // 로그인화면
@@ -36,36 +42,68 @@ public class MemberController{
         model.addAttribute("loginDTO", new LoginDTO());
         return "/member/login";
     }
-//login 관련 메소드
+
     @PostMapping("/login")
     public String login(@ModelAttribute("loginDTO") LoginDTO login,
                         BindingResult bindingResult,
                         RedirectAttributes redirectAttributes,
                         @RequestParam(name = "redirectURL", defaultValue = "/") String redirectURL,
                         HttpServletRequest request) {
-    	
+
         loginService.validate(login, bindingResult); //검증기에 주입
         if(bindingResult.hasErrors()){ // 입력 값 없으면 다시 로그인창
-            log.info("error ={}", bindingResult.getFieldError());
+            log.info("error1 ={}", bindingResult.getFieldError());
             return "/member/login";
         }
         //LoginService에서 받은 데이터로 로그인 가능한지 처리해야함
         MemberDTO loginMember = loginService.login(login.getLoginId(), login.getPassword()); // 넘겨준 아이디에 맞는 MemberDTO객체 있으면 반환받음
-        if(loginMember == null) { // 없는 회원일때
-            log.info("Login failed for user ID: {}", login.getLoginId());
-             redirectAttributes.addFlashAttribute("error", "아이디 또는 비밀번호가 일치하지 않습니다.");
-             return "redirect:/member/login";
+
+       if(loginMember == null) { // 없는 회원일때
+    	   log.info("Login failed for user ID: {}", login.getLoginId());
+     	   redirectAttributes.addFlashAttribute("error", "아이디 또는 비밀번호가 일치하지 않습니다.");
+     	   return "redirect:/member/login";
         }
 
         HttpSession session = request.getSession();
         session.setAttribute("loginMember", loginMember);
         log.info("OO");
-       
         return "redirect:" + redirectURL;
-        
+
+    }
+
+    @GetMapping("/signin") // 회원가입 화면
+    public String signInForm(@ModelAttribute("member") MemberDTO member){
+        return "/member/signin";
+    }
+
+    @PostMapping("/signin") // 회원가입 화면에서 가입하기 눌렸을 때
+    public String singIn(@ModelAttribute("member") MemberDTO member,
+                         @ModelAttribute("mbrPwdConfirm") String mbrPwdConfirm,
+                         BindingResult bindingResult,
+                         @RequestParam(name="redirectURL",defaultValue="/member/login") String redirectURL,
+                         HttpServletRequest request,
+                         Model model){
+
+
+        memberService.validate(member, bindingResult);
+
+        Set<String> errorMsgSet = memberService.isValidate(member,mbrPwdConfirm);
+        if(errorMsgSet.contains("noError")){ // 회원 가입이 적절할 떄
+        	memberService.save(member);
+        }
+        else { // 회원 가입이 적절하지 않을 때
+            log.info("회원 가입 실패");
+            if(errorMsgSet .contains("mbrIdError")){ log.info("사용자 이름 제약 조건 불충족");}
+            if(errorMsgSet .contains("mbrPwdError")){ log.info("사용자 비밀번호 제약 조건 불충족");}
+            if(errorMsgSet .contains("mbrPwdConfirmError")){ log.info("사용자 비밀번호 확인 제약 조건 불충족");}
+
+            return "/member/signin";
+        }
+
+        return "redirect:"+redirectURL;
     }
     
-  //logout 관련 메소드
+    //logout 관련 메소드
     @GetMapping("/logout")
     public String logout(HttpServletRequest request) {
     	
@@ -75,45 +113,8 @@ public class MemberController{
     	
     	return "redirect:/";
     }
-
     
-//회원가입 관련 메소드
-    @GetMapping("/signin") // 회원가입 화면
-    public String signInForm(@ModelAttribute("member") MemberDTO member){
-        return "/member/signin";
-    }
-
-    @PostMapping("/signin") // 회원가입 화면에서 가입하기 눌렸을 때
-    public String singIn(@ModelAttribute("member") MemberDTO member,
-                         BindingResult bindingResult,
-                         @RequestParam(name="redirectURL",defaultValue="/member/login") String redirectURL,
-                         HttpServletRequest request,
-                         Model model){
-
-    	String mbrPwdConfirm = (String)request.getParameter("mbrPwdConfirm");
-    	
-        memberService.validate(member, bindingResult);
-
-        Set<String> errorMsgSet=memberService.isValidate(member,mbrPwdConfirm);
-        if(errorMsgSet.contains("noError")){ // 회원 가입이 적절할 떄
-        	memberService.save(member);
-        	//store.save(member);
-        	//Controller에서 DAO 메소드 호출 안돼요!
-            log.info("회원 가입 성공");
-        }
-        else { // 회원 가입이 적절하지 않을 때
-            log.info("회원 가입 실패");
-            if(errorMsgSet.contains("mbrIdError")){ log.info("사용자 이름 제약 조건 불충족");}
-            if(errorMsgSet.contains("mbrPwdError")){ log.info("사용자 비밀번호 제약 조건 불충족");}
-            if(errorMsgSet.contains("mbrPwdConfirmError")){ log.info("사용자 비밀번호 확인 제약 조건 불충족");}
-
-            return "/member/signin";
-        }
-
-        return "redirect:"+redirectURL;
-    }
-    
- // 회원 삭제 관련 메소드
+    // 회원 삭제 관련 메소드
     @GetMapping("/deleteMember")
     public String deleteMember(Model model) {
         model.addAttribute("loginDTO", new LoginDTO());
@@ -142,7 +143,11 @@ public class MemberController{
 		return "/member/jusoPopup";
 	}
     
+<<<<<<< HEAD
+    // 내 정보 수정(회원 정보 수정)
+=======
 // 내 정보 수정(회원 정보 수정)
+>>>>>>> 67c7351913d3d7b685702f20c8a57c2edc988ea0
     @GetMapping("/editMember")
     public String editMember(Model model,
           HttpServletRequest request) {
@@ -165,6 +170,8 @@ public class MemberController{
        MemberDTO beforeEditMember=memberService.findMemberById(((MemberDTO)session.getAttribute("loginMember")).getMbrId());
        model.addAttribute("editMember",beforeEditMember);
        
+<<<<<<< HEAD
+=======
 
        System.out.println(beforeEditMember.getMbrNm());
        System.out.println(beforeEditMember.getMbrId());
@@ -178,6 +185,7 @@ public class MemberController{
        System.out.println(afterEditMember.getMbrEmail());
        System.out.println(afterEditMember.getRgn());
 
+>>>>>>> 67c7351913d3d7b685702f20c8a57c2edc988ea0
        String editMessage=memberService.editMember(beforeEditMember, afterEditMember);
        switch(editMessage) {
           case "noChange":
@@ -192,5 +200,9 @@ public class MemberController{
        session.setAttribute("loginMember", afterEditMember);
        return "redirect:/";
     }
+<<<<<<< HEAD
+}
+=======
     
 }
+>>>>>>> 67c7351913d3d7b685702f20c8a57c2edc988ea0
