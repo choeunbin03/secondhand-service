@@ -28,12 +28,12 @@
             
                 <tr>
                     <th>이름</th>
-                    <td><input type="text" name="mbrNm" id="mbrNm" value="${editMember.mbrNm}" readonly></td>
+                    <td><input type="text" name="mbrNm" id="mbrNm" value="${editMember.mbrNm}" ></td>
                 </tr>
                 
                 <tr>
                     <th>ID</th>
-                    <td><input type="text" name="mbrId" id="mbrId" value="${editMember.mbrId}" ></td>
+                    <td><input type="text" name="mbrId" id="mbrId" value="${editMember.mbrId}" readonly></td>
                 </tr>
                 
                 <tr>

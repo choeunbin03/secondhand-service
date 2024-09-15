@@ -18,6 +18,7 @@ public interface MemberDAO {
 	public List<String> getBMK(String mbrId);
 	//찜 추가 및 삭제
 	public void updateBMK(Map<String, Object> param);
+
 	//최근 방문 글 목록
 	public List<String> getRecentViewed(String mbrId);
 	//최근방문글 업데이트
@@ -26,4 +27,9 @@ public interface MemberDAO {
 	public void updateProfile(MemberDTO member) throws Exception;
 	   
     MemberDTO getUserProfile(String mbrId) throws Exception;
+    
+    // 회원 정보 수정
+    public void edit(MemberDTO member);
 }
+
+

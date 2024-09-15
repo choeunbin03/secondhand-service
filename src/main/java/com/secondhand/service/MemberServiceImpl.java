@@ -23,8 +23,11 @@ import javax.inject.Inject;
 public class MemberServiceImpl implements MemberService, Validator { // 회원가입 확인용 필터
 
     private final MemberDAO memberDao;
+
     @Inject
     private S3Service s3Service;
+
+
     
 //MemberService 메소드
     @Override
@@ -66,7 +69,43 @@ public class MemberServiceImpl implements MemberService, Validator { // 회원�
         }
         return errorMsg; // 모든 제약 조건을 통과
     }    
+    
+    public Set<String> isValidate2(MemberDTO member, String mbrPwdConfirm) {
 
+        Set<String> errorMsg = new HashSet<>(); // 에러 메시지 저장
+
+        // 1) mbrId 제약 조건 ==> 6글자 이상 & 한글 X & 중복 X
+        String mbrId = member.getMbrId();
+
+        if (mbrId.length() < 6) { // 6글자 미만인 경우
+            errorMsg.add("mbrIdError");
+        } else if (isHangulContain(mbrId)) { // 한글 O인 경우
+            errorMsg.add("mbrIdError");
+        }
+
+        // 2) mbrPwd 제약 조건 ==> must 영어 + 숫자 + 특수기호 & 8글자 이상
+        String mbrPwd = member.getMbrPwd();
+
+        if (isHangulContain(mbrPwd)) {
+            errorMsg.add("mbrPwdError");
+        } else if (!isDigitContain(mbrPwd)) {
+            errorMsg.add("mbrPwdError");
+        } else if (!isSpecialSymbolContain(mbrPwd)) {
+            errorMsg.add("mbrPwdError");
+        } else if (mbrPwd.length() < 8) {
+            errorMsg.add("mbrPwdError");
+        }
+
+        // 3) 비밀번호 확인 제약 조건 ==>
+        if (!mbrPwdConfirm.equals(member.getMbrPwd())) { // 비밀번호 확인 제약 조건 통과 X
+            errorMsg.add("mbrPwdConfirmError");
+        }
+
+        if (errorMsg.isEmpty()) {
+            errorMsg.add("noError");
+        }
+        return errorMsg; // 모든 제약 조건을 통과
+    }
 	@Override
 	public void save(MemberDTO member) {		
 		memberDao.save(member);
@@ -141,13 +180,10 @@ public class MemberServiceImpl implements MemberService, Validator { // 회원�
     	params.put("loginId", userId);
     	memberDao.updateBMK(params);
     }
-    
-//사용자 프로필 관련
     @Override
     public MemberDTO getUserProfile(String mbrId) throws Exception {
         return memberDao.getUserProfile(mbrId);
     }
-    
     @Override
     public void updateProfile(MemberDTO member, MultipartFile profilePhoto) throws Exception {
         MemberDTO existingMember = memberDao.getUserProfile(member.getMbrId());
@@ -202,21 +238,24 @@ public class MemberServiceImpl implements MemberService, Validator { // 회원�
           return "noChange";
        }
        else { // 변경 사항이 있을 경우
-          delete(beforeEditMember);
-          Set<String> errorSet=isValidate(afterEditMember,afterEditMember.getMbrPwd());
+    	  edit(afterEditMember);
+          Set<String> errorSet=isValidate2(afterEditMember,afterEditMember.getMbrPwd());
           
           if(errorSet.contains("noError")) { // 회원 가입 제약 조건 통과 O 경우
              // 멤버 정보 수정
-             save(afterEditMember);
+		     edit(afterEditMember);
              return "changeSuccess";
           }
           else { // 회원 가입 제약 조건 통과 X 경우
-             save(beforeEditMember);
              return "invalidChange";
           }
        }
     }
-
-
-
+    
+    // 멤버 정보 수정
+    @Override
+    public void edit(MemberDTO member) {
+    	memberDao.edit(member);
+    	return;
+    }
 }

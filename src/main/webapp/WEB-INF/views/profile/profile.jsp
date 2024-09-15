@@ -49,69 +49,62 @@
     </script>
 </head>
 <body>
-	<%@ include file="../module/header.jsp" %>
-	<div class="content">
-	    <div class="container">
-	        <h1>프로필페이지</h1>
-	        <div class="profile-section">
-	            <h3 class="profile-header">상점 프로필</h3>
-	            <div class="profile-content">
-	                <div class="profile-photo">
-	                    <img src="${profile.profilePhotoUrl != null ? profile.profilePhotoUrl : '/resources/images/default.jpg'}" alt="Profile Photo">
-	                </div>
-	                <div>
-	                    <p class="profile-description">상점 소개글: ${profile.storeDescription}</p>
-	                </div>
-	            </div>
-	        </div>
-	        
-	        <div class="tab-links">
-	            <button class="tab-button active" onclick="openTab(event, 'sales')">판매 내역</button>
-	            <button class="tab-button" onclick="openTab(event, 'purchases')">후기</button>
-	        </div>
-	
-	        <div id="sales" class="tab-content active">
-	            <h2 class="header">판매 내역</h2>
-	            <table class="table table-hover">
-	                <tr>
-	                    <th>상품명</th>
-	                    <th>가격</th>
-	                    <th>판매 여부</th>
-	                    <th>날짜</th>
-	                </tr>
-	                <c:forEach var="item" items="${sleReviewList}">
-	                    <tr onclick="location.href='/board/bbsView?bbsId=${item.bbsId}'">
-	                        <td>${item.bbsTtl}</td>
-	                        <td>${item.slePrc}</td>
-	                        <td>${item.sleCmptnYn == 1 ? '거래 완료' : '판매중' }</td>
-	                        <td><fmt:formatDate value="${item.rgtrDt}" pattern="yyyy-MM-dd" /></td>
-	                    </tr>
-	                </c:forEach>
-	            </table>
-	        </div>
-	
-	        <div id="purchases" class="tab-content">
-	            <h2 class="header">작성된 후기</h2>
-	            <table class="table table-hover">
-	                <tr>
-	                    <th>상품명</th>
-	                    <th>작성자</th>
-	                    <th>후기</th>
-	                    <th>작성일</th>
-	                </tr>
-	                <c:forEach var="item" items="${sleReviewList}">
-	                    <c:if test="${item.fdbk != null}">
-	                        <tr onclick="location.href='/board/bbsView?bbsId=${item.bbsId}'">
-	                            <td>${item.bbsTtl}</td>
-	                            <td>${item.prchId}</td>
-	                            <td>${item.fdbk}</td>
-	                            <td><fmt:formatDate value="${item.fdbkDt}" pattern="yyyy-MM-dd" /></td>
-	                        </tr>
-	                    </c:if>
-	                </c:forEach>
-	            </table>
-	        </div>
-	    </div>
-	</div>
+    <div class="container">
+        <h1>프로필페이지</h1>
+        <div class="profile-section">
+            <h3>상점 프로필</h3>
+            <div class="profile-photo">
+                <img src="${profile.profilePhotoUrl != null ? profile.profilePhotoUrl : '/resources/images/default.jpg'}" alt="Profile Photo">
+            </div>
+            <p>${profile.storeDescription}</p>
+        </div>
+        
+        <div class="tab-links">
+            <button class="tab-button active" onclick="openTab(event, 'sales')">판매 내역</button>
+            <button class="tab-button" onclick="openTab(event, 'purchases')">후기</button>
+        </div>
+
+        <div id="sales" class="tab-content active">
+            <h2 class="header">판매 내역</h2>
+            <table class="table table-hover">
+                <tr>
+                    <th>상품명</th>
+                    <th>가격</th>
+                    <th>판매 여부</th>
+                    <th>날짜</th>
+                </tr>
+                <c:forEach var="item" items="${sleReviewList}">
+                    <tr onclick="location.href='/board/bbsView?bbsId=${item.bbsId}'">
+                        <td>${item.bbsTtl}</td>
+                        <td>${item.slePrc}</td>
+                        <td>${item.sleCmptnYn == 1 ? '거래 완료' : '판매중' }</td>
+                        <td><fmt:formatDate value="${item.rgtrDt}" pattern="yyyy-MM-dd" /></td>
+                    </tr>
+                </c:forEach>
+            </table>
+        </div>
+
+        <div id="purchases" class="tab-content">
+            <h2 class="header">작성된 후기</h2>
+            <table class="table table-hover">
+                <tr>
+                    <th>상품명</th>
+                    <th>작성자</th>
+                    <th>후기</th>
+                    <th>작성일</th>
+                </tr>
+                <c:forEach var="item" items="${sleReviewList}">
+                    <c:if test="${item.fdbk != null}">
+                        <tr onclick="location.href='/board/bbsView?bbsId=${item.bbsId}'">
+                            <td>${item.bbsTtl}</td>
+                            <td>${item.prchId}</td>
+                            <td>${item.fdbk}</td>
+                            <td><fmt:formatDate value="${item.fdbkDt}" pattern="yyyy-MM-dd" /></td>
+                        </tr>
+                    </c:if>
+                </c:forEach>
+            </table>
+        </div>
+    </div>
 </body>
 </html>

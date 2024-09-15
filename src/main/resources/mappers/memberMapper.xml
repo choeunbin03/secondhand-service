@@ -8,7 +8,7 @@
        SELECT   MBR_NM      AS mbrNm,
              MBR_ID       AS mbrId,
              MBR_PWD      AS mbrPwd,
-             MBREMAIL   AS mbrEmail,
+             MBR_EMAIL   AS mbrEmail,
              RGN         AS rgn
        FROM TB_MBR
        WHERE MBR_ID = #{LoginId}            
@@ -23,7 +23,7 @@
          RGN,
          RGN_SCP,
          JOIN_DT,
-         mbrEmail
+         mbr_Email
       )
       VALUES(   #{mbrId},
             #{mbrNm},
@@ -41,6 +41,16 @@
 		WHERE mbr_id = #{mbrId}
 	</delete>
 	
+	<update id="edit" parameterType="com.secondhand.domain.MemberDTO">
+		UPDATE tb_mbr
+		SET mbr_nm = #{mbrNm},
+		    mbr_pwd = #{mbrPwd},
+		    rgn = #{rgn},
+		    mbr_Email = #{mbrEmail}
+		WHERE mbr_id = #{mbrId}
+	</update>
+
+	
 	<select id="getBMKByMbrId" resultType = "String" parameterType = "String">
 		SELECT	BMK 		AS BMK
 		FROM TB_MBR
@@ -53,7 +63,8 @@
 		WHERE MBR_ID = #{loginId}
 	</select>
 	
-	<update id="updateProfile" parameterType="com.secondhand.domain.MemberDTO">
+
+ 	<update id="updateProfile" parameterType="com.secondhand.domain.MemberDTO">
       UPDATE TB_MBR
       SET
          PROFILE_PHOTO_URL = #{profilePhotoUrl},
@@ -61,7 +72,9 @@
       WHERE MBR_ID = #{mbrId}
    </update>
 
-   <select id="getUserProfile" parameterType="string" resultType="com.secondhand.domain.MemberDTO">
+
+    <select id="getUserProfile" parameterType="string" resultType="com.secondhand.domain.MemberDTO">
+
       SELECT
          MBR_ID AS mbrId,
          PROFILE_PHOTO_URL AS profilePhotoUrl,
@@ -81,5 +94,5 @@
 		SET RCNT_VIEW = "${NewRecentView}"
 		WHERE MBR_ID = #{loginId}
 	</select>
-	
+
 </mapper>

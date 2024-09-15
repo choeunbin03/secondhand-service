@@ -58,6 +58,14 @@ public class MemberDAOImpl implements MemberDAO{ //리포지터리
 		}
 	}
 	
+	// 멤버 수정
+	@Override
+	public void edit(MemberDTO member) {
+		sqlSession.update(namespace+".edit",member);
+		log.info("회원 정보 수정");
+		return ;
+	}
+	
 	@Override
     public List<MemberDTO> findAll(){
         return new ArrayList<>(store.values());
@@ -99,6 +107,7 @@ public class MemberDAOImpl implements MemberDAO{ //리포지터리
 	}
     
     @Override
+
     public void updateProfile(MemberDTO member) throws Exception {
         sqlSession.update(namespace + ".updateProfile", member);
     }

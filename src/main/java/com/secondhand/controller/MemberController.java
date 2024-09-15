@@ -165,22 +165,6 @@ public class MemberController{
        MemberDTO beforeEditMember=memberService.findMemberById(((MemberDTO)session.getAttribute("loginMember")).getMbrId());
        model.addAttribute("editMember",beforeEditMember);
        
-
-       System.out.println("***************************************************");
-       System.out.println(beforeEditMember.getMbrNm());
-       System.out.println(beforeEditMember.getMbrId());
-       System.out.println(beforeEditMember.getMbrPwd());
-       System.out.println(beforeEditMember.getMbrEmail());
-       System.out.println(beforeEditMember.getRgn());
-       System.out.println("***************************************************");
-       
-       System.out.println("***************************************************");
-       System.out.println(afterEditMember.getMbrNm());
-       System.out.println(afterEditMember.getMbrId());
-       System.out.println(afterEditMember.getMbrPwd());
-       System.out.println(afterEditMember.getMbrEmail());
-       System.out.println(afterEditMember.getRgn());
-       System.out.println("***************************************************");
        String editMessage=memberService.editMember(beforeEditMember, afterEditMember);
        switch(editMessage) {
           case "noChange":

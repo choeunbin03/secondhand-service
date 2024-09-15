@@ -16,8 +16,8 @@
        .container { width: 80%; margin: 20px auto; background: white; padding: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
        .section { margin-bottom: 20px; }
        .section h2 { color: #333; padding: 10px; background-color: #efefef; border-radius: 5px; }
-       .button { display: block; width: 20%; padding: 10px; margin-top: 5px; background-color: #007bff; color: white; text-decoration: none; border: none; border-radius: 5px; cursor: pointer; }
-       .button:hover { background-color: #0056b3; }
+       .button { display: block; width: 20%; padding: 10px; margin-top: 5px; background-color: #ffb6c1; color: white; text-decoration: none; border: none; border-radius: 5px; cursor: pointer; }
+       .button:hover { background-color: #ff8ca1; }
        .button + .button { margin-top: 10px; }
        a { text-decoration: none; }
        .profile-section { padding: 20px; border: 1px solid #ddd; border-radius: 5px; margin-bottom: 20px; background-color: #fff; }
@@ -78,5 +78,4 @@
       });
    });   
 </script>
-</body>
 </html>
